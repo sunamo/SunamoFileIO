@@ -9,7 +9,7 @@ internal class FS
     internal static Action<string> CreateFoldersPsysicallyUnlessThere;
     internal static Func<string, string> GetFileNameWithoutExtension;
     internal static Func<string, string, string> InsertBetweenFileNameAndExtension;
-    internal static Func<string, string, bool, List<string>> GetFiles;
+    internal static Func<string, string, bool?, List<string>> GetFilesWithoutArgs;
 
     internal static bool ExistsFileAc<StorageFolder, StorageFile>(StorageFile selectedFile, AbstractCatalog<StorageFolder, StorageFile> ac = null)
     {
