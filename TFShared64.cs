@@ -89,7 +89,7 @@ List<string>
 
 
 
-    private static async void SaveFile_DontUse(string obsah, string soubor, bool pripsat)
+    private static async Task SaveFile_DontUse(string obsah, string soubor, bool pripsat)
     {
         var dir = FS.GetDirectoryName(soubor);
 
@@ -137,17 +137,17 @@ string
 
     public static bool readFile = true;
 
-    public static void CreateEmptyFileWhenDoesntExists(string path)
+    public static async Task CreateEmptyFileWhenDoesntExists(string path)
     {
-        CreateEmptyFileWhenDoesntExists<string, string>(path, null);
+        await CreateEmptyFileWhenDoesntExists<string, string>(path, null);
     }
 
-    public static void CreateEmptyFileWhenDoesntExists<StorageFolder, StorageFile>(StorageFile path, AbstractCatalog<StorageFolder, StorageFile> ac)
+    public static async Task CreateEmptyFileWhenDoesntExists<StorageFolder, StorageFile>(StorageFile path, AbstractCatalog<StorageFolder, StorageFile> ac)
     {
         if (!FS.ExistsFileAc(path, ac))
         {
             FS.CreateUpfoldersPsysicallyUnlessThereAc<StorageFolder, StorageFile>(path, ac);
-            TF.WriteAllText<StorageFolder, StorageFile>(path, "", Encoding.UTF8, ac);
+            await TF.WriteAllText<StorageFolder, StorageFile>(path, "", Encoding.UTF8, ac);
         }
     }
 

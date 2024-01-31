@@ -31,7 +31,7 @@ void
         }
 
         b = b.Skip(3).ToList();
-        TF.WriteAllBytes(path, b);
+        await TF.WriteAllBytes(path, b);
     }
     #endregion
 }

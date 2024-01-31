@@ -70,7 +70,7 @@ void
         var content2 = transformHtmlToMetro4.Invoke(content, arg);
         if (content.Trim() != content2.Trim())
         {
-            TF.WriteAllText(f, content2);
+            await TF.WriteAllText(f, content2);
         }
     }
 

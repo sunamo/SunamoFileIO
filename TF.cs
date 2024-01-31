@@ -42,7 +42,7 @@ void
         var c2 = SHSE.JoinNL(l);
         if (c2 != c)
         {
-            TF.WriteAllLines(path, l);
+            await TF.WriteAllLines(path, l);
         }
     }
 
@@ -85,7 +85,7 @@ List<string>
         await
 #endif
         TF.ReadAllLines(syncLocations);
-        SF.RemoveComments(l);
+        l = l.Where(d => !d.StartsWith("#")).ToList();
         return l;
     }
 
@@ -132,7 +132,7 @@ void
             if (!content.Contains(append))
             {
                 content = append + content;
-                TF.WriteAllText(item, content);
+                await TF.WriteAllText(item, content);
             }
         }
     }
@@ -143,7 +143,7 @@ void
         {
             return l;
         }
-        if (FS.ExistsFile(l))
+        if (File.Exists(l))
         {
             return TF.ReadAllText(l);
         }
@@ -213,7 +213,7 @@ void
                 }
             }
 
-            TF.WriteAllLines(item, lines);
+            await TF.WriteAllLines(item, lines);
         }
     }
 
@@ -255,7 +255,10 @@ void
 #endif
         ReadAllLines(path);
         l.AddRange(notRecognized);
-        //CAG.RemoveDuplicitiesList<string>(l);
-        TF.WriteAllLines(path, notRecognized);
+        if (deduplicate)
+        {
+            l = CAG.RemoveDuplicitiesList<string>(l);
+        }
+        await TF.WriteAllLines(path, notRecognized);
     }
 }

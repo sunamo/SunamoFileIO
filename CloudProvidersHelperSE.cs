@@ -69,17 +69,17 @@ public class CloudProvidersHelperSE
 
             if (myStations != null)
             {
-                oneDriveExe = oneDriveExe.Replace(SH.WrapWithBs(myStations.Vps), SH.WrapWithBs(myStations.Mb));
+                oneDriveExe = oneDriveExe.Replace(SHSH.WrapWithBs(myStations.Vps), SHSH.WrapWithBs(myStations.Mb));
             }
 
             //if (!VpsHelperXlf.IsVps)
             //{
             //    OneDriveExe = oneDriveExe;
-            //    GDriveExeExists = FS.ExistsFile(oneDriveExe);
+            //    GDriveExeExists =File.Exists(oneDriveExe);
             //}
 
             GDriveExe = l[0][1];
-            GDriveExeExists = FS.ExistsFile(GDriveExe);
+            GDriveExeExists =File.Exists(GDriveExe);
 
             OneDriveFn = Path.GetFileNameWithoutExtension(OneDriveExe);
             GDriveFn = Path.GetFileNameWithoutExtension(GDriveExe);

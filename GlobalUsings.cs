@@ -16,3 +16,5 @@ global using SunamoPlatformUwpInterop.PlatformUwpInterop;
 global using System.Threading;
 global using SunamoEnums.Enums;
 global using SunamoStringGetLines;
+global using SunamoFileSystem;
+global using SunamoShared.Helpers.FileSystem;

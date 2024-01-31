@@ -17,11 +17,11 @@ void
     {
         if (append)
         {
-            TF.AppendAllText(file.ToString(), content);
+            await TF.AppendAllText(file.ToString(), content);
         }
         else
         {
-            TF.WriteAllText(file.ToString(), content);
+            await TF.WriteAllText(file.ToString(), content);
         }
     }
 
@@ -80,7 +80,7 @@ void
                 return;
             }
 
-            File.WriteAllBytesAsync(fileS, b.ToArray());
+            await File.WriteAllBytesAsync(fileS, b.ToArray());
 
         }
         else
@@ -106,11 +106,11 @@ void
     /// </summary>
     /// <param name="path"></param>
     /// <param name="content"></param>
-    public static void WriteAllText<StorageFolder, StorageFile>(StorageFile path, string content, AbstractCatalog<StorageFolder, StorageFile> ac)
+    public static async Task WriteAllText<StorageFolder, StorageFile>(StorageFile path, string content, AbstractCatalog<StorageFolder, StorageFile> ac)
     {
         FS.CreateUpfoldersPsysicallyUnlessThereAc(path, ac);
 
-        TF.WriteAllText<StorageFolder, StorageFile>(path, content, Encoding.UTF8, ac);
+        await TF.WriteAllText<StorageFolder, StorageFile>(path, content, Encoding.UTF8, ac);
     }
 
 #if DEBUG

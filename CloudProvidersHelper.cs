@@ -56,7 +56,7 @@ public class CloudProvidersHelper
 
             if (myStations != null)
             {
-                oneDriveExe = oneDriveExe.Replace(SH.WrapWithBs(myStations.Vps), SH.WrapWithBs(myStations.Mb));
+                oneDriveExe = oneDriveExe.Replace(SHSH.WrapWithBs(myStations.Vps), SHSH.WrapWithBs(myStations.Mb));
             }
 
             //if (!VpsHelperSunamo.IsVps)
