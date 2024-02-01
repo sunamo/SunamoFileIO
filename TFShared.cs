@@ -15,13 +15,13 @@ void
 #if ASYNC
         await
 #endif
-        TF.ReadAllText(pathCsproj);
+        File.ReadAllTextAsync(pathCsproj);
         content = content.Replace(to, from);
 
 #if ASYNC
         await
 #endif
-        TF.WriteAllText(pathCsproj, content);
+        File.WriteAllTextAsync(pathCsproj, content);
     }
 
     public static
@@ -36,7 +36,7 @@ void
 #if ASYNC
         await
 #endif
-        TF.ReadAllText(f);
+        File.ReadAllTextAsync(f);
         //content = transformHtmlToMetro4.Invoke(content);
 
 #if ASYNC
@@ -58,7 +58,7 @@ void
 #if ASYNC
         await
 #endif
-        TF.ReadAllText(f);
+        File.ReadAllTextAsync(f);
 
 #if DEBUG
         if (f.Contains(@"\scz.sln"))
@@ -70,7 +70,7 @@ void
         var content2 = transformHtmlToMetro4.Invoke(content, arg);
         if (content.Trim() != content2.Trim())
         {
-            await TF.WriteAllText(f, content2);
+            await File.WriteAllTextAsync(f, content2);
         }
     }
 
@@ -88,7 +88,7 @@ void
 #if ASYNC
         await
 #endif
-        TF.ReadAllText(f);
+        File.ReadAllTextAsync(f);
         content = transformHtmlToMetro4.Invoke(content);
 
 #if ASYNC
@@ -113,7 +113,7 @@ void
 #if ASYNC
         await
 #endif
-        TF.ReadAllText(f)).Trim();
+        File.ReadAllTextAsync(f)).Trim();
         var content2 = transformHtmlToMetro4.Invoke(content);
 
         if (String.Compare(content, content2) != 0)
@@ -124,7 +124,7 @@ void
 #if ASYNC
             await
 #endif
-            TF.WriteAllText(f, content2);
+            File.WriteAllTextAsync(f, content2);
         }
     }
 

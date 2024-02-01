@@ -1,5 +1,7 @@
+namespace SunamoFileIO._sunamo;
+
 //namespace SunamoFileIO._sunamo;
-//public class SHReplace
+//internal class SHReplace
 //{
-//    public static Action<List<string>, int, string, string, bool> ReplaceInLine;
+//    internal static Action<List<string>, int, string, string, bool> ReplaceInLine;
 //}

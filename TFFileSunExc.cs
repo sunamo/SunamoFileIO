@@ -23,7 +23,7 @@ namespace SunamoFileIO;
 //#if ASYNC
 //        await
 //#endif
-//     se.TF.WriteAllLinesArray(path, c);
+//     se.File.WriteAllLinesAsyncArray(path, c);
 //    }
 
 //    public static
@@ -38,7 +38,7 @@ namespace SunamoFileIO;
 //#if ASYNC
 //        await
 //#endif
-//     se.TF.WriteAllBytesArray(path, c);
+//     se.File.WriteAllBytesAsyncArray(path, c);
 //    }
 
 //    public static
@@ -53,7 +53,7 @@ namespace SunamoFileIO;
 //#if ASYNC
 //    await
 //#endif
-// se.TF.ReadAllBytesArray(path);
+// se.File.ReadAllBytesAsyncArray(path).ToList();
 //    }
 //    #endregion
 
@@ -75,7 +75,7 @@ namespace SunamoFileIO;
 //#if ASYNC
 //    await
 //#endif
-// se.TF.ReadAllBytes(file);
+// se.File.ReadAllBytesAsync(file).ToList();
 //    }
 //    public static
 //#if ASYNC
@@ -89,7 +89,7 @@ namespace SunamoFileIO;
 //#if ASYNC
 //        await
 //#endif
-//     se.TF.WriteAllBytes(file, b);
+//     se.File.WriteAllBytesAsync(file, b);
 //    }
 //    #endregion
 
@@ -106,7 +106,7 @@ namespace SunamoFileIO;
 //#if ASYNC
 //        await
 //#endif
-//     se.TF.WriteAllLines(file, lines);
+//     se.File.WriteAllLinesAsync(file, lines);
 //    }
 
 //    public static
@@ -121,7 +121,7 @@ namespace SunamoFileIO;
 //#if ASYNC
 //    await
 //#endif
-// se.TF.ReadAllLines(file);
+// se.File.ReadAllLinesAsync(file).ToList();
 //    }
 //    #endregion
 
@@ -138,7 +138,7 @@ namespace SunamoFileIO;
 //    //#if ASYNC
 //    //        await
 //    //#endif
-//    //     se.TF.WriteAllText(path, content);
+//    //     se.File.WriteAllTextAsync(path, content);
 //    //    }
 
 //    public static
@@ -153,7 +153,7 @@ namespace SunamoFileIO;
 //#if ASYNC
 //    await
 //#endif
-// se.TF.ReadAllText(f);
+// se.File.ReadAllTextAsync(f);
 //    }
 
 //    public static
@@ -168,7 +168,7 @@ namespace SunamoFileIO;
 //#if ASYNC
 //    await
 //#endif
-// se.TF.ReadAllText(path, enc);
+// se.File.ReadAllTextAsync(path, enc);
 //    }
 //    #endregion
 //    #endregion

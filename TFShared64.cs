@@ -91,7 +91,7 @@ List<string>
 
     private static async Task SaveFile_DontUse(string obsah, string soubor, bool pripsat)
     {
-        var dir = FS.GetDirectoryName(soubor);
+        var dir = Path.GetDirectoryName(soubor);
 
         ThrowEx.DirectoryWasntFound(dir);
 
@@ -105,7 +105,7 @@ List<string>
         }
         else
         {
-            await TF.WriteAllText(soubor, obsah, Encoding.UTF8);
+            await File.WriteAllTextAsync(soubor, obsah, Encoding.UTF8);
         }
     }
 
@@ -139,16 +139,17 @@ string
 
     public static async Task CreateEmptyFileWhenDoesntExists(string path)
     {
-        await CreateEmptyFileWhenDoesntExists<string, string>(path, null);
+        //await CreateEmptyFileWhenDoesntExists<string, string>(path, null);
+        await File.WriteAllTextAsync(path, "");
     }
 
-    public static async Task CreateEmptyFileWhenDoesntExists<StorageFolder, StorageFile>(StorageFile path, AbstractCatalog<StorageFolder, StorageFile> ac)
-    {
-        if (!FS.ExistsFileAc(path, ac))
-        {
-            FS.CreateUpfoldersPsysicallyUnlessThereAc<StorageFolder, StorageFile>(path, ac);
-            await TF.WriteAllText<StorageFolder, StorageFile>(path, "", Encoding.UTF8, ac);
-        }
-    }
+    //public static async Task CreateEmptyFileWhenDoesntExists<StorageFolder, StorageFile>(StorageFile path, AbstractCatalog<StorageFolder, StorageFile> ac)
+    //{
+    //    if (!FS.ExistsFileAc(path, ac))
+    //    {
+    //        FS.CreateUpfoldersPsysicallyUnlessThereAc<StorageFolder, StorageFile>(path, ac);
+    //        await File.WriteAllTextAsync<StorageFolder, StorageFile>(path, "", Encoding.UTF8, ac);
+    //    }
+    //}
 
 }

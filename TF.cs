@@ -1,3 +1,5 @@
+using SunamoStringReplace;
+
 namespace SunamoFileIO;
 
 
@@ -42,7 +44,7 @@ void
         var c2 = SHSE.JoinNL(l);
         if (c2 != c)
         {
-            await TF.WriteAllLines(path, l);
+            await File.WriteAllLinesAsync(path, l);
         }
     }
 
@@ -80,11 +82,11 @@ List<string>
 #endif
     ReadConfigLines(string syncLocations)
     {
-        var l =
+        var l = (
 #if ASYNC
         await
 #endif
-        TF.ReadAllLines(syncLocations);
+        File.ReadAllLinesAsync(syncLocations)).ToList();
         l = l.Where(d => !d.StartsWith("#")).ToList();
         return l;
     }
@@ -128,11 +130,11 @@ void
 #if ASYNC
             await
 #endif
-            TF.ReadAllText(item);
+            File.ReadAllTextAsync(item);
             if (!content.Contains(append))
             {
                 content = append + content;
-                await TF.WriteAllText(item, content);
+                await File.WriteAllTextAsync(item, content);
             }
         }
     }
@@ -145,7 +147,7 @@ void
         }
         if (File.Exists(l))
         {
-            return TF.ReadAllText(l);
+            return File.ReadAllTextAsync(l);
         }
         return l;
     }
@@ -199,11 +201,11 @@ void
     {
         foreach (var item in files)
         {
-            var lines =
+            var lines = (
 #if ASYNC
             await
 #endif
-            TF.ReadAllLines<string, string>(item, null);
+            File.ReadAllLinesAsync(item, null)).ToList();
             for (int i = 0; i < lines.Count; i++)
             {
                 string line = lines[i].Trim();
@@ -213,7 +215,7 @@ void
                 }
             }
 
-            await TF.WriteAllLines(item, lines);
+            await File.WriteAllLinesAsync(item, lines);
         }
     }
 
@@ -238,7 +240,7 @@ void
     //#if ASYNC
     //    await
     //#endif
-    // TF.ReadAllLines(file)).ToList();
+    // File.ReadAllLinesAsync(file)).ToList();
     //    }
 
     public static
@@ -259,6 +261,6 @@ void
         {
             l = CAG.RemoveDuplicitiesList<string>(l);
         }
-        await TF.WriteAllLines(path, notRecognized);
+        await File.WriteAllLinesAsync(path, notRecognized);
     }
 }

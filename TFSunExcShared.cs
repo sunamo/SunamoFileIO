@@ -5,7 +5,7 @@ public partial class TF
 {
     #region For easy copy
 
-    public static List<byte> bomUtf8 = new List<byte>( [239, 187, 191]);
+    public static List<byte> bomUtf8 = new List<byte>([239, 187, 191]);
 
     public static
 #if ASYNC
@@ -15,11 +15,11 @@ void
 #endif
     RemoveDoubleBomUtf8(string path)
     {
-        var b =
+        var b = (
 #if ASYNC
         await
 #endif
-        TF.ReadAllBytes(path);
+        File.ReadAllBytesAsync(path)).ToList();
         var to = b.Count > 5 ? 6 : b.Count;
 
         for (int i = 3; i < to; i++)
@@ -31,7 +31,7 @@ void
         }
 
         b = b.Skip(3).ToList();
-        await TF.WriteAllBytes(path, b);
+        await File.WriteAllBytesAsync(path, b.ToArray());
     }
     #endregion
 }

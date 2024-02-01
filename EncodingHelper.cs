@@ -60,7 +60,7 @@ public partial class EncodingHelper
 
     public static bool isBinary(string path)
     {
-        long length = FS.GetFileSize(path);
+        long length = new FileInfo(path).Length;
         if (length == 0)
             return false;
         using (StreamReader stream = new StreamReader(path))

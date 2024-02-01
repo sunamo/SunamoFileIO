@@ -1,4 +1,6 @@
 namespace SunamoFileIO;
+using SunamoFileIO._sunamo;
+using SunamoSerializer;
 
 // Nevím proč tu NS je, odstraním ho
 //namespace sunamo.Helpers.FileSystem
@@ -79,7 +81,7 @@ public class CloudProvidersHelperSE
             //}
 
             GDriveExe = l[0][1];
-            GDriveExeExists =File.Exists(GDriveExe);
+            GDriveExeExists = File.Exists(GDriveExe);
 
             OneDriveFn = Path.GetFileNameWithoutExtension(OneDriveExe);
             GDriveFn = Path.GetFileNameWithoutExtension(GDriveExe);

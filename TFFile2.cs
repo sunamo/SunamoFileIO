@@ -106,12 +106,12 @@ void
     /// </summary>
     /// <param name="path"></param>
     /// <param name="content"></param>
-    public static async Task WriteAllText<StorageFolder, StorageFile>(StorageFile path, string content, AbstractCatalog<StorageFolder, StorageFile> ac)
-    {
-        FS.CreateUpfoldersPsysicallyUnlessThereAc(path, ac);
+    //public static async Task WriteAllText<StorageFolder, StorageFile>(StorageFile path, string content, AbstractCatalog<StorageFolder, StorageFile> ac)
+    //{
+    //    FS.CreateUpfoldersPsysicallyUnlessThereAc(path, ac);
 
-        await TF.WriteAllText<StorageFolder, StorageFile>(path, content, Encoding.UTF8, ac);
-    }
+    //    await File.WriteAllTextAsync(path, content, Encoding.UTF8, ac);
+    //}
 
 #if DEBUG
     public const int waitMsBeforeReadFile = 1000;

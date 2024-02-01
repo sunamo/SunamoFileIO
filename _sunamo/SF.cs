@@ -1,7 +1,9 @@
+namespace SunamoFileIO._sunamo;
+
 //namespace SunamoFileIO._sunamo;
 
-//public class SF
+//internal class SF
 //{
-//    public static Func<string, string, (List<string> header, List<List<string>> rows)> GetAllElementsFileAdvanced;
-//    public static Action<List<string>> RemoveComments;
+//    internal static Func<string, string, (List<string> header, List<List<string>> rows)> GetAllElementsFileAdvanced;
+//    internal static Action<List<string>> RemoveComments;
 //}
