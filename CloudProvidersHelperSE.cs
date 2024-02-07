@@ -1,12 +1,7 @@
 namespace SunamoFileIO;
-using SunamoFileIO._sunamo;
-using SunamoSerializer;
-
 // Nevím proč tu NS je, odstraním ho
 //namespace sunamo.Helpers.FileSystem
 //{
-
-
 
 public class CloudProvidersHelperSE
 {
@@ -55,37 +50,37 @@ public class CloudProvidersHelperSE
         //       string fCloudProviders =
         //AppData.ci.GetFileCommonSettings("CloudProviders.txt");
 
-        var (header, l) = SF.GetAllElementsFileAdvanced(fCloudProviders, null);
+        //var (header, l) = SF.GetAllElementsFileAdvanced(fCloudProviders, null);
 
 
-        if (header.Count != 0)
-        {
-            isUseCloud = true;
-            //folders = SF.ToDictionary<string, string>(l);
-            List<string> OneDriveFolders = SHSE.Split(header[0], AllStringsSE.ast);
-            OneDriveFolder0 = OneDriveFolders[0];
-            OneDriveFolder1 = OneDriveFolders[1];
-            gDriveFolder = l[0][0];
+        //if (header.Count != 0)
+        //{
+        //    isUseCloud = true;
+        //    //folders = SF.ToDictionary<string, string>(l);
+        //    List<string> OneDriveFolders = SHSE.Split(header[0], AllStringsSE.ast);
+        //    OneDriveFolder0 = OneDriveFolders[0];
+        //    OneDriveFolder1 = OneDriveFolders[1];
+        //    gDriveFolder = l[0][0];
 
-            string oneDriveExe = header[1];
+        //    string oneDriveExe = header[1];
 
-            if (myStations != null)
-            {
-                oneDriveExe = oneDriveExe.Replace(SHSH.WrapWithBs(myStations.Vps), SHSH.WrapWithBs(myStations.Mb));
-            }
+        //    if (myStations != null)
+        //    {
+        //        oneDriveExe = oneDriveExe.Replace(SHSH.WrapWithBs(myStations.Vps), SHSH.WrapWithBs(myStations.Mb));
+        //    }
 
-            //if (!VpsHelperXlf.IsVps)
-            //{
-            //    OneDriveExe = oneDriveExe;
-            //    GDriveExeExists =File.Exists(oneDriveExe);
-            //}
+        //    //if (!VpsHelperXlf.IsVps)
+        //    //{
+        //    //    OneDriveExe = oneDriveExe;
+        //    //    GDriveExeExists =File.Exists(oneDriveExe);
+        //    //}
 
-            GDriveExe = l[0][1];
-            GDriveExeExists = File.Exists(GDriveExe);
+        //    GDriveExe = l[0][1];
+        //    GDriveExeExists = File.Exists(GDriveExe);
 
-            OneDriveFn = Path.GetFileNameWithoutExtension(OneDriveExe);
-            GDriveFn = Path.GetFileNameWithoutExtension(GDriveExe);
-        }
+        //    OneDriveFn = Path.GetFileNameWithoutExtension(OneDriveExe);
+        //    GDriveFn = Path.GetFileNameWithoutExtension(GDriveExe);
+        //}
     }
 
     public static string GDriveFolder
@@ -101,48 +96,48 @@ public class CloudProvidersHelperSE
         }
     }
 
-    public static void OpenSyncAppIfNotRunning(string ss2)
-    {
-        if (OneDriveExeOpened && GDriveExeOpened)
-        {
-            return;
-        }
+    //public static void OpenSyncAppIfNotRunning(string ss2)
+    //{
+    //    if (OneDriveExeOpened && GDriveExeOpened)
+    //    {
+    //        return;
+    //    }
 
-        if (!isUseCloud)
-        {
-            return;
-        }
+    //    if (!isUseCloud)
+    //    {
+    //        return;
+    //    }
 
-        if (OneDriveExe == null)
-        {
-            OneDriveExeOpened = true;
-            return;
-        }
+    //    if (OneDriveExe == null)
+    //    {
+    //        OneDriveExeOpened = true;
+    //        return;
+    //    }
 
-        if (OneDriveExeExists)
-        {
-            if (ss2.StartsWith(OneDriveFolder0) || ss2.StartsWith(OneDriveFolder1))
-            {
-                if (!PH.IsAlreadyRunning(OneDriveFn))
-                {
-                    OneDriveExeOpened = true;
-                    AIStore.winPi?.PHWinPiRunAsDesktopUserNoAdmin(OneDriveExe);
-                    Thread.Sleep(5000);
-                }
-            }
-        }
-        else if (GDriveExeExists)
-        {
-            if (ss2.StartsWith(GDriveFolder))
-            {
-                if (!PH.IsAlreadyRunning(GDriveFn))
-                {
-                    GDriveExeOpened = true;
-                    Process.Start(GDriveExe);
-                    Thread.Sleep(5000);
-                }
-            }
-        }
-    }
+    //    if (OneDriveExeExists)
+    //    {
+    //        if (ss2.StartsWith(OneDriveFolder0) || ss2.StartsWith(OneDriveFolder1))
+    //        {
+    //            if (!PH.IsAlreadyRunning(OneDriveFn))
+    //            {
+    //                OneDriveExeOpened = true;
+    //                AIStore.winPi?.PHWinPiRunAsDesktopUserNoAdmin(OneDriveExe);
+    //                Thread.Sleep(5000);
+    //            }
+    //        }
+    //    }
+    //    else if (GDriveExeExists)
+    //    {
+    //        if (ss2.StartsWith(GDriveFolder))
+    //        {
+    //            if (!PH.IsAlreadyRunning(GDriveFn))
+    //            {
+    //                GDriveExeOpened = true;
+    //                Process.Start(GDriveExe);
+    //                Thread.Sleep(5000);
+    //            }
+    //        }
+    //    }
+    //}
 }
 //}

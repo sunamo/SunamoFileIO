@@ -1,3 +1,5 @@
+using SunamoExceptions.OnlyInSE;
+
 namespace SunamoFileIO;
 public partial class TF
 {
@@ -67,20 +69,20 @@ public partial class TF
 
 
 
-    public static
-#if ASYNC
-    async Task<List<string>>
-#else
-List<string>
-#endif
-    ReadAllLines<StorageFolder, StorageFile>(StorageFile file, AbstractCatalog<StorageFolder, StorageFile> ac)
-    {
-        return SHGetLines.GetLines(
-#if ASYNC
-        await
-#endif
-        ReadAllText<StorageFolder, StorageFile>(file, ac));
-    }
+    //    public static
+    //#if ASYNC
+    //    async Task<List<string>>
+    //#else
+    //List<string>
+    //#endif
+    //    ReadAllLines<StorageFolder, StorageFile>(StorageFile file, AbstractCatalog<StorageFolder, StorageFile> ac)
+    //    {
+    //        return SHGetLines.GetLines(
+    //#if ASYNC
+    //        await
+    //#endif
+    //        ReadAllText<StorageFolder, StorageFile>(file, ac));
+    //    }
 
     /// <summary>
     /// Just one command File.Write* can be wrapped with it
@@ -128,11 +130,13 @@ string
 #endif
     ReadAllText(string s)
     {
-        return
-#if ASYNC
-        await
-#endif
-        ReadAllText<string, string>(s);
+        //        return
+        //#if ASYNC
+        //        await
+        //#endif
+        //        ReadAllText<string, string>(s);
+
+        return (await File.ReadAllTextAsync(s));
     }
 
     public static bool readFile = true;

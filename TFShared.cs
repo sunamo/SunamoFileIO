@@ -1,3 +1,5 @@
+using SunamoFileIO._sunamo;
+
 namespace SunamoFileIO;
 
 
@@ -24,26 +26,26 @@ void
         File.WriteAllTextAsync(pathCsproj, content);
     }
 
-    public static
-#if ASYNC
-    async Task
-#else
-void
-#endif
-    PureFileOperationProcessEveryLine(string f, Func<string, string> transformHtmlToMetro4, string insertBetweenFilenameAndExtension)
-    {
-        var content =
-#if ASYNC
-        await
-#endif
-        File.ReadAllTextAsync(f);
-        //content = transformHtmlToMetro4.Invoke(content);
+    //    public static
+    //#if ASYNC
+    //    async Task
+    //#else
+    //void
+    //#endif
+    //    PureFileOperationProcessEveryLine(string f, Func<string, string> transformHtmlToMetro4, string insertBetweenFilenameAndExtension)
+    //    {
+    //        var content =
+    //#if ASYNC
+    //        await
+    //#endif
+    //        File.ReadAllTextAsync(f);
+    //        //content = transformHtmlToMetro4.Invoke(content);
 
-#if ASYNC
-        await
-#endif
-        TF.WriteAllText(FS.InsertBetweenFileNameAndExtension(f, insertBetweenFilenameAndExtension), content);
-    }
+    //#if ASYNC
+    //        await
+    //#endif
+    //        TF.WriteAllText(FS.InsertBetweenFileNameAndExtension(f, insertBetweenFilenameAndExtension), content);
+    //    }
 
 
     public static
@@ -175,7 +177,8 @@ void
 #if ASYNC
         await
 #endif
-        WriteAllText<string, string>(file, content, encoding, null);
+        //WriteAllText<string, string>(file, content, encoding, null);
+        File.WriteAllTextAsync(file, content, encoding);
     }
 
 

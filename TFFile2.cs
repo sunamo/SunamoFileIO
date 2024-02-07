@@ -1,3 +1,4 @@
+
 namespace SunamoFileIO;
 
 
@@ -25,70 +26,75 @@ void
         }
     }
 
+    public static async Task AppendAllText(string v, string content)
+    {
+        await File.WriteAllTextAsync(v, content);
+    }
+
     /// <summary>
     /// A1 cant be storagefile because its
     /// not in
     /// </summary>
     /// <param name="file"></param>
     /// <param name="content"></param>
-    public static
-#if ASYNC
-    async Task
-#else
-void
-#endif
-    WriteAllText<StorageFolder, StorageFile>(StorageFile file, string content, Encoding enc, AbstractCatalog<StorageFolder, StorageFile> ac)
-    {
-        if (ac == null)
-        {
-            try
-            {
+    //    public static
+    //#if ASYNC
+    //    async Task
+    //#else
+    //void
+    //#endif
+    //    WriteAllText<StorageFolder, StorageFile>(StorageFile file, string content, Encoding enc, AbstractCatalog<StorageFolder, StorageFile> ac)
+    //    {
+    //        if (ac == null)
+    //        {
+    //            try
+    //            {
 
-#if ASYNC
-                await
-#endif
-                File.WriteAllTextAsync(file.ToString(), content, enc);
-            }
-            catch (Exception)
-            {
-                if (throwExcIfCantBeWrite)
-                {
-                    throw;
-                }
-            }
-        }
-        else
-        {
-            ac.tf.writeAllText.Invoke(file, content);
-        }
-    }
+    //#if ASYNC
+    //                await
+    //#endif
+    //                File.WriteAllTextAsync(file.ToString(), content, enc);
+    //            }
+    //            catch (Exception)
+    //            {
+    //                if (throwExcIfCantBeWrite)
+    //                {
+    //                    throw;
+    //                }
+    //            }
+    //        }
+    //        else
+    //        {
+    //            ac.tf.writeAllText.Invoke(file, content);
+    //        }
+    //    }
 
-    public static
-#if ASYNC
-    async Task
-#else
-void
-#endif
-    WriteAllBytes<StorageFolder, StorageFile>(StorageFile file, List<byte> b, AbstractCatalog<StorageFolder, StorageFile> ac)
-    {
-        if (ac == null)
-        {
-            var fileS = file.ToString();
+    //    public static
+    //#if ASYNC
+    //    async Task
+    //#else
+    //void
+    //#endif
+    //    WriteAllBytes<StorageFolder, StorageFile>(StorageFile file, List<byte> b, AbstractCatalog<StorageFolder, StorageFile> ac)
+    //    {
+    //        if (ac == null)
+    //        {
+    //            var fileS = file.ToString();
 
-            if (LockedByBitLocker(fileS))
-            {
-                return;
-            }
+    //            if (LockedByBitLocker(fileS))
+    //            {
+    //                return;
+    //            }
 
-            await File.WriteAllBytesAsync(fileS, b.ToArray());
+    //            await File.WriteAllBytesAsync(fileS, b.ToArray());
 
-        }
-        else
-        {
-            ac.tf.writeAllBytes(file, b);
-        }
+    //        }
+    //        else
+    //        {
+    //            ac.tf.writeAllBytes(file, b);
+    //        }
 
-    }
+    //    }
 
     //    public static
     //#if ASYNC
@@ -133,81 +139,81 @@ void
     /// Precte soubor a vrati jeho obsah. Pokud soubor neexistuje, vytvori ho a vrati SE.
     /// </summary>
     /// <param name="s"></param>
-    public static
-#if ASYNC
-    async Task<string>
-#else
-string
-#endif
-    ReadAllText<StorageFolder, StorageFile>(StorageFile s, AbstractCatalog<StorageFolder, StorageFile> ac = null)
-    {
-        if (readFile)
-        {
-            var ss = s.ToString();
+    //    public static
+    //#if ASYNC
+    //    async Task<string>
+    //#else
+    //string
+    //#endif
+    //    ReadAllText<StorageFolder, StorageFile>(StorageFile s, AbstractCatalog<StorageFolder, StorageFile> ac = null)
+    //    {
+    //        if (readFile)
+    //        {
+    //            var ss = s.ToString();
 
-#if DEBUG
-            var f = AppData.ci.GetFile(AppFolders.Data, "ReadedFiles.txt");
-            if (ss.EndsWith(".cs"))
-            {
-#if ASYNC
-                await
-#endif
-                TF.AppendAllText(f, ss + Environment.NewLine);
-            }
-#endif
+    //#if DEBUG
+    //            var f = AppData.ci.GetFile(AppFolders.Data, "ReadedFiles.txt");
+    //            if (ss.EndsWith(".cs"))
+    //            {
+    //#if ASYNC
+    //                await
+    //#endif
+    //                TF.AppendAllText(f, ss + Environment.NewLine);
+    //            }
+    //#endif
 
-            if (!File.Exists(ss))
-            {
-                return string.Empty;
-            }
+    //            if (!File.Exists(ss))
+    //            {
+    //                return string.Empty;
+    //            }
 
-            if (ac == null)
-            {
-                FS.MakeUncLongPath<StorageFolder, StorageFile>(ref s, ac);
-            }
+    //            if (ac == null)
+    //            {
+    //                FS.MakeUncLongPath<StorageFolder, StorageFile>(ref s, ac);
+    //            }
 
-            if (isUsed != null)
-            {
-                if (isUsed.Invoke(ss))
-                {
-                    return string.Empty;
-                }
-            }
+    //            if (isUsed != null)
+    //            {
+    //                if (isUsed.Invoke(ss))
+    //                {
+    //                    return string.Empty;
+    //                }
+    //            }
 
-            if (ac == null)
-            {
-                var ss2 = s.ToString();
+    //            if (ac == null)
+    //            {
+    //                var ss2 = s.ToString();
 
-                // Způsobovalo mi chybu v asp.net Could not find file 'D:\Documents\sunamo\Common\Settings\CloudProviders'.
-
-
-                CloudProvidersHelper.Init();
-                CloudProvidersHelper.OpenSyncAppIfNotRunning(ss2);
+    //                // Způsobovalo mi chybu v asp.net Could not find file 'D:\Documents\sunamo\Common\Settings\CloudProviders'.
 
 
-                if (LockedByBitLocker(ss2))
-                {
-                    return String.Empty;
-                }
-
-                //ThisApp.firstReadingFromCloudProvider =
-
-                //result = enc.GetString(bytesArray);
-#if ASYNC
-                //await WaitD();
-#endif
+    //                CloudProvidersHelper.Init();
+    //                CloudProvidersHelper.OpenSyncAppIfNotRunning(ss2);
 
 
-                return File.ReadAllText(ss2);
-            }
-            else
-            {
-                return ac.tf.readAllText(s);
-            }
-        }
-        return string.Empty;
+    //                if (LockedByBitLocker(ss2))
+    //                {
+    //                    return String.Empty;
+    //                }
 
-    }
+    //                //ThisApp.firstReadingFromCloudProvider =
+
+    //                //result = enc.GetString(bytesArray);
+    //#if ASYNC
+    //                //await WaitD();
+    //#endif
+
+
+    //                return File.ReadAllText(ss2);
+    //            }
+    //            else
+    //            {
+    //                return ac.tf.readAllText(s);
+    //            }
+    //        }
+    //        return string.Empty;
+
+    //    }
 
 
 }

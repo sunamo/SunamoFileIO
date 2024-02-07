@@ -50,7 +50,7 @@ public partial class EncodingHelper
     private static Dictionary<string, bool> TestBinaryFile(string folderPath)
     {
         Dictionary<string, bool> output = new Dictionary<string, bool>();
-        foreach (string filePath in FS.GetFilesWithoutArgs(folderPath, "*", true))
+        foreach (string filePath in Directory.GetFiles(folderPath, "*", SearchOption.AllDirectories))
         {
             output.Add(filePath, isBinary(filePath));
         }

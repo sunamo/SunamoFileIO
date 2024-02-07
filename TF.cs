@@ -1,4 +1,6 @@
-using SunamoStringReplace;
+
+
+using SunamoExceptions.InSunamoIsDerivedFrom;
 
 namespace SunamoFileIO;
 
@@ -14,39 +16,39 @@ public partial class TF : TFSE
         return ReadFileParallel(fileName, 1470, from, to);
     }
 
-    public static
-#if ASYNC
-    async Task
-#else
-void
-#endif
-    ReplaceInFileOnLine(string path, int line, string what, string to, bool checkForMoreOccurences)
-    {
-        var c =
-#if ASYNC
-        await
-#endif
-        File.ReadAllTextAsync(path);
-        var l = SHGetLines.GetLines(c);
-        if (checkForMoreOccurences)
-        {
-            SHReplace.ReplaceInLine(l, line, what, to, checkForMoreOccurences);
-        }
-        else
-        {
-            if (c.Contains("import "))
-            {
-                SHReplace.ReplaceInLine(l, line, what, to, checkForMoreOccurences);
-            }
-        }
+    //    public static
+    //#if ASYNC
+    //    async Task
+    //#else
+    //void
+    //#endif
+    //    ReplaceInFileOnLine(string path, int line, string what, string to, bool checkForMoreOccurences)
+    //    {
+    //        var c =
+    //#if ASYNC
+    //        await
+    //#endif
+    //        File.ReadAllTextAsync(path);
+    //        var l = SHGetLines.GetLines(c);
+    //        if (checkForMoreOccurences)
+    //        {
+    //            SHReplace.ReplaceInLine(l, line, what, to, checkForMoreOccurences);
+    //        }
+    //        else
+    //        {
+    //            if (c.Contains("import "))
+    //            {
+    //                SHReplace.ReplaceInLine(l, line, what, to, checkForMoreOccurences);
+    //            }
+    //        }
 
 
-        var c2 = SHSE.JoinNL(l);
-        if (c2 != c)
-        {
-            await File.WriteAllLinesAsync(path, l);
-        }
-    }
+    //        var c2 = SHSE.JoinNL(l);
+    //        if (c2 != c)
+    //        {
+    //            await File.WriteAllLinesAsync(path, l);
+    //        }
+    //    }
 
     public static string ReadFileParallel(string fileName, int linesCount, IList<string> from, IList<string> to)
     {
@@ -168,11 +170,11 @@ int
 #endif
     GetNumberOfLinesTrimEnd(string file)
     {
-        List<string> lines =
+        List<string> lines = (
 #if ASYNC
         await
 #endif
-        ReadAllLines(file);
+        File.ReadAllLinesAsync(file)).ToList();
         for (int i = lines.Count - 1; i >= 0; i--)
         {
             if (lines[i].Trim() != "")
@@ -251,15 +253,16 @@ void
 #endif
     AppendAllLines(string path, List<string> notRecognized, bool deduplicate = false)
     {
-        var l =
+        var l = (
 #if ASYNC
         await
 #endif
-        ReadAllLines(path);
+        File.ReadAllLinesAsync(path)).ToList();
         l.AddRange(notRecognized);
         if (deduplicate)
         {
-            l = CAG.RemoveDuplicitiesList<string>(l);
+            //l = CAG.RemoveDuplicitiesList<string>(l);
+            l = l.Distinct().ToList();
         }
         await File.WriteAllLinesAsync(path, notRecognized);
     }
