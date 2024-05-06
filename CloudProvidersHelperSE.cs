@@ -9,7 +9,16 @@ public class CloudProvidersHelperSE
     public static string OneDriveFolder0;
     public static string OneDriveFolder1;
 
-    private static string gDriveFolder;
+    /// <summary>
+    /// Mám to tady zakomentované, proto to musím nejdříve opravit, zkontrolovat v UT a vrátit zpět
+    /// Dočasně tu cestu tu budu mít hard coded
+    /// 
+    /// tak já tomu nerozumím
+    /// je to prokazatelně uložené, na základě uložených souborů jsem vytvořil pakcage
+    /// unit testy procházejí
+    /// a přesto 
+    /// </summary>
+    private static string gDriveFolder = @"D:\Drive\";
     public static string OneDriveExe;
     public static string GDriveExe;
 
@@ -57,7 +66,7 @@ public class CloudProvidersHelperSE
         //{
         //    isUseCloud = true;
         //    //folders = SF.ToDictionary<string, string>(l);
-        //    List<string> OneDriveFolders = SHSE.Split(header[0], AllStringsSE.ast);
+        //    List<string> OneDriveFolders = SHSE.Split(header[0], AllStrings.ast);
         //    OneDriveFolder0 = OneDriveFolders[0];
         //    OneDriveFolder1 = OneDriveFolders[1];
         //    gDriveFolder = l[0][0];
