@@ -1,3 +1,4 @@
+using SunamoExceptions;
 using SunamoFileIO._sunamo;
 
 namespace SunamoFileIO;
@@ -162,7 +163,7 @@ void
 #if ASYNC
         await
 #endif
-        WriteAllText(file, sb.ToString());
+        WriteAllText(file, sb.ToString().ToUnixLineEnding());
     }
 
     public static
@@ -178,7 +179,7 @@ void
         await
 #endif
         //WriteAllText<string, string>(file, content, encoding, null);
-        File.WriteAllTextAsync(file, content, encoding);
+        File.WriteAllTextAsync(file, content.ToUnixLineEnding(), encoding);
     }
 
 

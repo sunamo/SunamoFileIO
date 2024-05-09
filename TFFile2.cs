@@ -1,4 +1,6 @@
 
+using SunamoExceptions;
+
 namespace SunamoFileIO;
 
 
@@ -18,17 +20,17 @@ void
     {
         if (append)
         {
-            await TF.AppendAllText(file.ToString(), content);
+            await TF.AppendAllText(file.ToString(), content.ToUnixLineEnding());
         }
         else
         {
-            await TF.WriteAllText(file.ToString(), content);
+            await TF.WriteAllText(file.ToString(), content.ToUnixLineEnding());
         }
     }
 
     public static async Task AppendAllText(string v, string content)
     {
-        await File.WriteAllTextAsync(v, content);
+        await File.WriteAllTextAsync(v, content.ToUnixLineEnding());
     }
 
     /// <summary>

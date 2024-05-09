@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SunamoFileIO._sunamo;
 
 namespace SunamoFileIO;
 public class FileList
@@ -17,9 +13,9 @@ public class FileList
         return (await File.ReadAllBytesAsync(path)).ToList();
     }
 
-    public static async Task WriteAllLinesListAsync(string path, IEnumerable<string> lines)
+    public static async Task WriteAllLinesListAsync(string path, IList<string> lines)
     {
-        await File.WriteAllLinesAsync(path, lines);
+        await File.WriteAllLinesAsync(path, lines.ToUnixLineEnding());
     }
 
     public static async Task WriteAllBytesListAsync(string path, List<byte> bytes)
