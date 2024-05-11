@@ -9,7 +9,7 @@ internal class SHSH
 {
     internal static string WrapWithBs(string commitMessage)
     {
-        return WrapWithChar(commitMessage, AllCharsSE.bs);
+        return WrapWithChar(commitMessage, AllChars.bs);
     }
 
     //    internal static Action<List<string>, int, string, string, bool> ReplaceInLine;
