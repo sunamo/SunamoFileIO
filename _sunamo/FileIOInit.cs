@@ -1,4 +1,4 @@
-namespace SunamoFileIO._sunamo;
+namespace SunamoFileIO;
 
 //using System;
 //using System.Collections.Generic;

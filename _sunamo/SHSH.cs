@@ -1,4 +1,4 @@
-namespace SunamoFileIO._sunamo;
+namespace SunamoFileIO;
 
 using SunamoValues;
 using System.Runtime.CompilerServices;

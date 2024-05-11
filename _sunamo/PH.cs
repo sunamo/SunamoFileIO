@@ -1,4 +1,4 @@
-namespace SunamoFileIO._sunamo;
+namespace SunamoFileIO;
 
 internal class PH
 {

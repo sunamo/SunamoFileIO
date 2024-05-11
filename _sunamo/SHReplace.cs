@@ -1,4 +1,4 @@
-namespace SunamoFileIO._sunamo;
+namespace SunamoFileIO;
 
 //namespace SunamoFileIO._sunamo;
 //internal class SHReplace

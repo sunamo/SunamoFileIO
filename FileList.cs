@@ -1,4 +1,4 @@
-﻿using SunamoFileIO._sunamo;
+using SunamoFileIO._sunamo;
 
 namespace SunamoFileIO;
 public class FileList
