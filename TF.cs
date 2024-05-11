@@ -43,7 +43,7 @@ public partial class TF : TFSE
     //        }
 
 
-    //        var c2 = SHSE.JoinNL(l);
+    //        var c2 = SHSunamoExceptions.JoinNL(l);
     //        if (c2 != c)
     //        {
     //            await File.WriteAllLinesAsync(path, l);
