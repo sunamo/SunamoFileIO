@@ -1,6 +1,6 @@
 namespace SunamoFileIO;
 
-using SunamoExceptions;
+
 internal static class IListStringExtensions
 {
     public static IList<string> ToUnixLineEnding(this IList<string> t)

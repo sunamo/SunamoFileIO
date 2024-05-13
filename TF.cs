@@ -1,6 +1,6 @@
 
 
-using SunamoExceptions.InSunamoIsDerivedFrom;
+
 
 namespace SunamoFileIO;
 
