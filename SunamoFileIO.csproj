@@ -13,8 +13,6 @@
     <DefineConstants>$(DefineConstants);ASYNC;SunamoFileIO</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="SunamoExceptions" Version="24.2.6.3" />
-    <PackageReference Include="SunamoValues" Version="24.2.6.3" />
     <Compile Include="..\SunamoValues\AllStrings.cs" Link="_linked\SunamoValues\AllStrings.cs" />
     <Compile Include="..\SunamoExceptions\AIStore.cs" Link="_linked\SunamoExceptions\AIStore.cs" />
     <Compile Include="..\SunamoData\Data\StorageFolder.cs" Link="_linked\SunamoData\Data\StorageFolder.cs" />
