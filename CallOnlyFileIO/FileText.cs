@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SunamoFileIO.CallOnlyFileIO;
+namespace SunamoFileIO;
 internal class FileText
 {
     public async Task<string> ReadAllText(string path)
