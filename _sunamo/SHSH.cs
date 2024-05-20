@@ -3,7 +3,7 @@ namespace SunamoFileIO;
 
 using System.Runtime.CompilerServices;
 
-//namespace SunamoFileIO._sunamo;
+//namespace SunamoFileIO;
 
 internal class SHSH
 {

@@ -2,7 +2,7 @@
 
 namespace SunamoFileIO;
 
-//namespace SunamoFileIO._sunamo;
+//namespace SunamoFileIO;
 
 internal class FS
 {
