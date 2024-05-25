@@ -84,11 +84,11 @@ List<string>
 #endif
     ReadConfigLines(string syncLocations)
     {
-        var l = (
+        var l = SHGetLines.GetLines (
 #if ASYNC
         await
 #endif
-        File.ReadAllLinesAsync(syncLocations)).ToList();
+        File.ReadAllTextAsync(syncLocations)).ToList();
         l = l.Where(d => !d.StartsWith("#")).ToList();
         return l;
     }
@@ -174,7 +174,7 @@ int
 #if ASYNC
         await
 #endif
-        File.ReadAllLinesAsync(file)).ToList();
+        File.ReadAllTextAsync(file)).ToList();
         for (int i = lines.Count - 1; i >= 0; i--)
         {
             if (lines[i].Trim() != "")
@@ -203,11 +203,11 @@ void
     {
         foreach (var item in files)
         {
-            var lines = (
+            var lines = SHG(
 #if ASYNC
             await
 #endif
-            File.ReadAllLinesAsync(item, null)).ToList();
+            File.ReadAllTextAsync(item, null)).ToList();
             for (int i = 0; i < lines.Count; i++)
             {
                 string line = lines[i].Trim();
@@ -242,7 +242,7 @@ void
     //#if ASYNC
     //    await
     //#endif
-    // File.ReadAllLinesAsync(file)).ToList();
+    // File.ReadAllTextAsync(file)).ToList();
     //    }
 
     public static
@@ -257,7 +257,7 @@ void
 #if ASYNC
         await
 #endif
-        File.ReadAllLinesAsync(path)).ToList();
+        File.ReadAllTextAsync(path)).ToList();
         l.AddRange(notRecognized);
         if (deduplicate)
         {

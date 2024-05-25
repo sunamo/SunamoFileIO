@@ -3,7 +3,7 @@ public class FileList
 {
     public static async Task<List<string>> ReadAllLinesListAsync(string path)
     {
-        return (await File.ReadAllLinesAsync(path)).ToList();
+        return (await File.ReadAllTextAsync(path)).ToList();
     }
 
     public static async Task<List<byte>> ReadAllBytesListAsync(string path)

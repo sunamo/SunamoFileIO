@@ -121,7 +121,7 @@ namespace SunamoFileIO;
 //#if ASYNC
 //    await
 //#endif
-// se.File.ReadAllLinesAsync(file).ToList();
+// se.File.ReadAllTextAsync(file).ToList();
 //    }
 //    #endregion
 
