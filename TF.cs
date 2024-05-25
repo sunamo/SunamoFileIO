@@ -170,7 +170,7 @@ int
 #endif
     GetNumberOfLinesTrimEnd(string file)
     {
-        List<string> lines = (
+        List<string> lines = SHGetLines.GetLines(
 #if ASYNC
         await
 #endif
@@ -203,7 +203,7 @@ void
     {
         foreach (var item in files)
         {
-            var lines = SHG(
+            var lines = SHGetLines.GetLines(
 #if ASYNC
             await
 #endif
@@ -253,7 +253,7 @@ void
 #endif
     AppendAllLines(string path, List<string> notRecognized, bool deduplicate = false)
     {
-        var l = (
+        var l = SHGetLines.GetLines(
 #if ASYNC
         await
 #endif
