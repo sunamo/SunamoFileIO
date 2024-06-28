@@ -4,9 +4,9 @@ namespace SunamoFileIO;
 
 //namespace SunamoFileIO;
 
-public class FS
+internal class FS
 {
-    public static string InsertBetweenFileNameAndExtension(string orig, string whatInsert)
+    internal static string InsertBetweenFileNameAndExtension(string orig, string whatInsert)
     {
         //return InsertBetweenFileNameAndExtension<string, string>(orig, whatInsert, null);
 
@@ -27,16 +27,16 @@ public class FS
         return fn + whatInsert + e;
     }
 
-    //    public static Func<string, bool> ExistsFile;
-    //    public static Func<string, long> GetFileSize;
-    //    public static Func<string, string> GetDirectoryName;
-    //    public static Action<string> CreateUpfoldersPsysicallyUnlessThere;
-    //    public static Action<string> CreateFoldersPsysicallyUnlessThere;
-    //    public static Func<string, string> GetFileNameWithoutExtension;
-    //    public static Func<string, string, string> InsertBetweenFileNameAndExtension;
-    //    public static Func<string, string, bool?, List<string>> GetFilesWithoutArgs;
+    //    internal static Func<string, bool> ExistsFile;
+    //    internal static Func<string, long> GetFileSize;
+    //    internal static Func<string, string> GetDirectoryName;
+    //    internal static Action<string> CreateUpfoldersPsysicallyUnlessThere;
+    //    internal static Action<string> CreateFoldersPsysicallyUnlessThere;
+    //    internal static Func<string, string> GetFileNameWithoutExtension;
+    //    internal static Func<string, string, string> InsertBetweenFileNameAndExtension;
+    //    internal static Func<string, string, bool?, List<string>> GetFilesWithoutArgs;
 
-    //    public static bool ExistsFileAc<StorageFolder, StorageFile>(StorageFile selectedFile, AbstractCatalog<StorageFolder, StorageFile> ac = null)
+    //    internal static bool ExistsFileAc<StorageFolder, StorageFile>(StorageFile selectedFile, AbstractCatalog<StorageFolder, StorageFile> ac = null)
     //    {
     //        if (ac == null)
     //        {
@@ -46,7 +46,7 @@ public class FS
     //    }
 
     //    #region MakeUncLongPath
-    //    public static void MakeUncLongPath<StorageFolder, StorageFile>(ref StorageFile path, AbstractCatalog<StorageFolder, StorageFile> ac)
+    //    internal static void MakeUncLongPath<StorageFolder, StorageFile>(ref StorageFile path, AbstractCatalog<StorageFolder, StorageFile> ac)
     //    {
     //        if (ac == null)
     //        {
@@ -64,12 +64,12 @@ public class FS
     //    /// </summary>
     //    /// <param name="path"></param>
     //    /// <returns></returns>
-    //    public static string MakeUncLongPath(string path)
+    //    internal static string MakeUncLongPath(string path)
     //    {
     //        return MakeUncLongPath(ref path);
     //    }
 
-    //    public static string MakeUncLongPath(ref string path)
+    //    internal static string MakeUncLongPath(ref string path)
     //    {
     //        if (!path.StartsWith(Consts.UncLongPath))
     //        {
@@ -85,7 +85,7 @@ public class FS
     //    }
     //    #endregion
 
-    //    public static StorageFolder GetDirectoryNameAc<StorageFolder, StorageFile>(StorageFile rp2, AbstractCatalog<StorageFolder, StorageFile> ac)
+    //    internal static StorageFolder GetDirectoryNameAc<StorageFolder, StorageFile>(StorageFile rp2, AbstractCatalog<StorageFolder, StorageFile> ac)
     //    {
     //        if (ac != null)
     //        {
@@ -96,7 +96,7 @@ public class FS
     //        return (dynamic)GetDirectoryName(rp);
     //    }
 
-    //    public static void CreateUpfoldersPsysicallyUnlessThereAc<StorageFolder, StorageFile>(StorageFile nad, AbstractCatalog<StorageFolder, StorageFile> ac)
+    //    internal static void CreateUpfoldersPsysicallyUnlessThereAc<StorageFolder, StorageFile>(StorageFile nad, AbstractCatalog<StorageFolder, StorageFile> ac)
     //    {
     //        if (ac == null)
     //        {
@@ -108,7 +108,7 @@ public class FS
     //        }
     //    }
 
-    //    public static void CreateFoldersPsysicallyUnlessThereFolderAc<StorageFolder, StorageFile>(StorageFolder nad, AbstractCatalog<StorageFolder, StorageFile> ac)
+    //    internal static void CreateFoldersPsysicallyUnlessThereFolderAc<StorageFolder, StorageFile>(StorageFolder nad, AbstractCatalog<StorageFolder, StorageFile> ac)
     //    {
     //        if (ac == null)
     //        {
@@ -120,7 +120,7 @@ public class FS
     //        }
     //    }
 
-    //    public static void ThrowNotImplementedUwp()
+    //    internal static void ThrowNotImplementedUwp()
     //    {
     //        throw new Exception("Not implemented in UWP");
     //    }

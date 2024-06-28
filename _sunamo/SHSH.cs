@@ -5,24 +5,24 @@ using System.Runtime.CompilerServices;
 
 //namespace SunamoFileIO;
 
-public class SHSH
+internal class SHSH
 {
-    public static string WrapWithBs(string commitMessage)
+    internal static string WrapWithBs(string commitMessage)
     {
         return WrapWithChar(commitMessage, AllChars.bs);
     }
 
-    //    public static Action<List<string>, int, string, string, bool> ReplaceInLine;
-    //    public static Func<string, string> WrapWithBs;
+    //    internal static Action<List<string>, int, string, string, bool> ReplaceInLine;
+    //    internal static Func<string, string> WrapWithBs;
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static string WrapWith(string value, string h)
+    internal static string WrapWith(string value, string h)
     {
         return h + value + h;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static string WrapWithChar(string value, char v, bool _trimWrapping = false, bool alsoIfIsWhitespaceOrEmpty = true)
+    internal static string WrapWithChar(string value, char v, bool _trimWrapping = false, bool alsoIfIsWhitespaceOrEmpty = true)
     {
         if (string.IsNullOrWhiteSpace(value) && !alsoIfIsWhitespaceOrEmpty)
         {
