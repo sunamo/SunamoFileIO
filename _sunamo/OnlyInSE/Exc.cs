@@ -1,3 +1,5 @@
+
+namespace SunamoFileIO;
 using System.Diagnostics;
 using System.Text;
 

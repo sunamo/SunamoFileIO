@@ -1,3 +1,5 @@
+
+namespace SunamoFileIO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
