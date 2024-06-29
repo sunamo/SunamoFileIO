@@ -1,7 +1,7 @@
 namespace SunamoFileIO;
 
 
-internal class TFSE
+public class TFSE
 {
     internal static string ReadAllTextSync(string path)
     {
