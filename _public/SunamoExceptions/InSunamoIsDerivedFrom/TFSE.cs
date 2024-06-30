@@ -3,11 +3,11 @@ namespace SunamoFileIO;
 
 public class TFSE
 {
-    internal static string ReadAllTextSync(string path)
+    public static string ReadAllTextSync(string path)
     {
         return ReadAllTextSync(path, false);
     }
-    internal static string ReadAllTextSync(string path, bool createEmptyIfWasNotExists = false)
+    public static string ReadAllTextSync(string path, bool createEmptyIfWasNotExists = false)
     {
         if (createEmptyIfWasNotExists)
             if (!File.Exists(path))
@@ -17,19 +17,19 @@ public class TFSE
             }
         return File.ReadAllText(path);
     }
-    internal static void WriteAllTextSync(string path, string content)
+    public static void WriteAllTextSync(string path, string content)
     {
         File.WriteAllText(path, content);
     }
-    internal static void AppendAllTextSync(string path, string content)
+    public static void AppendAllTextSync(string path, string content)
     {
         File.AppendAllText(path, content);
     }
-    internal static List<string> ReadAllLinesSync(string path)
+    public static List<string> ReadAllLinesSync(string path)
     {
         return ReadAllLinesSync(path, false);
     }
-    internal static List<string> ReadAllLinesSync(string path, bool createEmptyIfWasNotExists = false)
+    public static List<string> ReadAllLinesSync(string path, bool createEmptyIfWasNotExists = false)
     {
         if (createEmptyIfWasNotExists)
             if (!File.Exists(path))
@@ -39,29 +39,29 @@ public class TFSE
             }
         return SHGetLines.GetLines(File.ReadAllText(path));
     }
-    internal static void WriteAllLinesSync(string path, List<string> content)
+    public static void WriteAllLinesSync(string path, List<string> content)
     {
         File.WriteAllLines(path, content.ToArray());
     }
-    internal static void AppendAllLinesSync(string path, List<string> content)
+    public static void AppendAllLinesSync(string path, List<string> content)
     {
         File.AppendAllLines(path, content.ToArray());
     }
-    internal static List<byte> ReadAllBytesSync(string path)
+    public static List<byte> ReadAllBytesSync(string path)
     {
         return File.ReadAllBytes(path).ToList();
     }
-    internal static void WriteAllBytesSync(string path, List<byte> content)
+    public static void WriteAllBytesSync(string path, List<byte> content)
     {
         File.WriteAllBytes(path, content.ToArray());
     }
-    internal static Func<string, bool> isUsed = null;
+    public static Func<string, bool> isUsed = null;
     #region
     protected static bool LockedByBitLocker(string path)
     {
         return ThrowEx.LockedByBitLocker(path);
     }
-    internal static
+    public static
 #if ASYNC
         async Task<string>
 #else
@@ -73,9 +73,9 @@ string
             if (isUsed.Invoke(path))
                 return string.Empty;
 #if ASYNC
-        //TFSE.await WaitD();
+        
 #endif
-        //return enc == null ? File.ReadAllText(path) : File.ReadAllText(path, enc);
+        
 #if ASYNC
         return await File.ReadAllTextAsync(path, enc);
 #else
@@ -83,7 +83,7 @@ return File.ReadAllText(path, enc);
 #endif
     }
     #region Array
-    internal static
+    public static
 #if ASYNC
         async Task
 #else
@@ -96,7 +96,7 @@ void
 #endif
             WriteAllLines(path, c.ToList());
     }
-    internal static
+    public static
 #if ASYNC
         async Task
 #else
@@ -109,7 +109,7 @@ void
 #endif
             WriteAllBytes(path, c.ToList());
     }
-    internal static
+    public static
 #if ASYNC
         async Task<byte[]>
 #else
@@ -125,12 +125,12 @@ byte[]
     }
     #endregion
     #region Bytes
-    /// <summary>
-    ///     Only one method where could be TFSE.ReadAllBytes
-    /// </summary>
-    /// <param name="file"></param>
-    /// <returns></returns>
-    internal static
+    
+    
+    
+    
+    
+    public static
 #if ASYNC
         async Task<List<byte>>
 #else
@@ -140,7 +140,7 @@ List<byte>
     {
         if (LockedByBitLocker(file)) return new List<byte>();
 #if ASYNC
-        //await WaitD();
+        
 #endif
         return
 #if ASYNC
@@ -149,7 +149,7 @@ List<byte>
 File.ReadAllBytes(file).ToList();
 #endif
     }
-    internal static
+    public static
 #if ASYNC
         async Task
 #else
@@ -166,7 +166,7 @@ File.WriteAllBytes(file, b.ToArray());
     }
     #endregion
     #region Lines
-    internal static
+    public static
 #if ASYNC
         async Task
 #else
@@ -182,7 +182,7 @@ File.WriteAllLines
 #endif
             (file, lines.ToArray());
     }
-    internal static
+    public static
 #if ASYNC
         async Task<List<string>>
 #else
@@ -192,7 +192,7 @@ List<string>
     {
         if (LockedByBitLocker(file)) return new List<string>();
 #if ASYNC
-        //await WaitD();
+        
 #endif
         var result = SHGetLines.GetLines
 #if ASYNC
@@ -205,7 +205,7 @@ File.ReadAllText(file).ToList();
     }
     #endregion
     #region Text
-    internal static
+    public static
 #if ASYNC
         async Task
 #else
@@ -220,7 +220,7 @@ void
 File.WriteAllText(path, content);
 #endif
     }
-    internal static
+    public static
 #if ASYNC
         async Task<string>
 #else
@@ -230,7 +230,7 @@ string
     {
         if (LockedByBitLocker(f)) return string.Empty;
 #if ASYNC
-        //await WaitD();
+        
 #endif
         try
         {
@@ -245,7 +245,7 @@ return File.ReadAllText(f);
             return string.Empty;
         }
     }
-    internal static
+    public static
 #if ASYNC
         async Task
 #else
@@ -255,7 +255,7 @@ void
     {
         if (LockedByBitLocker(path)) return;
 #if ASYNC
-        //await WaitD();
+        
 #endif
         try
         {
@@ -272,12 +272,9 @@ File.AppendAllText(path, content);
     #endregion
     #endregion
 #if ASYNC
-    internal static async Task<string> WaitD()
+    public static async Task<string> WaitD()
     {
-        /*
-        Vůbec nevím proč tu mám tuto metodu
-        ale protože WaitD jsem volal na více místech, nechám tu metodu tu jako prázdnou
-        */
+        
         return await Task.Run(() => "");
     }
 #endif
