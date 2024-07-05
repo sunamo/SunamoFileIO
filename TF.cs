@@ -115,9 +115,9 @@ List<string>
 
     }
 
-    public static void Move(string source, string dest)
+    public static void Move(string source, string dest, bool overwrite = false)
     {
-        FileMs.Move(source, dest);
+        FileMs.Move(source, dest, overwrite);
     }
 
     public static bool Exists(string p)
