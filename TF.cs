@@ -1,5 +1,7 @@
 namespace SunamoFileIO;
 
+using FileMs = System.IO.File;
+
 public class TF : TFSE
 {
     public static string ReadFileParallel(string fileName, IList<string> from, IList<string> to)
@@ -19,7 +21,7 @@ public class TF : TFSE
     //#if ASYNC
     //        await
     //#endif
-    //        File.ReadAllTextAsync(path);
+    //        FileMs.ReadAllTextAsync(path);
     //        var l = SHGetLines.GetLines(c);
     //        if (checkForMoreOccurences)
     //        {
@@ -37,14 +39,14 @@ public class TF : TFSE
     //        var c2 = SHSunamoExceptions.JoinNL(l);
     //        if (c2 != c)
     //        {
-    //            await File.WriteAllLinesAsync(path, l);
+    //            await FileMs.WriteAllLinesAsync(path, l);
     //        }
     //    }
 
     public static string ReadFileParallel(string fileName, int linesCount, IList<string> from, IList<string> to)
     {
         string[] AllLines = new string[linesCount]; //only allocate memory here
-        using (StreamReader sr = File.OpenText(fileName))
+        using (StreamReader sr = FileMs.OpenText(fileName))
         {
             int x = 0;
             while (!sr.EndOfStream)
@@ -79,7 +81,7 @@ List<string>
 #if ASYNC
             await
 #endif
-                File.ReadAllTextAsync(syncLocations)).ToList();
+                FileMs.ReadAllTextAsync(syncLocations)).ToList();
         l = l.Where(d => !d.StartsWith("#")).ToList();
         return l;
     }
@@ -107,6 +109,22 @@ List<string>
         return EncodingHelper.DetectEncoding(new List<byte>(bom));
     }
 
+    public static void Delete(string p)
+    {
+        FileMs.Delete(p);
+
+    }
+
+    public static void Move(string source, string dest)
+    {
+        FileMs.Move(source, dest);
+    }
+
+    public static bool Exists(string p)
+    {
+        return FileMs.Exists(p);
+    }
+
     private static
 #if ASYNC
         async Task
@@ -123,11 +141,11 @@ void
 #if ASYNC
                 await
 #endif
-                    File.ReadAllTextAsync(item);
+                    FileMs.ReadAllTextAsync(item);
             if (!content.Contains(append))
             {
                 content = append + content;
-                await File.WriteAllTextAsync(item, content);
+                await FileMs.WriteAllTextAsync(item, content);
             }
         }
     }
@@ -138,9 +156,9 @@ void
         {
             return l;
         }
-        if (File.Exists(l))
+        if (FileMs.Exists(l))
         {
-            return File.ReadAllTextAsync(l);
+            return FileMs.ReadAllTextAsync(l);
         }
         return l;
     }
@@ -165,7 +183,7 @@ int
 #if ASYNC
             await
 #endif
-                File.ReadAllTextAsync(file)).ToList();
+                FileMs.ReadAllTextAsync(file)).ToList();
         for (int i = lines.Count - 1; i >= 0; i--)
         {
             if (lines[i].Trim() != "")
@@ -198,7 +216,7 @@ void
 #if ASYNC
                 await
 #endif
-                    File.ReadAllTextAsync(item, null)).ToList();
+                    FileMs.ReadAllTextAsync(item, null)).ToList();
             for (int i = 0; i < lines.Count; i++)
             {
                 string line = lines[i].Trim();
@@ -208,7 +226,7 @@ void
                 }
             }
 
-            await File.WriteAllLinesAsync(item, lines);
+            await FileMs.WriteAllLinesAsync(item, lines);
         }
     }
 
@@ -233,7 +251,7 @@ void
     //#if ASYNC
     //    await
     //#endif
-    // File.ReadAllTextAsync(file)).ToList();
+    // FileMs.ReadAllTextAsync(file)).ToList();
     //    }
 
     public static
@@ -242,20 +260,20 @@ void
 #else
 void
 #endif
-        AppendAllLines(string path, List<string> notRecognized, bool deduplicate = false)
+        AppendAllLines(string path, IEnumerable<string> notRecognized, bool deduplicate = false)
     {
         var l = SHGetLines.GetLines(
 #if ASYNC
             await
 #endif
-                File.ReadAllTextAsync(path)).ToList();
+                FileMs.ReadAllTextAsync(path)).ToList();
         l.AddRange(notRecognized);
         if (deduplicate)
         {
             //l = CAG.RemoveDuplicitiesList<string>(l);
             l = l.Distinct().ToList();
         }
-        await File.WriteAllLinesAsync(path, notRecognized);
+        await FileMs.WriteAllLinesAsync(path, notRecognized);
     }
 
     public static
@@ -270,13 +288,13 @@ void
 #if ASYNC
             await
 #endif
-                File.ReadAllTextAsync(pathCsproj);
+                FileMs.ReadAllTextAsync(pathCsproj);
         content = content.Replace(to, from);
 
 #if ASYNC
         await
 #endif
-            File.WriteAllTextAsync(pathCsproj, content);
+            FileMs.WriteAllTextAsync(pathCsproj, content);
     }
 
     //    public static
@@ -291,7 +309,7 @@ void
     //#if ASYNC
     //        await
     //#endif
-    //        File.ReadAllTextAsync(f);
+    //        FileMs.ReadAllTextAsync(f);
     //        //content = transformHtmlToMetro4.Invoke(content);
 
     //#if ASYNC
@@ -313,7 +331,7 @@ void
 #if ASYNC
             await
 #endif
-                File.ReadAllTextAsync(f);
+                FileMs.ReadAllTextAsync(f);
 
 #if DEBUG
         if (f.Contains(@"\scz.sln"))
@@ -325,7 +343,7 @@ void
         var content2 = transformHtmlToMetro4.Invoke(content, arg);
         if (content.Trim() != content2.Trim())
         {
-            await File.WriteAllTextAsync(f, content2);
+            await FileMs.WriteAllTextAsync(f, content2);
         }
     }
 
@@ -343,7 +361,7 @@ void
 #if ASYNC
             await
 #endif
-                File.ReadAllTextAsync(f);
+                FileMs.ReadAllTextAsync(f);
         content = transformHtmlToMetro4.Invoke(content);
 
 #if ASYNC
@@ -368,7 +386,7 @@ void
 #if ASYNC
             await
 #endif
-                File.ReadAllTextAsync(f)).Trim();
+                FileMs.ReadAllTextAsync(f)).Trim();
         var content2 = transformHtmlToMetro4.Invoke(content);
 
         if (String.Compare(content, content2) != 0)
@@ -379,7 +397,7 @@ void
 #if ASYNC
             await
 #endif
-                File.WriteAllTextAsync(f, content2);
+                FileMs.WriteAllTextAsync(f, content2);
         }
     }
 
@@ -400,7 +418,7 @@ void
     /// <param name="file"></param>
     public static StreamReader TextReader(string file)
     {
-        return File.OpenText(file);
+        return FileMs.OpenText(file);
     }
 
     public static
@@ -431,7 +449,7 @@ void
         await
 #endif
             //WriteAllText<string, string>(file, content, encoding, null);
-            File.WriteAllTextAsync(file, content.ToUnixLineEnding(), encoding);
+            FileMs.WriteAllTextAsync(file, content.ToUnixLineEnding(), encoding);
     }
 
     #region For easy copy
@@ -450,7 +468,7 @@ void
 #if ASYNC
             await
 #endif
-                File.ReadAllBytesAsync(path)).ToList();
+                FileMs.ReadAllBytesAsync(path)).ToList();
         var to = b.Count > 5 ? 6 : b.Count;
 
         for (int i = 3; i < to; i++)
@@ -462,7 +480,7 @@ void
         }
 
         b = b.Skip(3).ToList();
-        await File.WriteAllBytesAsync(path, b.ToArray());
+        await FileMs.WriteAllBytesAsync(path, b.ToArray());
     }
     #endregion
 
@@ -486,7 +504,7 @@ void
 
     public static async Task AppendAllText(string v, string content)
     {
-        await File.WriteAllTextAsync(v, content.ToUnixLineEnding());
+        await FileMs.WriteAllTextAsync(v, content.ToUnixLineEnding());
     }
 
     /// <summary>
@@ -511,7 +529,7 @@ void
     //#if ASYNC
     //                await
     //#endif
-    //                File.WriteAllTextAsync(file.ToString(), content, enc);
+    //                FileMs.WriteAllTextAsync(FileMs.ToString(), content, enc);
     //            }
     //            catch (Exception)
     //            {
@@ -537,14 +555,14 @@ void
     //    {
     //        if (ac == null)
     //        {
-    //            var fileS = file.ToString();
+    //            var fileS = FileMs.ToString();
 
     //            if (LockedByBitLocker(fileS))
     //            {
     //                return;
     //            }
 
-    //            await File.WriteAllBytesAsync(fileS, b.ToArray());
+    //            await FileMs.WriteAllBytesAsync(fileS, b.ToArray());
 
     //        }
     //        else
@@ -562,7 +580,7 @@ void
     //#endif
     //        SaveLines(IList<string> list, string file)
     //    {
-    //        File.WriteAllLines(file, list);
+    //        FileMs.WriteAllLines(file, list);
     //    }
 
     /// <summary>
@@ -574,7 +592,7 @@ void
     //{
     //    FS.CreateUpfoldersPsysicallyUnlessThereAc(path, ac);
 
-    //    await File.WriteAllTextAsync(path, content, Encoding.UTF8, ac);
+    //    await FileMs.WriteAllTextAsync(path, content, Encoding.UTF8, ac);
     //}
 
 #if DEBUG
@@ -620,7 +638,7 @@ void
     //            }
     //#endif
 
-    //            if (!File.Exists(ss))
+    //            if (!FileMs.Exists(ss))
     //            {
     //                return string.Empty;
     //            }
@@ -662,7 +680,7 @@ void
     //#endif
 
 
-    //                return File.ReadAllText(ss2);
+    //                return FileMs.ReadAllText(ss2);
     //            }
     //            else
     //            {
@@ -754,7 +772,7 @@ void
     //    }
 
     /// <summary>
-    /// Just one command File.Write* can be wrapped with it
+    /// Just one command FileMs.Write* can be wrapped with it
     /// </summary>
     public static bool throwExcIfCantBeWrite = false;
 
@@ -772,11 +790,11 @@ void
         }
         if (pripsat)
         {
-            File.AppendAllText(soubor, obsah);
+            FileMs.AppendAllText(soubor, obsah);
         }
         else
         {
-            await File.WriteAllTextAsync(soubor, obsah, Encoding.UTF8);
+            await FileMs.WriteAllTextAsync(soubor, obsah, Encoding.UTF8);
         }
     }
 
@@ -805,7 +823,7 @@ string
         //#endif
         //        ReadAllText<string, string>(s);
 
-        return (await File.ReadAllTextAsync(s));
+        return (await FileMs.ReadAllTextAsync(s));
     }
 
     public static bool readFile = true;
@@ -813,7 +831,28 @@ string
     public static async Task CreateEmptyFileWhenDoesntExists(string path)
     {
         //await CreateEmptyFileWhenDoesntExists<string, string>(path, null);
-        await File.WriteAllTextAsync(path, "");
+        await FileMs.WriteAllTextAsync(path, "");
+
+    }
+
+    //public static void WriteAllBytes(string p, IEnumerable<byte> b)
+    //{
+    //    FileMs.WriteAllBytes(p, b.ToArray());
+    //}
+
+    public static async Task WriteAllBytes(string p, IEnumerable<byte> b)
+    {
+        await FileMs.WriteAllBytesAsync(p, b.ToArray());
+    }
+
+    //public static List<byte> ReadAllBytes(string p)
+    //{
+    //    return FileMs.ReadAllBytes(p).ToList();
+    //}
+
+    public static async Task<List<byte>> ReadAllBytes(string p)
+    {
+        return (await FileMs.ReadAllBytesAsync(p)).ToList();
     }
 
     //public static async Task CreateEmptyFileWhenDoesntExists<StorageFolder, StorageFile>(StorageFile path, AbstractCatalog<StorageFolder, StorageFile> ac)
@@ -821,7 +860,12 @@ string
     //    if (!FS.ExistsFileAc(path, ac))
     //    {
     //        FS.CreateUpfoldersPsysicallyUnlessThereAc<StorageFolder, StorageFile>(path, ac);
-    //        await File.WriteAllTextAsync<StorageFolder, StorageFile>(path, "", Encoding.UTF8, ac);
+    //        await FileMs.WriteAllTextAsync<StorageFolder, StorageFile>(path, "", Encoding.UTF8, ac);
     //    }
+    //}
+
+    //public static async Task<string> ReadAllText(string p)
+    //{
+    //    return await FileMs.ReadAllTextAsync(p);
     //}
 }
