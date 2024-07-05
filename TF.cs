@@ -120,6 +120,12 @@ List<string>
         FileMs.Move(source, dest, overwrite);
     }
 
+    public static void Copy(string source, string dest, bool overwrite = false)
+    {
+        FileMs.Copy(source, dest, overwrite);
+    }
+
+
     public static bool Exists(string p)
     {
         return FileMs.Exists(p);
