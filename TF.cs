@@ -1,7 +1,3 @@
-
-
-
-
 namespace SunamoFileIO;
 
 public class TF : TFSE
