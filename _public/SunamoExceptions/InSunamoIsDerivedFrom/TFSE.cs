@@ -1,4 +1,4 @@
-namespace SunamoFileIO;
+namespace SunamoFileIO._public.SunamoExceptions.InSunamoIsDerivedFrom;
 
 
 public class TFSE

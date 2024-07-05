@@ -9,6 +9,16 @@ global using System.Threading;
 global using System.Data;
 global using System.Collections.Generic;
 global using System.Collections;
-
 global using System.Diagnostics.CodeAnalysis;
 global using System.Reflection;
+global using SunamoFileIO;
+global using SunamoFileIO.CallOnlyFileIO;
+global using SunamoFileIO._sunamo.SunamoExtensions;
+global using SunamoFileIO._sunamo.SunamoFileSystem;
+global using SunamoFileIO._sunamo.SunamoStringGetLines;
+global using SunamoFileIO._sunamo.SunamoValues;
+global using SunamoFileIO._sunamo.SunamoWinStd;
+global using SunamoFileIO._sunamo.SunamoXlfKeys;
+global using SunamoFileIO._public.SunamoExceptions.InSunamoIsDerivedFrom;
+global using SunamoFileIO._sunamo.SunamoExceptions.OnlyInSE;
+global using SunamoFileIO._sunamo.SunamoExceptions._AddedToAllCsproj;

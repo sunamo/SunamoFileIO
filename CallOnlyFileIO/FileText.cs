@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SunamoFileIO;
+namespace SunamoFileIO.CallOnlyFileIO;
 internal class FileText
 {
     public async Task<string> ReadAllText(string path)

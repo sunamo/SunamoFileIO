@@ -1,4 +1,4 @@
-namespace SunamoFileIO;
+namespace SunamoFileIO.CallOnlyFileIO;
 public class FileList
 {
     public static async Task<List<string>> ReadAllLinesListAsync(string path)
