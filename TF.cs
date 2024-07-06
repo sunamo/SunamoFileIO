@@ -535,7 +535,7 @@ void
     //#if ASYNC
     //                await
     //#endif
-    //                FileMs.WriteAllTextAsync(FileMs.ToString(), content, enc);
+    //                FileMs.WriteAllText(FileMs.ToString(), content, enc);
     //            }
     //            catch (Exception)
     //            {
@@ -866,7 +866,7 @@ string
     //    if (!FS.ExistsFileAc(path, ac))
     //    {
     //        FS.CreateUpfoldersPsysicallyUnlessThereAc<StorageFolder, StorageFile>(path, ac);
-    //        await FileMs.WriteAllTextAsync<StorageFolder, StorageFile>(path, "", Encoding.UTF8, ac);
+    //        await FileMs.WriteAllText<StorageFolder, StorageFile>(path, "", Encoding.UTF8, ac);
     //    }
     //}
 
