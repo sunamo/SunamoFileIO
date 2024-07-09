@@ -25,6 +25,8 @@ internal class FS
         return fn + whatInsert + e;
     }
 
+
+
     //    internal static Func<string, bool> ExistsFile;
     //    internal static Func<string, long> GetFileSize;
     //    internal static Func<string, string> GetDirectoryName;

@@ -279,7 +279,7 @@ void
             //l = CAG.RemoveDuplicitiesList<string>(l);
             l = l.Distinct().ToList();
         }
-        await FileMs.WriteAllLinesAsync(path, notRecognized);
+        await FileMs.WriteAllLinesAsync(path, l);
     }
 
     public static
