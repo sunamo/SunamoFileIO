@@ -1,5 +1,6 @@
 namespace SunamoFileIO.CallOnlyFileIO;
-internal class FileText
+
+public class FileText
 {
     public async Task<string> ReadAllText(string path)
     {
