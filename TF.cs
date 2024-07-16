@@ -314,7 +314,7 @@ File.AppendAllText(path, content);
     //        }
 
 
-    //        var c2 = SHSunamoExceptions.JoinNL(l);
+    //        var c2 = SH.JoinNL(l);
     //        if (c2 != c)
     //        {
     //            await FileMs.WriteAllLinesAsync(path, l);
