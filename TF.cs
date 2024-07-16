@@ -1,6 +1,6 @@
-using FileMs = System.IO.File;
 
 namespace SunamoFileIO;
+using FileMs = System.IO.File;
 
 public class TF
 {
