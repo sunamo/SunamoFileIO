@@ -19,7 +19,7 @@ global using SunamoFileIO._sunamo.SunamoStringGetLines;
 global using SunamoFileIO._sunamo.SunamoValues;
 global using SunamoFileIO._sunamo.SunamoWinStd;
 global using SunamoFileIO._sunamo.SunamoXlfKeys;
-global using SunamoFileIO._public.SunamoExceptions.InSunamoIsDerivedFrom;
+
 global using SunamoFileIO._sunamo.SunamoExceptions.OnlyInSE;
 global using SunamoFileIO._sunamo.SunamoExceptions._AddedToAllCsproj;
 global using System.Net;

@@ -1,9 +1,287 @@
-namespace SunamoFileIO;
-
 using FileMs = System.IO.File;
 
-public class TF : TFSE
+namespace SunamoFileIO;
+
+public class TF
 {
+
+    public static string ReadAllTextSync(string path)
+    {
+        return ReadAllTextSync(path, false);
+    }
+    public static string ReadAllTextSync(string path, bool createEmptyIfWasNotExists = false)
+    {
+        if (createEmptyIfWasNotExists)
+            if (!File.Exists(path))
+            {
+                WriteAllTextSync(path, string.Empty);
+                return string.Empty;
+            }
+        return File.ReadAllText(path);
+    }
+    public static void WriteAllTextSync(string path, string content)
+    {
+        File.WriteAllText(path, content);
+    }
+    public static void AppendAllTextSync(string path, string content)
+    {
+        File.AppendAllText(path, content);
+    }
+    public static List<string> ReadAllLinesSync(string path)
+    {
+        return ReadAllLinesSync(path, false);
+    }
+    public static List<string> ReadAllLinesSync(string path, bool createEmptyIfWasNotExists = false)
+    {
+        if (createEmptyIfWasNotExists)
+            if (!File.Exists(path))
+            {
+                WriteAllTextSync(path, string.Empty);
+                return new List<string>();
+            }
+        return SHGetLines.GetLines(File.ReadAllText(path));
+    }
+    public static void WriteAllLinesSync(string path, List<string> content)
+    {
+        File.WriteAllLines(path, content.ToArray());
+    }
+    public static void AppendAllLinesSync(string path, List<string> content)
+    {
+        File.AppendAllLines(path, content.ToArray());
+    }
+    public static List<byte> ReadAllBytesSync(string path)
+    {
+        return File.ReadAllBytes(path).ToList();
+    }
+    public static void WriteAllBytesSync(string path, List<byte> content)
+    {
+        File.WriteAllBytes(path, content.ToArray());
+    }
+    public static Func<string, bool> isUsed = null;
+    #region
+    protected static bool LockedByBitLocker(string path)
+    {
+        return ThrowEx.LockedByBitLocker(path);
+    }
+    public static
+#if ASYNC
+        async Task<string>
+#else
+string
+#endif
+        ReadAllText(string path, Encoding enc)
+    {
+        if (isUsed != null)
+            if (isUsed.Invoke(path))
+                return string.Empty;
+#if ASYNC
+
+#endif
+
+#if ASYNC
+        return await File.ReadAllTextAsync(path, enc);
+#else
+return File.ReadAllText(path, enc);
+#endif
+    }
+    #region Array
+    public static
+#if ASYNC
+        async Task
+#else
+void
+#endif
+        WriteAllLinesArray(string path, string[] c)
+    {
+#if ASYNC
+        await
+#endif
+            WriteAllLines(path, c.ToList());
+    }
+    public static
+#if ASYNC
+        async Task
+#else
+void
+#endif
+        WriteAllBytesArray(string path, byte[] c)
+    {
+#if ASYNC
+        await
+#endif
+            WriteAllBytes(path, c.ToList());
+    }
+    public static
+#if ASYNC
+        async Task<byte[]>
+#else
+byte[]
+#endif
+        ReadAllBytesArray(string path)
+    {
+        return (
+#if ASYNC
+            await
+#endif
+                ReadAllBytes(path)).ToArray();
+    }
+    #endregion
+    #region Bytes
+
+
+
+
+
+    public static
+#if ASYNC
+        async Task<List<byte>>
+#else
+List<byte>
+#endif
+        ReadAllBytes(string file)
+    {
+        if (LockedByBitLocker(file)) return new List<byte>();
+#if ASYNC
+
+#endif
+        return
+#if ASYNC
+            (await File.ReadAllBytesAsync(file)).ToList();
+#else
+File.ReadAllBytes(file).ToList();
+#endif
+    }
+    public static
+#if ASYNC
+        async Task
+#else
+void
+#endif
+        WriteAllBytes(string file, List<byte> b)
+    {
+        if (LockedByBitLocker(file)) return;
+#if ASYNC
+        await File.WriteAllBytesAsync(file, b.ToArray());
+#else
+File.WriteAllBytes(file, b.ToArray());
+#endif
+    }
+    #endregion
+    #region Lines
+    public static
+#if ASYNC
+        async Task
+#else
+void
+#endif
+        WriteAllLines(string file, IList<string> lines)
+    {
+        if (LockedByBitLocker(file)) return;
+#if ASYNC
+        await File.WriteAllLinesAsync
+#else
+File.WriteAllLines
+#endif
+            (file, lines.ToArray());
+    }
+    public static
+#if ASYNC
+        async Task<List<string>>
+#else
+List<string>
+#endif
+        ReadAllLines(string file, bool trim = true)
+    {
+        if (LockedByBitLocker(file)) return new List<string>();
+#if ASYNC
+
+#endif
+        var result = SHGetLines.GetLines
+#if ASYNC
+            (await File.ReadAllTextAsync(file)).ToList();
+#else
+File.ReadAllText(file).ToList();
+#endif
+        if (trim) result = result.Where(d => !string.IsNullOrWhiteSpace(d)).ToList();
+        return result;
+    }
+    #endregion
+    #region Text
+    public static
+#if ASYNC
+        async Task
+#else
+void
+#endif
+        WriteAllText(string path, string content)
+    {
+        if (LockedByBitLocker(path)) return;
+#if ASYNC
+        await File.WriteAllTextAsync(path, content);
+#else
+File.WriteAllText(path, content);
+#endif
+    }
+    public static
+#if ASYNC
+        async Task<string>
+#else
+string
+#endif
+        ReadAllText(string f)
+    {
+        if (LockedByBitLocker(f)) return string.Empty;
+#if ASYNC
+
+#endif
+        try
+        {
+#if ASYNC
+            return await File.ReadAllTextAsync(f);
+#else
+return File.ReadAllText(f);
+#endif
+        }
+        catch (Exception)
+        {
+            return string.Empty;
+        }
+    }
+    public static
+#if ASYNC
+        async Task
+#else
+void
+#endif
+        AppendAllText(string path, string content)
+    {
+        if (LockedByBitLocker(path)) return;
+#if ASYNC
+
+#endif
+        try
+        {
+#if ASYNC
+            await File.AppendAllTextAsync(path, content);
+#else
+File.AppendAllText(path, content);
+#endif
+        }
+        catch (Exception)
+        {
+        }
+    }
+    #endregion
+    #endregion
+#if ASYNC
+    public static async Task<string> WaitD()
+    {
+
+        return await Task.Run(() => "");
+    }
+#endif
+
+
     public static string ReadFileParallel(string fileName, IList<string> from, IList<string> to)
     {
         return ReadFileParallel(fileName, 1470, from, to);
@@ -508,11 +786,6 @@ void
         }
     }
 
-    public static async Task AppendAllText(string v, string content)
-    {
-        await FileMs.WriteAllTextAsync(v, content.ToUnixLineEnding());
-    }
-
     /// <summary>
     /// A1 cant be storagefile because its
     /// not in
@@ -603,22 +876,12 @@ void
 
 #if DEBUG
     public const int waitMsBeforeReadFile = 1000;
-
-    public static void WaitD()
-    {
-#if DEBUG
-        if (waitMsBeforeReadFile != 0)
-        {
-            Thread.Sleep((int)waitMsBeforeReadFile);
-        }
-#endif
-    }
 #endif
 
 
 
     /// <summary>
-    /// Precte soubor a vrati jeho obsah. Pokud soubor neexistuje, vytvori ho a vrati SE.
+    /// Precte soubor a vrati jeho obsah. Pokud soubor neexistuje, vytvori ho a vrati .
     /// </summary>
     /// <param name="s"></param>
     //    public static
@@ -810,27 +1073,7 @@ void
         //SaveFile(obsah, soubor, true);
     }
 
-    /// <summary>
-    /// Return string.Empty when file won't exists
-    /// Use FileUtil.WhoIsLocking to avoid error The process cannot access the file because it is being used by another process
-    /// </summary>
-    /// <param name="s"></param>
-    public static
-#if ASYNC
-        async Task<string>
-#else
-string
-#endif
-        ReadAllText(string s)
-    {
-        //        return
-        //#if ASYNC
-        //        await
-        //#endif
-        //        ReadAllText<string, string>(s);
 
-        return (await FileMs.ReadAllTextAsync(s));
-    }
 
     public static bool readFile = true;
 
@@ -856,10 +1099,6 @@ string
     //    return FileMs.ReadAllBytes(p).ToList();
     //}
 
-    public static async Task<List<byte>> ReadAllBytes(string p)
-    {
-        return (await FileMs.ReadAllBytesAsync(p)).ToList();
-    }
 
     //public static async Task CreateEmptyFileWhenDoesntExists<StorageFolder, StorageFile>(StorageFile path, AbstractCatalog<StorageFolder, StorageFile> ac)
     //{
@@ -874,4 +1113,5 @@ string
     //{
     //    return await FileMs.ReadAllTextAsync(p);
     //}
+
 }

@@ -1,4 +1,5 @@
 namespace SunamoFileIO;
+
 public class CloudProvidersHelper
 {
     //private Dictionary<string, string> folders = null;
@@ -55,7 +56,7 @@ public class CloudProvidersHelper
 
         //    if (myStations != null)
         //    {
-        //        oneDriveExe = oneDriveExe.Replace(SHSH.WrapWithBs(myStations.Vps), SHSH.WrapWithBs(myStations.Mb));
+        //        oneDriveExe = oneDriveExe.Replace(SH.WrapWithBs(myStations.Vps), SH.WrapWithBs(myStations.Mb));
         //    }
 
         //    //if (!VpsHelperSunamo.IsVps)

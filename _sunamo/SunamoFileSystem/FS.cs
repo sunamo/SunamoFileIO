@@ -1,7 +1,5 @@
 namespace SunamoFileIO._sunamo.SunamoFileSystem;
 
-//namespace SunamoFileIO;
-
 internal class FS
 {
     internal static string InsertBetweenFileNameAndExtension(string orig, string whatInsert)
