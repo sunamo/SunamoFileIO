@@ -14,3 +14,4 @@ global using SunamoFileIO._sunamo.SunamoStringGetLines;
 global using SunamoFileIO._sunamo.SunamoValues;
 global using SunamoFileIO._sunamo.SunamoExceptions.OnlyInSE;
 global using System.Net;
+global using SunamoFileIO._sunamo.SunamoFileSystem;

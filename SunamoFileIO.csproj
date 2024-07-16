@@ -3,7 +3,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <Version>24.7.15.2</Version>
+    <Version>24.7.16.1</Version>
     <Description>ReadAllText, WriteAllText etc. with some magic ability</Description>
     <PackageReleaseNotes>Added Copy()</PackageReleaseNotes>
     <Authors>www.sunamo.cz</Authors>
