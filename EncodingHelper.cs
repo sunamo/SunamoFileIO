@@ -4,7 +4,7 @@ public class EncodingHelper
 {
     public static string PrintNamesForEncodingAsIsInSheet(Encoding e)
     {
-        StringBuilder sb = new StringBuilder();
+        var sb = new StringBuilder();
 
         sb.AppendLine(e.EncodingName);
         sb.AppendLine(e.BodyName);
@@ -15,21 +15,18 @@ public class EncodingHelper
     }
 
     /// <summary>
-    /// First 4 bytes
+    ///     First 4 bytes
     /// </summary>
-    /// <param name = "bom"></param>
+    /// <param name="bom"></param>
     public static Encoding DetectEncoding(List<byte> bom, Encoding def = null)
     {
-        if (def == null)
-        {
-            def = Encoding.ASCII;
-        }
+        if (def == null) def = Encoding.ASCII;
 
         if (bom.Count > 3)
         {
-            byte first = bom[0];
-            byte second = bom[1];
-            byte third = bom[2];
+            var first = bom[0];
+            var second = bom[1];
+            var third = bom[2];
             // Analyze the BOM
             if (first == 0x2b && second == 0x2f && third == 0x76)
                 return Encoding.UTF7;
@@ -48,30 +45,24 @@ public class EncodingHelper
 
     private static Dictionary<string, bool> TestBinaryFile(string folderPath)
     {
-        Dictionary<string, bool> output = new Dictionary<string, bool>();
-        foreach (string filePath in Directory.GetFiles(folderPath, "*", SearchOption.AllDirectories))
-        {
+        var output = new Dictionary<string, bool>();
+        foreach (var filePath in Directory.GetFiles(folderPath, "*", SearchOption.AllDirectories))
             output.Add(filePath, isBinary(filePath));
-        }
 
         return output;
     }
 
     public static bool isBinary(string path)
     {
-        long length = new FileInfo(path).Length;
+        var length = new FileInfo(path).Length;
         if (length == 0)
             return false;
-        using (StreamReader stream = new StreamReader(path))
+        using (var stream = new StreamReader(path))
         {
             int ch;
             while ((ch = stream.Read()) != -1)
-            {
                 if (isControlChar(ch))
-                {
                     return true;
-                }
-            }
         }
 
         return false;
@@ -82,24 +73,17 @@ public class EncodingHelper
         return (ch > Chars.NUL && ch < Chars.BS) || (ch > Chars.CR && ch < Chars.SUB);
     }
 
-    public static class Chars
-    {
-        public static char NUL = (char)0; // Null char
-        public static char BS = (char)8; // Back Space
-        public static char CR = (char)13; // Carriage Return
-        public static char SUB = (char)26; // Substitute
-    }
-
     public static string ConvertTo(int destEncCodepage, List<byte> input, string badCharsReplaceFor)
     {
-        Encoding srcEnc = DetectEncoding(input);
-        Encoding destEnc = Encoding.GetEncoding(destEncCodepage, new EncoderReplacementFallback(badCharsReplaceFor), new DecoderReplacementFallback(badCharsReplaceFor));
+        var srcEnc = DetectEncoding(input);
+        var destEnc = Encoding.GetEncoding(destEncCodepage, new EncoderReplacementFallback(badCharsReplaceFor),
+            new DecoderReplacementFallback(badCharsReplaceFor));
         return destEnc.GetString(Encoding.Convert(srcEnc, destEnc, input.ToArray()));
     }
 
     public static Dictionary<int, string> ConvertToAllAvailableEncodings(byte[] buffer)
     {
-        Dictionary<int, string> v = new Dictionary<int, string>();
+        var v = new Dictionary<int, string>();
         Encoding e = null;
         var encs = Encoding.GetEncodings();
         foreach (var item in encs)
@@ -118,6 +102,14 @@ public class EncodingHelper
         //    output.Write(converted, 0, converted.Length);
         //}
         return v;
+    }
+
+    public static class Chars
+    {
+        public static char NUL = (char)0; // Null char
+        public static char BS = (char)8; // Back Space
+        public static char CR = (char)13; // Carriage Return
+        public static char SUB = (char)26; // Substitute
     }
     //public static string PureBytesOperation(Func<List<byte>, List<byte>> b, string s)
     //{

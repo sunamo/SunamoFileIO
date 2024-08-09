@@ -15,19 +15,15 @@ public class CloudProvidersHelper
     public static /*IMyStations*/ dynamic myStations = null;
 
     //private static CloudProvidersHelper Instance = null;
-    static bool isUseCloud = false;
+    private static bool isUseCloud = false;
 
     private CloudProvidersHelper()
     {
-
     }
 
     public static void Init()
     {
-        if (GDriveFolder != null)
-        {
-            return;
-        }
+        if (GDriveFolder != null) return;
 
         // Return always, also for my PC
         // Nemůžu, občas to používám
@@ -70,7 +66,6 @@ public class CloudProvidersHelper
         //    GDriveFn = Path.GetFileNameWithoutExtension(GDriveExe);
         //}
     }
-
 
 
     //public static void OpenSyncAppIfNotRunning(string ss2)
