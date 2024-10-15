@@ -783,7 +783,7 @@ void
 
     protected static bool LockedByBitLocker(string path)
     {
-        return ThrowEx.LockedByBitLocker(path);
+        return ThrowEx.Custom($"{path} locked by bitlocker");
     }
 
     public static
