@@ -43,7 +43,7 @@ public class CloudProvidersHelper
 
         //    isUseCloud = true;
         //    //folders = SF.ToDictionary<string, string>(l);
-        //    var OneDriveFolders = SHSplit.SplitMore(header[0], AllStrings.ast);
+        //    var OneDriveFolders = SHSplit.SplitMore(header[0], "*");
         //    OneDriveFolder0 = OneDriveFolders[0];
         //    OneDriveFolder1 = OneDriveFolders[1];
         //    GDriveFolder = l[0][0];

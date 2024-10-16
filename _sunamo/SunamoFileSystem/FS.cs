@@ -14,7 +14,7 @@ internal class FS
         string fn = Path.GetFileNameWithoutExtension(origS);
         string e = Path.GetExtension(origS);
 
-        if (origS.Contains(AllChars.slash) || origS.Contains(AllChars.bs))
+        if (origS.Contains('/') || origS.Contains('\\'))
         {
             string p = Path.GetDirectoryName(origS);
 
@@ -69,13 +69,13 @@ internal class FS
 
     //    internal static string MakeUncLongPath(ref string path)
     //    {
-    //        if (!path.StartsWith(Consts.UncLongPath))
+    //        if (!path.StartsWith(@"\\?\"))
     //        {
     //            // V ASP.net mi vrátilo u každé directory.exists false. Byl jsem pod ApplicationPoolIdentity v IIS a bylo nastaveno Full Control pro IIS AppPool\DefaultAppPool
     //#if !ASPNET
     //            //  asp.net / vps nefunguje, ve windows store apps taktéž, NECHAT TO TRVALE ZAKOMENTOVANÉ
     //            // v asp.net toto způsobí akorát zacyklení, IIS začne vyhazovat 0xc00000fd, pak už nejde načíst jediná stránka
-    //            //path = Consts.UncLongPath + path;
+    //            //path = @"\\?\" + path;
     //#endif
     //        }
 

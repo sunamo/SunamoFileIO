@@ -9,7 +9,7 @@ global using System.Data;
 global using System.Collections;
 global using SunamoFileIO._sunamo.SunamoExtensions;
 global using SunamoFileIO._sunamo.SunamoStringGetLines;
-global using SunamoFileIO._sunamo.SunamoValues;
+global using SunamoFileIO;
 global using SunamoFileIO._sunamo.SunamoExceptions;
 global using SunamoFileIO._sunamo.SunamoFileSystem;
 global using System.Diagnostics.CodeAnalysis;
