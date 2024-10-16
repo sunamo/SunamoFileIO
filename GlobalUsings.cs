@@ -13,3 +13,4 @@ global using SunamoFileIO._sunamo.SunamoExceptions;
 global using SunamoFileIO._sunamo.SunamoFileSystem;
 global using System.Reflection;
 global using System.Net;
+global using System.Diagnostics.CodeAnalysis;
