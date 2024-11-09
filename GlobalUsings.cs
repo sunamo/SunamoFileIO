@@ -14,3 +14,7 @@ global using SunamoFileIO._sunamo.SunamoFileSystem;
 global using System.Reflection;
 global using System.Net;
 global using System.Diagnostics.CodeAnalysis;
+global using SunamoFileIO;
+global using SunamoFileIO.CallOnlyFileIO;
+global using SunamoFileIO._sunamo;
+global using SunamoFileIO._sunamo.SunamoWinStd;

@@ -783,7 +783,9 @@ void
 
     protected static bool LockedByBitLocker(string path)
     {
-        return ThrowEx.Custom($"{path} locked by bitlocker");
+        // na to chce mít vlastní metodu v ThrowEx. Bitlocker jsem zatím do nugetů nepřevedl
+        //return ThrowEx.Custom($"{path} locked by bitlocker");
+        return false;
     }
 
     public static
