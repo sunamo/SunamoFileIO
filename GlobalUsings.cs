@@ -14,3 +14,7 @@ global using System.Threading.Tasks;
 global using FileMs = System.IO.File;
 global using SunamoFileIO;
 global using SunamoFileIO.CallOnlyFileIO;
+
+global using ILogger = Microsoft.Extensions.Logging.ILogger;
+global using Microsoft.Extensions.Logging;
+global using NullLogger = Microsoft.Extensions.Logging.Abstractions.NullLogger;
