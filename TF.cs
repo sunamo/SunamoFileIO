@@ -233,7 +233,7 @@ void
 
     public static
 #if ASYNC
-        async Task
+        async Task<bool>
 #else
 void
 #endif
@@ -245,20 +245,20 @@ void
 #endif
                 FileMs.ReadAllTextAsync(f);
 
-#if DEBUG
-        if (f.Contains(@"\scz.sln"))
-        {
-        }
-#endif
 
         var content2 = transformHtmlToMetro4.Invoke(content, arg);
-        if (content.Trim() != content2.Trim()) await FileMs.WriteAllTextAsync(f, content2);
+        if (content.Trim() != content2.Trim())
+        {
+            await FileMs.WriteAllTextAsync(f, content2);
+            return true;
+        }
+        return false;
     }
 
 
     public static
 #if ASYNC
-        async Task
+        async Task<bool>
 #else
 void
 #endif
@@ -270,18 +270,23 @@ void
             await
 #endif
                 FileMs.ReadAllTextAsync(f);
-        content = transformHtmlToMetro4.Invoke(content);
+        var contentNew = transformHtmlToMetro4.Invoke(content);
 
+        if (contentNew != content)
+        {
 #if ASYNC
-        await
+            await
 #endif
-            WriteAllText(FS.InsertBetweenFileNameAndExtension(f, insertBetweenFilenameAndExtension), content);
+                WriteAllText(FS.InsertBetweenFileNameAndExtension(f, insertBetweenFilenameAndExtension), content);
+            return true;
+        }
+        return false;
     }
 
 
     public static
 #if ASYNC
-        async Task
+        async Task<bool>
 #else
 void
 #endif
@@ -303,7 +308,9 @@ void
             await
 #endif
                 FileMs.WriteAllTextAsync(f, content2);
+            return true;
         }
+        return false;
     }
 
 
