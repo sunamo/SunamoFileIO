@@ -23,9 +23,6 @@ public partial class TF
 
     public static bool readFile = true;
 
-
-
-
 #if ASYNC
     public static async Task<string> WaitD()
     {
