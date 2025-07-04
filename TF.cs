@@ -9,7 +9,9 @@ public partial class TF
 #endif
     public static Func<string, bool> isUsed = null;
 
+#pragma warning disable
     protected static bool LockedByBitLocker(string path)
+#pragma warning restore
     {
         // na to chce mít vlastní metodu v ThrowEx. Bitlocker jsem zatím do nugetů nepřevedl
         //return ThrowEx.Custom($"{path} locked by bitlocker");

@@ -2,6 +2,39 @@ namespace SunamoFileIO._sunamo.SunamoFileSystem;
 
 internal class FS
 {
+    internal static string InsertBetweenFileNameAndPath(string folder, string parentFolder, string insert)
+    {
+
+        if (parentFolder == null) parentFolder = Path.GetDirectoryName(folder);
+        var outputFolder = Path.Combine(parentFolder, insert);
+        CreateFoldersPsysicallyUnlessThere(outputFolder);
+        return Path.Combine(outputFolder, Path.GetFileName(folder));
+    }
+
+    internal static void CreateFoldersPsysicallyUnlessThere(string nad)
+    {
+        //ThrowEx.IsNotWindowsPathFormat("nad", nad);
+        if (Directory.Exists(nad)) return;
+        var slozkyKVytvoreni = new List<string>
+        {
+            nad
+        };
+        while (true)
+        {
+            nad = Path.GetDirectoryName(nad);
+            // TODO: Tady to nefunguje pro UWP/UAP apps protoze nemaji pristup k celemu disku. Zjistit co to je UWP/UAP/... a jak v nem ziskat/overit jakoukoliv slozku na disku
+            if (Directory.Exists(nad)) break;
+            var kopia = nad;
+            slozkyKVytvoreni.Add(kopia);
+        }
+        slozkyKVytvoreni.Reverse();
+        foreach (var item in slozkyKVytvoreni)
+        {
+            var folder = item;
+            if (!Directory.Exists(folder)) Directory.CreateDirectory(folder);
+        }
+    }
+
     internal static string InsertBetweenFileNameAndExtension(string orig, string whatInsert)
     {
         //return InsertBetweenFileNameAndExtension<string, string>(orig, whatInsert, null);
