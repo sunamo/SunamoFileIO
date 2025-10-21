@@ -1,17 +1,20 @@
+// EN: Variable names have been checked and replaced with self-descriptive names
+// CZ: Názvy proměnných byly zkontrolovány a nahrazeny samopopisnými názvy
+
 namespace SunamoFileIO;
 
 public class EncodingHelper
 {
     public static string PrintNamesForEncodingAsIsInSheet(Encoding e)
     {
-        var sb = new StringBuilder();
+        var stringBuilder = new StringBuilder();
 
-        sb.AppendLine(e.EncodingName);
-        sb.AppendLine(e.BodyName);
-        sb.AppendLine(e.HeaderName);
-        sb.AppendLine(e.WebName);
+        stringBuilder.AppendLine(e.EncodingName);
+        stringBuilder.AppendLine(e.BodyName);
+        stringBuilder.AppendLine(e.HeaderName);
+        stringBuilder.AppendLine(e.WebName);
 
-        return sb.ToString();
+        return stringBuilder.ToString();
     }
 
     /// <summary>
@@ -83,25 +86,25 @@ public class EncodingHelper
 
     public static Dictionary<int, string> ConvertToAllAvailableEncodings(byte[] buffer)
     {
-        var v = new Dictionary<int, string>();
+        var value = new Dictionary<int, string>();
         Encoding e = null;
         var encs = Encoding.GetEncodings();
         foreach (var item in encs)
         {
             e = item.GetEncoding();
-            v.Add(e.CodePage, Encoding.UTF8.GetString(Encoding.Convert(e, Encoding.UTF8, buffer)));
+            value.Add(e.CodePage, Encoding.UTF8.GetString(Encoding.Convert(e, Encoding.UTF8, buffer)));
         }
 
         e = Encoding.GetEncoding("latin1");
-        v.Remove(e.CodePage);
-        v.Add(e.CodePage, Encoding.UTF8.GetString(Encoding.Convert(e, Encoding.UTF8, buffer)));
+        value.Remove(e.CodePage);
+        value.Add(e.CodePage, Encoding.UTF8.GetString(Encoding.Convert(e, Encoding.UTF8, buffer)));
         //using (System.IO.FileStream output = new System.IO.FileStream(outFileName,
         //                                     System.IO.FileMode.Create,
         //                                     System.IO.FileAccess.Write))
         //{
         //    output.Write(converted, 0, converted.Length);
         //}
-        return v;
+        return value;
     }
 
     public static class Chars
@@ -111,9 +114,9 @@ public class EncodingHelper
         public static char CR = (char)13; // Carriage Return
         public static char SUB = (char)26; // Substitute
     }
-    //public static string PureBytesOperation(Func<List<byte>, List<byte>> b, string s)
+    //public static string PureBytesOperation(Func<List<byte>, List<byte>> b, string text)
     //{
-    //    var bytes = BTS.ConvertFromUtf8ToBytes(s);
+    //    var bytes = BTS.ConvertFromUtf8ToBytes(text);
     //    bytes = b.Invoke(bytes);
     //    return BTS.ConvertFromBytesToUtf8(bytes);
     //}

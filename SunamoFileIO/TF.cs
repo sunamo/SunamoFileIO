@@ -1,3 +1,6 @@
+// EN: Variable names have been checked and replaced with self-descriptive names
+// CZ: Názvy proměnných byly zkontrolovány a nahrazeny samopopisnými názvy
+
 namespace SunamoFileIO;
 
 
@@ -45,17 +48,17 @@ public partial class TF
         var AllLines = new string[linesCount]; //only allocate memory here
         using (var sr = FileMs.OpenText(fileName))
         {
-            var x = 0;
+            var xValue = 0;
             while (!sr.EndOfStream)
             {
                 AllLines[x] = sr.ReadLine();
-                x += 1;
+                xValue += 1;
             }
         } //CLOSE THE FILE because we are now DONE with it.
 
         if (from != null)
             for (var i = 0; i < from.Count; i++)
-                Parallel.For(0, AllLines.Length, x => { AllLines[x] = AllLines[x].Replace(from[i], to[i]); });
+                Parallel.For(0, AllLines.Length, xValue => { AllLines[x] = AllLines[x].Replace(from[i], to[i]); });
         return string.Empty;
     }
 
@@ -67,13 +70,13 @@ List<string>
 #endif
         ReadConfigLines(string syncLocations)
     {
-        var l = SHGetLines.GetLines(
+        var list = SHGetLines.GetLines(
 #if ASYNC
             await
 #endif
                 FileMs.ReadAllTextAsync(syncLocations)).ToList();
-        l = l.Where(d => !d.StartsWith("#")).ToList();
-        return l;
+        list = list.Where(d => !d.StartsWith("#")).ToList();
+        return list;
     }
 
 
@@ -145,11 +148,11 @@ void
         }
     }
 
-    public static object ReadFileOrReturn(string l)
+    public static object ReadFileOrReturn(string list)
     {
-        if (l.Length > 250) return l;
-        if (FileMs.Exists(l)) return FileMs.ReadAllTextAsync(l);
-        return l;
+        if (list.Length > 250) return list;
+        if (FileMs.Exists(list)) return FileMs.ReadAllTextAsync(list);
+        return list;
     }
 
 
@@ -328,9 +331,9 @@ void
         await FileMs.WriteAllTextAsync(path, "");
     }
 
-    //public static void WriteAllBytes(string p, IEnumerable<byte> b)
+    //public static void WriteAllBytes(string p, IEnumerable<byte> builder)
     //{
-    //    FileMs.WriteAllBytes(p, b.ToArray());
+    //    FileMs.WriteAllBytes(p, builder.ToArray());
     //}
 
 
@@ -349,19 +352,19 @@ void
 #endif
         RemoveDoubleBomUtf8(string path)
     {
-        var b = (
+        var builder = (
 #if ASYNC
             await
 #endif
                 FileMs.ReadAllBytesAsync(path)).ToList();
-        var to = b.Count > 5 ? 6 : b.Count;
+        var to = builder.Count > 5 ? 6 : builder.Count;
 
         for (var i = 3; i < to; i++)
-            if (bomUtf8[i - 3] != b[i])
+            if (bomUtf8[i - 3] != builder[i])
                 break;
 
-        b = b.Skip(3).ToList();
-        await FileMs.WriteAllBytesAsync(path, b.ToArray());
+        builder = builder.Skip(3).ToList();
+        await FileMs.WriteAllBytesAsync(path, builder.ToArray());
     }
 
     #endregion

@@ -1,4 +1,7 @@
-﻿namespace SunamoFileIO;
+// EN: Variable names have been checked and replaced with self-descriptive names
+// CZ: Názvy proměnných byly zkontrolovány a nahrazeny samopopisnými názvy
+
+namespace SunamoFileIO;
 partial class TF
 {
     #region Lines
@@ -15,15 +18,15 @@ void
             await TF.WriteAllText(path, "");
         }
 
-        var l = SHGetLines.GetLines(
+        var list = SHGetLines.GetLines(
 #if ASYNC
             await
 #endif
                 FileMs.ReadAllTextAsync(path)).ToList();
-        l.AddRange(notRecognized);
+        list.AddRange(notRecognized);
         if (deduplicate)
-            l = l.Distinct().ToList();
-        await FileMs.WriteAllLinesAsync(path, l);
+            list = list.Distinct().ToList();
+        await FileMs.WriteAllLinesAsync(path, list);
     }
 
     public static

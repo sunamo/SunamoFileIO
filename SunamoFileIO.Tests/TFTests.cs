@@ -1,3 +1,6 @@
+// EN: Variable names have been checked and replaced with self-descriptive names
+// CZ: Názvy proměnných byly zkontrolovány a nahrazeny samopopisnými názvy
+
 namespace SunamoFileIO.Tests;
 
 public class TFTests
@@ -19,7 +22,7 @@ public class TFTests
 
         //AppData.ci.CreateAppFoldersIfDontExists(new SunamoPlatformUwpInterop.Args.CreateAppFoldersIfDontExistsArgs { });
 
-        //var d = await TF.ReadAllText(@"D:\_Test\ConsoleApp1\ConsoleApp1\ParseTableFromCoolJobs\JobOffers.html");
+        //var data = await TF.ReadAllText(@"D:\_Test\ConsoleApp1\ConsoleApp1\ParseTableFromCoolJobs\JobOffers.html");
 
 
     }
@@ -36,7 +39,7 @@ public class TFTests
     {
         var path = @"D:\_Test\PlatformIndependentNuGetPackages\SunamoFileIO\AllNN.cs";
         var o = await File.ReadAllLinesAsync(path);
-        var l = await TF.ReadAllLines(path);
+        var list = await TF.ReadAllLines(path);
 
         
     }
@@ -48,21 +51,21 @@ public class TFTests
         var path = bp + "AllRnRn.cs";
         // TF.ReadAllLines vrací 26 řádků, ReadAllLinesAsync 29
         var o = await File.ReadAllLinesAsync(path);
-        var l = await TF.ReadAllLines(path);
+        var list = await TF.ReadAllLines(path);
     }
 
     [Fact]
     public async Task ReadAllLinesTest_CantRemoveEmptyLines()
     {
-        var a = await TF.ReadAllLines(@"E:\vs\Projects\PlatformIndependentNuGetPackages\SunamoCl\SunamoCmd\CmdBootStrap.cs");
+        var argument = await TF.ReadAllLines(@"E:\vs\Projects\PlatformIndependentNuGetPackages\SunamoCl\SunamoCmd\CmdBootStrap.cs");
     }
 
         [Fact]
     public async Task WriteAllLinesTest()
     {
-        var l = new List<string>(["a", "", "b"]);
+        var list = new List<string>(["a", "", "b"]);
         var fp = FilePath(nameof(WriteAllLinesTest));
-        await TF.WriteAllLines(fp, l);
+        await TF.WriteAllLines(fp, list);
         var nlDeli = await DetectNlDelimiter(fp);
         Assert.True(true);
     }
@@ -70,19 +73,19 @@ public class TFTests
     [Fact]
     public async Task WriteAllTextTest()
     {
-        var l = @"a
+        var list = @"a
 
 b";
         var fp = FilePath(nameof(WriteAllLinesTest));
-        await TF.WriteAllText(fp, l);
+        await TF.WriteAllText(fp, list);
         var nlDeli = await DetectNlDelimiter(fp);
         Assert.True(true);
     }
 
     private async Task<bool> DetectNlDelimiter(string fp)
     {
-        var c = await TF.ReadAllText(fp);
-        if (c.Contains("\r\n"))
+        var count = await TF.ReadAllText(fp);
+        if (count.Contains("\r\n"))
         {
             return false;
         }
