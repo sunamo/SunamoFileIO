@@ -51,14 +51,14 @@ public partial class TF
             var xValue = 0;
             while (!sr.EndOfStream)
             {
-                AllLines[x] = sr.ReadLine();
+                AllLines[xValue] = sr.ReadLine();
                 xValue += 1;
             }
         } //CLOSE THE FILE because we are now DONE with it.
 
         if (from != null)
             for (var i = 0; i < from.Count; i++)
-                Parallel.For(0, AllLines.Length, xValue => { AllLines[x] = AllLines[x].Replace(from[i], to[i]); });
+                Parallel.For(0, AllLines.Length, lineIndex => { AllLines[lineIndex] = AllLines[lineIndex].Replace(from[i], to[i]); });
         return string.Empty;
     }
 
