@@ -1,17 +1,12 @@
 // EN: Variable names have been checked and replaced with self-descriptive names
 // CZ: Názvy proměnných byly zkontrolovány a nahrazeny samopopisnými názvy
-
 namespace SunamoFileIO;
-
-
 public partial class TF
 {
-
 #if DEBUG
     public const int waitMsBeforeReadFile = 1000;
 #endif
     public static Func<string, bool> isUsed = null;
-
 #pragma warning disable
     protected static bool LockedByBitLocker(string path)
 #pragma warning restore
@@ -22,26 +17,18 @@ public partial class TF
     }
 
     private static Type type = typeof(TF);
-
     public static bool throwExcIfCantBeWrite = false;
-
-
     public static bool readFile = true;
-
 #if ASYNC
     public static async Task<string> WaitD()
     {
         return await Task.Run(() => "");
     }
 #endif
-
-
     public static string ReadFileParallel(string fileName, IList<string> from, IList<string> to)
     {
         return ReadFileParallel(fileName, 1470, from, to);
     }
-
-
 
     public static string ReadFileParallel(string fileName, int linesCount, IList<string> from, IList<string> to)
     {
@@ -58,27 +45,29 @@ public partial class TF
 
         if (from != null)
             for (var i = 0; i < from.Count; i++)
-                Parallel.For(0, AllLines.Length, lineIndex => { AllLines[lineIndex] = AllLines[lineIndex].Replace(from[i], to[i]); });
+                Parallel.For(0, AllLines.Length, lineIndex =>
+                {
+                    AllLines[lineIndex] = AllLines[lineIndex].Replace(from[i], to[i]);
+                });
         return string.Empty;
     }
 
-    public static
+    public static 
 #if ASYNC
         async Task<List<string>>
 #else
-List<string>
+    List<string> 
 #endif
-        ReadConfigLines(string syncLocations)
+    ReadConfigLines(string syncLocations)
     {
         var list = SHGetLines.GetLines(
 #if ASYNC
             await
 #endif
-                FileMs.ReadAllTextAsync(syncLocations)).ToList();
+        FileMs.ReadAllTextAsync(syncLocations)).ToList();
         list = list.Where(d => !d.StartsWith("#")).ToList();
         return list;
     }
-
 
     public static Encoding GetEncoding(string filename)
     {
@@ -93,11 +82,10 @@ List<string>
     ///     Dont working, with Air bank export return US-ascii / 1252, file has diacritic
     ///     Atom with auto-encoding return ISO-8859-2 which is right
     /// </summary>
-    /// <param name="file"></param>
+    /// <param name = "file"></param>
     public static Encoding GetEncoding(FileStream file)
     {
         var bom = new byte[4];
-
         file.Read(bom, 0, 4);
         return EncodingHelper.DetectEncoding(new List<byte>(bom));
     }
@@ -117,29 +105,27 @@ List<string>
         FileMs.Copy(source, dest, overwrite);
     }
 
-
     public static bool Exists(string p)
     {
         return FileMs.Exists(p);
     }
 
-    private static
+    private static 
 #if ASYNC
         async Task
 #else
-void
+    void 
 #endif
-        AppendToStartOfFileIfDontContains(List<string> files, string append)
+    AppendToStartOfFileIfDontContains(List<string> files, string append)
     {
         append += Environment.NewLine;
-
         foreach (var item in files)
         {
-            var content =
+            var content = 
 #if ASYNC
                 await
 #endif
-                    FileMs.ReadAllTextAsync(item);
+            FileMs.ReadAllTextAsync(item);
             if (!content.Contains(append))
             {
                 content = append + content;
@@ -150,43 +136,43 @@ void
 
     public static object ReadFileOrReturn(string list)
     {
-        if (list.Length > 250) return list;
-        if (FileMs.Exists(list)) return FileMs.ReadAllTextAsync(list);
+        if (list.Length > 250)
+            return list;
+        if (FileMs.Exists(list))
+            return FileMs.ReadAllTextAsync(list);
         return list;
     }
-
 
     /// <summary>
     ///     ...
     /// </summary>
-    /// <param name="file"></param>
-    public static
+    /// <param name = "file"></param>
+    public static 
 #if ASYNC
         async Task<int>
 #else
-int
+    int 
 #endif
-        GetNumberOfLinesTrimEnd(string file)
+    GetNumberOfLinesTrimEnd(string file)
     {
         var lines = SHGetLines.GetLines(
 #if ASYNC
             await
 #endif
-                FileMs.ReadAllTextAsync(file)).ToList();
+        FileMs.ReadAllTextAsync(file)).ToList();
         for (var i = lines.Count - 1; i >= 0; i--)
             if (lines[i].Trim() != "")
                 return i;
         return 0;
     }
 
-
-    private static
+    private static 
 #if ASYNC
         async Task
 #else
-void
+    void 
 #endif
-        ReplaceIfDontStartWith(List<string> files, string contains, string prefix)
+    ReplaceIfDontStartWith(List<string> files, string contains, string prefix)
     {
         foreach (var item in files)
         {
@@ -194,180 +180,58 @@ void
 #if ASYNC
                 await
 #endif
-                    FileMs.ReadAllTextAsync(item, null)).ToList();
+            FileMs.ReadAllTextAsync(item, null)).ToList();
             for (var i = 0; i < lines.Count; i++)
             {
                 var line = lines[i].Trim();
-                if (line.StartsWith(contains)) lines[i] = lines[i].Replace(contains, prefix + contains);
+                if (line.StartsWith(contains))
+                    lines[i] = lines[i].Replace(contains, prefix + contains);
             }
 
             await FileMs.WriteAllLinesAsync(item, lines);
         }
     }
 
-
-
-
-
-    public static
+    public static 
 #if ASYNC
         async Task
 #else
-void
+    void 
 #endif
-        Replace(string pathCsproj, string to, string from)
+    Replace(string pathCsproj, string to, string from)
     {
-        var content =
+        var content = 
 #if ASYNC
             await
 #endif
-                FileMs.ReadAllTextAsync(pathCsproj);
+        FileMs.ReadAllTextAsync(pathCsproj);
         content = content.Replace(to, from);
-
 #if ASYNC
         await
 #endif
-            FileMs.WriteAllTextAsync(pathCsproj, content);
+        FileMs.WriteAllTextAsync(pathCsproj, content);
     }
 
-
-
-
-    public static
+    public static 
 #if ASYNC
         async Task<bool>
 #else
-void
+    void 
 #endif
-        PureFileOperationWithArg(string f, Func<string, string, string> transformHtmlToMetro4, string arg)
+    PureFileOperationWithArg(string f, Func<string, string, string> transformHtmlToMetro4, string arg)
     {
-        var content =
+        var content = 
 #if ASYNC
             await
 #endif
-                FileMs.ReadAllTextAsync(f);
-
-
+        FileMs.ReadAllTextAsync(f);
         var content2 = transformHtmlToMetro4.Invoke(content, arg);
         if (content.Trim() != content2.Trim())
         {
             await FileMs.WriteAllTextAsync(f, content2);
             return true;
         }
+
         return false;
     }
-
-
-    public static
-#if ASYNC
-        async Task<bool>
-#else
-void
-#endif
-        PureFileOperation(string f, Func<string, string> transformHtmlToMetro4,
-            string insertBetweenFilenameAndExtension)
-    {
-        var content =
-#if ASYNC
-            await
-#endif
-                FileMs.ReadAllTextAsync(f);
-        var contentNew = transformHtmlToMetro4.Invoke(content);
-
-        if (contentNew != content)
-        {
-#if ASYNC
-            await
-#endif
-                WriteAllText(FS.InsertBetweenFileNameAndExtension(f, insertBetweenFilenameAndExtension), content);
-            return true;
-        }
-        return false;
-    }
-
-
-    public static
-#if ASYNC
-        async Task<bool>
-#else
-void
-#endif
-        PureFileOperation(string f, Func<string, string> transformHtmlToMetro4)
-    {
-        var content = (
-#if ASYNC
-            await
-#endif
-                FileMs.ReadAllTextAsync(f)).Trim();
-        var content2 = transformHtmlToMetro4.Invoke(content);
-
-        if (string.Compare(content, content2) != 0)
-        {
-            //TF.SaveFile(content, CompareFilesPaths.GetFile(CompareExt.cs, 1));
-            //TF.SaveFile(content2, CompareFilesPaths.GetFile(CompareExt.cs, 2));
-
-#if ASYNC
-            await
-#endif
-                FileMs.WriteAllTextAsync(f, content2);
-            return true;
-        }
-        return false;
-    }
-
-
-    /// <summary>
-    ///     StreamReader is derived from TextReader
-    /// </summary>
-    /// <param name="file"></param>
-    public static StreamReader TextReader(string file)
-    {
-        return FileMs.OpenText(file);
-    }
-
-    public static async Task CreateEmptyFileWhenDoesntExists(string path)
-    {
-        //await CreateEmptyFileWhenDoesntExists<string, string>(path, null);
-        await FileMs.WriteAllTextAsync(path, "");
-    }
-
-    //public static void WriteAllBytes(string p, IEnumerable<byte> builder)
-    //{
-    //    FileMs.WriteAllBytes(p, builder.ToArray());
-    //}
-
-
-
-
-
-    #region For easy copy
-
-    public static List<byte> bomUtf8 = new List<byte>([239, 187, 191]);
-
-    public static
-#if ASYNC
-        async Task
-#else
-void
-#endif
-        RemoveDoubleBomUtf8(string path)
-    {
-        var builder = (
-#if ASYNC
-            await
-#endif
-                FileMs.ReadAllBytesAsync(path)).ToList();
-        var to = builder.Count > 5 ? 6 : builder.Count;
-
-        for (var i = 3; i < to; i++)
-            if (bomUtf8[i - 3] != builder[i])
-                break;
-
-        builder = builder.Skip(3).ToList();
-        await FileMs.WriteAllBytesAsync(path, builder.ToArray());
-    }
-
-    #endregion
-
-
 }
