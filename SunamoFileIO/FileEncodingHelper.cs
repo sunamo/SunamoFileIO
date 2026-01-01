@@ -1,36 +1,31 @@
 namespace SunamoFileIO;
 
-// EN: Variable names have been checked and replaced with self-descriptive names
-// CZ: Názvy proměnných byly zkontrolovány a nahrazeny samopopisnými názvy
+/// <summary>
+/// Helper class for converting file encodings.
+/// </summary>
 internal class FileEncodingHelper
 {
     /// <summary>
-    /// A2 can be null
+    /// Converts files from input encoding to output encoding with optional filename insert.
     /// </summary>
-    /// <param name="files"></param>
-    /// <param name="input"></param>
-    /// <param name="output"></param>
-    /// <param name="insert"></param>
-    public static
+    /// <param name="files">List of file paths to convert.</param>
+    /// <param name="inputEncoding">Source encoding (can be null to auto-detect).</param>
+    /// <param name="outputEncoding">Target encoding.</param>
+    /// <param name="filenameInsert">Optional string to insert into filename (null to overwrite original).</param>
+    internal static
 #if ASYNC
 async Task
 #else
 void
 #endif
-ConvertToEncodingWorker(List<string> files, Encoding input, Encoding output, string insert = null)
+ConvertToEncodingWorker(List<string> files, Encoding inputEncoding, Encoding outputEncoding, string filenameInsert = null)
     {
         foreach (var item in files)
         {
-#if DEBUG
-
-            if (item.Contains(@"src\packages\webui\src\TextArea\TextArea.tsx"))
+            string content = null;
+            if (inputEncoding == null)
             {
-            }
-#endif
-            string v = null;
-            if (input == null)
-            {
-                v =
+                content =
 #if ASYNC
 await
 #endif
@@ -38,51 +33,36 @@ TF.ReadAllText(item);
             }
             else
             {
-                v =
+                content =
 #if ASYNC
 await
 #endif
-            TF.ReadAllText(item, input);
+            TF.ReadAllText(item, inputEncoding);
             }
             var newFile = item;
-            if (insert != null)
+            if (filenameInsert != null)
             {
-                newFile = FS.InsertBetweenFileNameAndPath(item, null, insert);
+                newFile = FS.InsertBetweenFileNameAndPath(item, null, filenameInsert);
             }
-            await TF.WriteAllText(newFile, v, output);
+            await TF.WriteAllText(newFile, content, outputEncoding);
         }
     }
 
-    //    /// <summary>
-    //    /// A2 can be null
-    //    /// </summary>
-    //    /// <param name="files"></param>
-    //    /// <param name="input"></param>
-    //    /// <param name="output"></param>
-    //    public static
-    //#if ASYNC
-    //async Task
-    //#else
-    //    void
-    //#endif
-    //ConvertToEncoding(List<string> files, Encoding input, Encoding output)
-    //    {
-    //        await ConvertToEncodingWorker(files, input, output);
-    //    }
-
     /// <summary>
-    /// A2 can be null
+    /// Converts files from input encoding to output encoding, creating new files with "Converted" inserted in filename.
     /// </summary>
-    /// <param name="folder"></param>
-    public static
+    /// <param name="files">List of file paths to convert.</param>
+    /// <param name="inputEncoding">Source encoding (can be null to auto-detect).</param>
+    /// <param name="outputEncoding">Target encoding.</param>
+    internal static
 #if ASYNC
 async Task
 #else
     void
 #endif
-ConvertToEncoding(List<string> files, Encoding input, Encoding output)
+ConvertToEncoding(List<string> files, Encoding inputEncoding, Encoding outputEncoding)
     {
         var insert = "Converted";
-        await ConvertToEncodingWorker(files, input, output, insert);
+        await ConvertToEncodingWorker(files, inputEncoding, outputEncoding, insert);
     }
 }

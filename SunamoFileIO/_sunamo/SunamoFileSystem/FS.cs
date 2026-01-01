@@ -1,158 +1,72 @@
 namespace SunamoFileIO._sunamo.SunamoFileSystem;
 
+/// <summary>
+/// EN: File system helper methods for path manipulation and folder creation
+/// CZ: Pomocné metody pro souborový systém - manipulace s cestami a vytváření složek
+/// </summary>
 internal class FS
 {
+    /// <summary>
+    /// EN: Inserts a folder name between parent path and file name
+    /// CZ: Vloží název složky mezi nadřazenou cestu a název souboru
+    /// </summary>
     internal static string InsertBetweenFileNameAndPath(string folder, string parentFolder, string insert)
     {
-
         if (parentFolder == null) parentFolder = Path.GetDirectoryName(folder);
         var outputFolder = Path.Combine(parentFolder, insert);
         CreateFoldersPsysicallyUnlessThere(outputFolder);
         return Path.Combine(outputFolder, Path.GetFileName(folder));
     }
 
-    internal static void CreateFoldersPsysicallyUnlessThere(string nad)
+    /// <summary>
+    /// EN: Creates all necessary parent folders if they don't exist
+    /// CZ: Vytvoří všechny potřebné nadřazené složky pokud neexistují
+    /// </summary>
+    internal static void CreateFoldersPsysicallyUnlessThere(string path)
     {
-        //ThrowEx.IsNotWindowsPathFormat("nad", nad);
-        if (Directory.Exists(nad)) return;
-        var slozkyKVytvoreni = new List<string>
+        if (Directory.Exists(path)) return;
+
+        var foldersToCreate = new List<string>
         {
-            nad
+            path
         };
+
+        var currentPath = path;
         while (true)
         {
-            nad = Path.GetDirectoryName(nad);
-            // TODO: Tady to nefunguje pro UWP/UAP apps protoze nemaji pristup k celemu disku. Zjistit co to je UWP/UAP/... a jak v nem ziskat/overit jakoukoliv slozku na disku
-            if (Directory.Exists(nad)) break;
-            var kopia = nad;
-            slozkyKVytvoreni.Add(kopia);
+            currentPath = Path.GetDirectoryName(currentPath);
+            // EN: TODO: This doesn't work for UWP/UAP apps because they don't have access to the whole disk
+            // CZ: TODO: Toto nefunguje pro UWP/UAP aplikace protože nemají přístup k celému disku
+            if (Directory.Exists(currentPath)) break;
+            foldersToCreate.Add(currentPath);
         }
-        slozkyKVytvoreni.Reverse();
-        foreach (var item in slozkyKVytvoreni)
+
+        foldersToCreate.Reverse();
+
+        foreach (var folder in foldersToCreate)
         {
-            var folder = item;
-            if (!Directory.Exists(folder)) Directory.CreateDirectory(folder);
+            if (!Directory.Exists(folder))
+                Directory.CreateDirectory(folder);
         }
     }
 
-    internal static string InsertBetweenFileNameAndExtension(string orig, string whatInsert)
+    /// <summary>
+    /// EN: Inserts text between file name and extension (e.g., "file.txt" + "_backup" = "file_backup.txt")
+    /// CZ: Vloží text mezi název souboru a příponu (např. "soubor.txt" + "_zaloha" = "soubor_zaloha.txt")
+    /// </summary>
+    internal static string InsertBetweenFileNameAndExtension(string originalPath, string whatInsert)
     {
-        //return InsertBetweenFileNameAndExtension<string, string>(orig, whatInsert, null);
+        var pathString = originalPath.ToString();
 
-        // Cesta by se zde hodila kvůli FS.CiStorageFile
-        // nicméně StorageFolder nevím zda se používá, takže to bude umět i bez toho
+        string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(pathString);
+        string extension = Path.GetExtension(pathString);
 
-        var origS = orig.ToString();
-
-        string fn = Path.GetFileNameWithoutExtension(origS);
-        string e = Path.GetExtension(origS);
-
-        if (origS.Contains('/') || origS.Contains('\\'))
+        if (pathString.Contains('/') || pathString.Contains('\\'))
         {
-            string p = Path.GetDirectoryName(origS);
-
-            return Path.Combine(p, fn + whatInsert + e);
+            string directoryPath = Path.GetDirectoryName(pathString);
+            return Path.Combine(directoryPath, fileNameWithoutExtension + whatInsert + extension);
         }
-        return fn + whatInsert + e;
+
+        return fileNameWithoutExtension + whatInsert + extension;
     }
-
-
-
-    //    internal static Func<string, bool> ExistsFile;
-    //    internal static Func<string, long> GetFileSize;
-    //    internal static Func<string, string> GetDirectoryName;
-    //    internal static Action<string> CreateUpfoldersPsysicallyUnlessThere;
-    //    internal static Action<string> CreateFoldersPsysicallyUnlessThere;
-    //    internal static Func<string, string> GetFileNameWithoutExtension;
-    //    internal static Func<string, string, string> InsertBetweenFileNameAndExtension;
-    //    internal static Func<string, string, bool?, List<string>> GetFilesWithoutArgs;
-
-    //    internal static bool ExistsFileAc<StorageFolder, StorageFile>(StorageFile selectedFile, AbstractCatalog<StorageFolder, StorageFile> ac = null)
-    //    {
-    //        if (ac == null)
-    //        {
-    //            return ExistsFile(selectedFile.ToString());
-    //        }
-    //        return ac.fs.existsFile.Invoke(selectedFile);
-    //    }
-
-    //    #region MakeUncLongPath
-    //    internal static void MakeUncLongPath<StorageFolder, StorageFile>(ref StorageFile path, AbstractCatalog<StorageFolder, StorageFile> ac)
-    //    {
-    //        if (ac == null)
-    //        {
-    //            path = (StorageFile)(dynamic)MakeUncLongPath(path.ToString());
-    //        }
-    //        else
-    //        {
-    //            ThrowNotImplementedUwp();
-    //        }
-    //        //return path;
-    //    }
-
-    //    /// <summary>
-    //    ///     Usage: ExistsDirectoryWorker
-    //    /// </summary>
-    //    /// <param name="path"></param>
-    //    /// <returns></returns>
-    //    internal static string MakeUncLongPath(string path)
-    //    {
-    //        return MakeUncLongPath(ref path);
-    //    }
-
-    //    internal static string MakeUncLongPath(ref string path)
-    //    {
-    //        if (!path.StartsWith(@"\\?\"))
-    //        {
-    //            // V ASP.net mi vrátilo u každé directory.exists false. Byl jsem pod ApplicationPoolIdentity v IIS a bylo nastaveno Full Control pro IIS AppPool\DefaultAppPool
-    //#if !ASPNET
-    //            //  asp.net / vps nefunguje, ve windows store apps taktéž, NECHAT TO TRVALE ZAKOMENTOVANÉ
-    //            // v asp.net toto způsobí akorát zacyklení, IIS začne vyhazovat 0xc00000fd, pak už nejde načíst jediná stránka
-    //            //path = @"\\?\" + path;
-    //#endif
-    //        }
-
-    //        return path;
-    //    }
-    //    #endregion
-
-    //    internal static StorageFolder GetDirectoryNameAc<StorageFolder, StorageFile>(StorageFile rp2, AbstractCatalog<StorageFolder, StorageFile> ac)
-    //    {
-    //        if (ac != null)
-    //        {
-    //            return ac.Path.GetDirectoryName.Invoke(rp2);
-    //        }
-
-    //        var rp = rp2.ToString();
-    //        return (dynamic)GetDirectoryName(rp);
-    //    }
-
-    //    internal static void CreateUpfoldersPsysicallyUnlessThereAc<StorageFolder, StorageFile>(StorageFile nad, AbstractCatalog<StorageFolder, StorageFile> ac)
-    //    {
-    //        if (ac == null)
-    //        {
-    //            CreateUpfoldersPsysicallyUnlessThere(nad.ToString());
-    //        }
-    //        else
-    //        {
-    //            CreateFoldersPsysicallyUnlessThereFolderAc<StorageFolder, StorageFile>(Path.GetDirectoryNameAc<StorageFolder, StorageFile>(nad, ac), ac);
-    //        }
-    //    }
-
-    //    internal static void CreateFoldersPsysicallyUnlessThereFolderAc<StorageFolder, StorageFile>(StorageFolder nad, AbstractCatalog<StorageFolder, StorageFile> ac)
-    //    {
-    //        if (ac == null)
-    //        {
-    //            CreateFoldersPsysicallyUnlessThere(nad.ToString());
-    //        }
-    //        else
-    //        {
-    //            ThrowNotImplementedUwp();
-    //        }
-    //    }
-
-    //    internal static void ThrowNotImplementedUwp()
-    //    {
-    //        throw new Exception("Not implemented in UWP");
-    //    }
 }

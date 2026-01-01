@@ -3,13 +3,20 @@ namespace SunamoFileIO;
 partial class TF
 {
     #region Lines
+
+    /// <summary>
+    /// Appends lines to a file, optionally removing duplicates.
+    /// </summary>
+    /// <param name="path">Path to the file.</param>
+    /// <param name="linesToAppend">Lines to append to file.</param>
+    /// <param name="isDuplicatingRemoving">Whether to remove duplicate lines after appending.</param>
     public static
 #if ASYNC
     async Task
 #else
 void
 #endif
-    AppendAllLines(string path, IEnumerable<string> notRecognized, bool deduplicate = false)
+    AppendAllLines(string path, IEnumerable<string> linesToAppend, bool isDuplicatingRemoving = false)
     {
         if (!File.Exists(path))
         {
@@ -21,55 +28,64 @@ void
             await
 #endif
                 FileMs.ReadAllTextAsync(path)).ToList();
-        list.AddRange(notRecognized);
-        if (deduplicate)
+        list.AddRange(linesToAppend);
+        if (isDuplicatingRemoving)
             list = list.Distinct().ToList();
         await FileMs.WriteAllLinesAsync(path, list);
     }
 
+    /// <summary>
+    /// Writes all lines to a file.
+    /// </summary>
+    /// <param name="filePath">Path to the file.</param>
+    /// <param name="lines">Lines to write to file.</param>
     public static
 #if ASYNC
         async Task
 #else
 void
 #endif
-        WriteAllLines(string file, IList<string> lines)
+        WriteAllLines(string filePath, IList<string> lines)
     {
-        if (LockedByBitLocker(file)) return;
+        if (LockedByBitLocker(filePath)) return;
 
 #if ASYNC
         await File.WriteAllLinesAsync
 #else
 File.WriteAllLines
 #endif
-            (file, lines.ToArray());
+            (filePath, lines.ToArray());
     }
 
+    /// <summary>
+    /// Reads all lines from a file, optionally trimming empty lines.
+    /// </summary>
+    /// <param name="filePath">Path to the file.</param>
+    /// <param name="isTrimmingEmptyLines">Whether to remove empty or whitespace-only lines.</param>
+    /// <returns>List of lines from file.</returns>
     public static
 #if ASYNC
         async Task<List<string>>
 #else
 List<string>
 #endif
-        ReadAllLines(string file, bool trim = true)
+        ReadAllLines(string filePath, bool isTrimmingEmptyLines = true)
     {
-        if (!File.Exists(file))
+        if (!File.Exists(filePath))
         {
-            await TF.WriteAllText(file, "");
+            await TF.WriteAllText(filePath, "");
             return new List<string>();
         }
 
-        if (LockedByBitLocker(file)) return new List<string>();
-#if ASYNC
+        if (LockedByBitLocker(filePath)) return new List<string>();
 
-#endif
         var result = SHGetLines.GetLines
 #if ASYNC
-            (await File.ReadAllTextAsync(file)).ToList();
+            (await File.ReadAllTextAsync(filePath)).ToList();
 #else
-File.ReadAllText(file).ToList();
+File.ReadAllText(filePath).ToList();
 #endif
-        if (trim) result = result.Where(d => !string.IsNullOrWhiteSpace(d)).ToList();
+        if (isTrimmingEmptyLines) result = result.Where(d => !string.IsNullOrWhiteSpace(d)).ToList();
         return result;
     }
 

@@ -1,57 +1,77 @@
 namespace SunamoFileIO._sunamo.SunamoStringGetLines;
 
+/// <summary>
+/// EN: String helper for splitting text into lines (handles all newline formats: \r\n, \n\r, \r, \n)
+/// CZ: String helper pro rozdělení textu na řádky (zpracovává všechny formáty nových řádků: \r\n, \n\r, \r, \n)
+/// </summary>
 internal class SHGetLines
 {
-    internal static List<string> GetLines(string p)
+    /// <summary>
+    /// EN: Splits text into lines, handling all newline formats (\r\n, \n\r, \r, \n)
+    /// CZ: Rozdělí text na řádky, zpracovává všechny formáty nových řádků (\r\n, \n\r, \r, \n)
+    /// </summary>
+    internal static List<string> GetLines(string text)
     {
-        var parts = p.Split(new string[] { "\r\n", "\n\r" }, StringSplitOptions.None).ToList();
+        var parts = text.Split(new string[] { "\r\n", "\n\r" }, StringSplitOptions.None).ToList();
         SplitByUnixNewline(parts);
         return parts;
     }
 
-    private static void SplitByUnixNewline(List<string> d)
+    /// <summary>
+    /// EN: Splits parts by Unix newline characters (\r and \n)
+    /// CZ: Rozdělí části podle Unix znaků pro nový řádek (\r a \n)
+    /// </summary>
+    private static void SplitByUnixNewline(List<string> lines)
     {
-        SplitBy(d, "\r");
-        SplitBy(d, "\n");
+        SplitBy(lines, "\r");
+        SplitBy(lines, "\n");
     }
 
-    private static void SplitBy(List<string> d, string v)
+    /// <summary>
+    /// EN: Splits each line by specified delimiter, ensuring no double splitting
+    /// CZ: Rozdělí každý řádek podle zadaného oddělovače, zajišťuje že nedojde k dvojímu rozdělení
+    /// </summary>
+    private static void SplitBy(List<string> lines, string delimiter)
     {
-        for (int i = d.Count - 1; i >= 0; i--)
+        for (int i = lines.Count - 1; i >= 0; i--)
         {
-            if (v == "\r")
+            if (delimiter == "\r")
             {
-                var rn = d[i].Split(new string[] { "\r\n" }, StringSplitOptions.None);
-                var nr = d[i].Split(new string[] { "\n\r" }, StringSplitOptions.None);
+                var rnParts = lines[i].Split(new string[] { "\r\n" }, StringSplitOptions.None);
+                var nrParts = lines[i].Split(new string[] { "\n\r" }, StringSplitOptions.None);
 
-                if (rn.Length > 1)
+                if (rnParts.Length > 1)
                 {
-                    ThrowEx.Custom("cannot contain any \r\name, pass already split by this pattern");
+                    ThrowEx.Custom("cannot contain any \r\n, pass already split by this pattern");
                 }
-                else if (nr.Length > 1)
+                else if (nrParts.Length > 1)
                 {
                     ThrowEx.Custom("cannot contain any \n\r, pass already split by this pattern");
                 }
             }
 
-            var name = d[i].Split(new string[] { v }, StringSplitOptions.None);
+            var splitParts = lines[i].Split(new string[] { delimiter }, StringSplitOptions.None);
 
-            if (name.Length > 1)
+            if (splitParts.Length > 1)
             {
-                InsertOnIndex(d, name.ToList(), i);
+                InsertOnIndex(lines, splitParts.ToList(), i);
             }
         }
     }
 
-    private static void InsertOnIndex(List<string> d, List<string> r, int i)
+    /// <summary>
+    /// EN: Inserts new parts at specified index, removing original element
+    /// CZ: Vloží nové části na zadaný index, odstraní původní element
+    /// </summary>
+    private static void InsertOnIndex(List<string> lines, List<string> newParts, int index)
     {
-        r.Reverse();
+        newParts.Reverse();
 
-        d.RemoveAt(i);
+        lines.RemoveAt(index);
 
-        foreach (var item in r)
+        foreach (var item in newParts)
         {
-            d.Insert(i, item);
+            lines.Insert(index, item);
         }
     }
 }

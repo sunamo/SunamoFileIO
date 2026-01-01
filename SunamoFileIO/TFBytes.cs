@@ -1,46 +1,53 @@
 namespace SunamoFileIO;
 
-// EN: Variable names have been checked and replaced with self-descriptive names
-// CZ: Názvy proměnných byly zkontrolovány a nahrazeny samopopisnými názvy
 partial class TF
 {
     #region Bytes
+
+    /// <summary>
+    /// Reads all bytes from a file.
+    /// </summary>
+    /// <param name="filePath">Path to the file.</param>
+    /// <returns>List of bytes from file, or empty list if locked by BitLocker.</returns>
     public static
 #if ASYNC
         async Task<List<byte>>
 #else
 List<byte>
 #endif
-        ReadAllBytes(string file)
+        ReadAllBytes(string filePath)
     {
-        if (LockedByBitLocker(file))
+        if (LockedByBitLocker(filePath))
         {
             return new List<byte>();
         }
-#if ASYNC
 
-#endif
         return
 #if ASYNC
-            (await File.ReadAllBytesAsync(file)).ToList();
+            (await File.ReadAllBytesAsync(filePath)).ToList();
 #else
-File.ReadAllBytes(file).ToList();
+File.ReadAllBytes(filePath).ToList();
 #endif
     }
 
+    /// <summary>
+    /// Writes all bytes to a file.
+    /// </summary>
+    /// <param name="filePath">Path to the file.</param>
+    /// <param name="bytes">Bytes to write to file.</param>
     public static
 #if ASYNC
         async Task
 #else
 void
 #endif
-        WriteAllBytes(string file, IEnumerable<byte> b)
+        WriteAllBytes(string filePath, IEnumerable<byte> bytes)
     {
-        if (LockedByBitLocker(file)) return;
+        if (LockedByBitLocker(filePath)) return;
 #if ASYNC
-        await File.WriteAllBytesAsync(file, b.ToArray());
+        await File.WriteAllBytesAsync(filePath, bytes.ToArray());
 #else
-File.WriteAllBytes(file, b.ToArray());
+File.WriteAllBytes(filePath, bytes.ToArray());
 #endif
     }
 

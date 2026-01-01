@@ -1,89 +1,140 @@
 namespace SunamoFileIO;
 
-// EN: Variable names have been checked and replaced with self-descriptive names
-// CZ: Názvy proměnných byly zkontrolovány a nahrazeny samopopisnými názvy
+/// <summary>
+/// Text File helper class providing file I/O operations.
+/// </summary>
 public partial class TF
 {
 #if DEBUG
-    public const int waitMsBeforeReadFile = 1000;
+    /// <summary>
+    /// Wait time in milliseconds before reading a file (debug only).
+    /// </summary>
+    public const int WaitMsBeforeReadFile = 1000;
 #endif
-    public static Func<string, bool> isUsed = null;
+
+    /// <summary>
+    /// Function to check if a file is currently in use.
+    /// </summary>
+    public static Func<string, bool> IsUsed = null;
+
 #pragma warning disable
+    /// <summary>
+    /// Checks if a path is locked by BitLocker.
+    /// </summary>
+    /// <param name="path">Path to check.</param>
+    /// <returns>Always returns false (BitLocker check not implemented).</returns>
     protected static bool LockedByBitLocker(string path)
 #pragma warning restore
     {
-        // na to chce mít vlastní metodu v ThrowEx. Bitlocker jsem zatím do nugetů nepřevedl
-        //return ThrowEx.Custom($"{path} locked by bitlocker");
         return false;
     }
 
     private static Type type = typeof(TF);
-    public static bool throwExcIfCantBeWrite = false;
-    public static bool readFile = true;
+
+    /// <summary>
+    /// Throw exception if file cannot be written.
+    /// </summary>
+    public static bool ThrowExcIfCantBeWrite = false;
+
+    /// <summary>
+    /// Enable file reading operations.
+    /// </summary>
+    public static bool ReadFile = true;
 #if ASYNC
+    /// <summary>
+    /// Waits and returns empty string (async helper).
+    /// </summary>
+    /// <returns>Empty string.</returns>
     public static async Task<string> WaitD()
     {
         return await Task.Run(() => "");
     }
 #endif
-    public static string ReadFileParallel(string fileName, IList<string> from, IList<string> to)
+
+    /// <summary>
+    /// Reads file and performs parallel string replacements with default line count of 1470.
+    /// </summary>
+    /// <param name="fileName">Path to file to read.</param>
+    /// <param name="searchStrings">List of strings to search for.</param>
+    /// <param name="replacementStrings">List of replacement strings.</param>
+    /// <returns>Empty string.</returns>
+    public static string ReadFileParallel(string fileName, IList<string> searchStrings, IList<string> replacementStrings)
     {
-        return ReadFileParallel(fileName, 1470, from, to);
+        return ReadFileParallel(fileName, 1470, searchStrings, replacementStrings);
     }
 
-    public static string ReadFileParallel(string fileName, int linesCount, IList<string> from, IList<string> to)
+    /// <summary>
+    /// Reads file and performs parallel string replacements.
+    /// </summary>
+    /// <param name="fileName">Path to file to read.</param>
+    /// <param name="linesCount">Expected number of lines in file.</param>
+    /// <param name="searchStrings">List of strings to search for.</param>
+    /// <param name="replacementStrings">List of replacement strings.</param>
+    /// <returns>Empty string.</returns>
+    public static string ReadFileParallel(string fileName, int linesCount, IList<string> searchStrings, IList<string> replacementStrings)
     {
-        var AllLines = new string[linesCount]; //only allocate memory here
+        var allLines = new string[linesCount];
         using (var sr = FileMs.OpenText(fileName))
         {
-            var xValue = 0;
+            var lineIndex = 0;
             while (!sr.EndOfStream)
             {
-                AllLines[xValue] = sr.ReadLine();
-                xValue += 1;
+                allLines[lineIndex] = sr.ReadLine();
+                lineIndex += 1;
             }
-        } //CLOSE THE FILE because we are now DONE with it.
+        }
 
-        if (from != null)
-            for (var i = 0; i < from.Count; i++)
-                Parallel.For(0, AllLines.Length, lineIndex =>
+        if (searchStrings != null)
+            for (var i = 0; i < searchStrings.Count; i++)
+                Parallel.For(0, allLines.Length, currentLineIndex =>
                 {
-                    AllLines[lineIndex] = AllLines[lineIndex].Replace(from[i], to[i]);
+                    allLines[currentLineIndex] = allLines[currentLineIndex].Replace(searchStrings[i], replacementStrings[i]);
                 });
         return string.Empty;
     }
 
-    public static 
+    /// <summary>
+    /// Reads configuration file lines, excluding comment lines starting with #.
+    /// </summary>
+    /// <param name="configFilePath">Path to configuration file.</param>
+    /// <returns>List of non-comment lines.</returns>
+    public static
 #if ASYNC
         async Task<List<string>>
 #else
-    List<string> 
+    List<string>
 #endif
-    ReadConfigLines(string syncLocations)
+    ReadConfigLines(string configFilePath)
     {
         var list = SHGetLines.GetLines(
 #if ASYNC
             await
 #endif
-        FileMs.ReadAllTextAsync(syncLocations)).ToList();
+        FileMs.ReadAllTextAsync(configFilePath)).ToList();
         list = list.Where(d => !d.StartsWith("#")).ToList();
         return list;
     }
 
+    /// <summary>
+    /// Gets encoding from file by reading its BOM (Byte Order Mark).
+    /// </summary>
+    /// <param name="filename">Path to the file.</param>
+    /// <returns>Detected encoding.</returns>
     public static Encoding GetEncoding(string filename)
     {
         var file = new FileStream(filename, FileMode.Open, FileAccess.Read);
-        // Read the BOM
-        var enc = GetEncoding(file);
+        var encoding = GetEncoding(file);
         file.Dispose();
-        return enc;
+        return encoding;
     }
 
     /// <summary>
-    ///     Dont working, with Air bank export return US-ascii / 1252, file has diacritic
-    ///     Atom with auto-encoding return ISO-8859-2 which is right
+    /// Gets encoding from file stream by reading its BOM (Byte Order Mark).
+    /// Note: May not work correctly with all files - Air bank export returns US-ascii/1252 but file has diacritics.
+    /// Atom with auto-encoding returns ISO-8859-2 which is correct.
     /// </summary>
-    /// <param name = "file"></param>
+    /// <param name="file">File stream to read from.</param>
+    /// <returns>Detected encoding.</returns>
     public static Encoding GetEncoding(FileStream file)
     {
         var bom = new byte[4];
@@ -91,89 +142,127 @@ public partial class TF
         return EncodingHelper.DetectEncoding(new List<byte>(bom));
     }
 
-    public static void Delete(string p)
+    /// <summary>
+    /// Deletes a file.
+    /// </summary>
+    /// <param name="path">Path to file to delete.</param>
+    public static void Delete(string path)
     {
-        FileMs.Delete(p);
+        FileMs.Delete(path);
     }
 
-    public static void Move(string source, string dest, bool overwrite = false)
+    /// <summary>
+    /// Moves a file from source to destination.
+    /// </summary>
+    /// <param name="source">Source file path.</param>
+    /// <param name="destination">Destination file path.</param>
+    /// <param name="isOverwriting">Whether to overwrite if destination exists.</param>
+    public static void Move(string source, string destination, bool isOverwriting = false)
     {
-        FileMs.Move(source, dest, overwrite);
+        FileMs.Move(source, destination, isOverwriting);
     }
 
-    public static void Copy(string source, string dest, bool overwrite = false)
+    /// <summary>
+    /// Copies a file from source to destination.
+    /// </summary>
+    /// <param name="source">Source file path.</param>
+    /// <param name="destination">Destination file path.</param>
+    /// <param name="isOverwriting">Whether to overwrite if destination exists.</param>
+    public static void Copy(string source, string destination, bool isOverwriting = false)
     {
-        FileMs.Copy(source, dest, overwrite);
+        FileMs.Copy(source, destination, isOverwriting);
     }
 
-    public static bool Exists(string p)
+    /// <summary>
+    /// Checks if a file exists.
+    /// </summary>
+    /// <param name="path">Path to check.</param>
+    /// <returns>True if file exists, false otherwise.</returns>
+    public static bool Exists(string path)
     {
-        return FileMs.Exists(p);
+        return FileMs.Exists(path);
     }
 
-    private static 
+    /// <summary>
+    /// Appends text to the start of files if they don't already contain it.
+    /// </summary>
+    /// <param name="files">List of file paths to process.</param>
+    /// <param name="textToAppend">Text to append to start of file.</param>
+    private static
 #if ASYNC
         async Task
 #else
-    void 
+    void
 #endif
-    AppendToStartOfFileIfDontContains(List<string> files, string append)
+    AppendToStartOfFileIfDontContains(List<string> files, string textToAppend)
     {
-        append += Environment.NewLine;
+        textToAppend += Environment.NewLine;
         foreach (var item in files)
         {
-            var content = 
+            var content =
 #if ASYNC
                 await
 #endif
             FileMs.ReadAllTextAsync(item);
-            if (!content.Contains(append))
+            if (!content.Contains(textToAppend))
             {
-                content = append + content;
+                content = textToAppend + content;
                 await FileMs.WriteAllTextAsync(item, content);
             }
         }
     }
 
-    public static object ReadFileOrReturn(string list)
+    /// <summary>
+    /// Reads file content if path is valid and shorter than 250 characters, otherwise returns the input string.
+    /// </summary>
+    /// <param name="pathOrText">File path or text content.</param>
+    /// <returns>File content if path exists and is valid, otherwise returns input string.</returns>
+    public static object ReadFileOrReturn(string pathOrText)
     {
-        if (list.Length > 250)
-            return list;
-        if (FileMs.Exists(list))
-            return FileMs.ReadAllTextAsync(list);
-        return list;
+        if (pathOrText.Length > 250)
+            return pathOrText;
+        if (FileMs.Exists(pathOrText))
+            return FileMs.ReadAllTextAsync(pathOrText);
+        return pathOrText;
     }
 
     /// <summary>
-    ///     ...
+    /// Gets the line number of the last non-empty line (after trimming).
     /// </summary>
-    /// <param name = "file"></param>
-    public static 
+    /// <param name="filePath">Path to the file.</param>
+    /// <returns>Line number of last non-empty line, or 0 if all lines are empty.</returns>
+    public static
 #if ASYNC
         async Task<int>
 #else
-    int 
+    int
 #endif
-    GetNumberOfLinesTrimEnd(string file)
+    GetNumberOfLinesTrimEnd(string filePath)
     {
         var lines = SHGetLines.GetLines(
 #if ASYNC
             await
 #endif
-        FileMs.ReadAllTextAsync(file)).ToList();
+        FileMs.ReadAllTextAsync(filePath)).ToList();
         for (var i = lines.Count - 1; i >= 0; i--)
             if (lines[i].Trim() != "")
                 return i;
         return 0;
     }
 
-    private static 
+    /// <summary>
+    /// Replaces lines that contain a string but don't start with it by adding a prefix.
+    /// </summary>
+    /// <param name="files">List of file paths to process.</param>
+    /// <param name="searchText">Text to search for in lines.</param>
+    /// <param name="prefix">Prefix to add if line doesn't start with searchText.</param>
+    private static
 #if ASYNC
         async Task
 #else
-    void 
+    void
 #endif
-    ReplaceIfDontStartWith(List<string> files, string contains, string prefix)
+    ReplaceIfDontStartWith(List<string> files, string searchText, string prefix)
     {
         foreach (var item in files)
         {
@@ -185,51 +274,64 @@ public partial class TF
             for (var i = 0; i < lines.Count; i++)
             {
                 var line = lines[i].Trim();
-                if (line.StartsWith(contains))
-                    lines[i] = lines[i].Replace(contains, prefix + contains);
+                if (line.StartsWith(searchText))
+                    lines[i] = lines[i].Replace(searchText, prefix + searchText);
             }
 
             await FileMs.WriteAllLinesAsync(item, lines);
         }
     }
 
-    public static 
+    /// <summary>
+    /// Replaces text in a file.
+    /// </summary>
+    /// <param name="filePath">Path to the file.</param>
+    /// <param name="searchText">Text to search for.</param>
+    /// <param name="replacementText">Text to replace with.</param>
+    public static
 #if ASYNC
         async Task
 #else
-    void 
+    void
 #endif
-    Replace(string pathCsproj, string to, string from)
+    Replace(string filePath, string searchText, string replacementText)
     {
-        var content = 
+        var content =
 #if ASYNC
             await
 #endif
-        FileMs.ReadAllTextAsync(pathCsproj);
-        content = content.Replace(to, from);
+        FileMs.ReadAllTextAsync(filePath);
+        content = content.Replace(searchText, replacementText);
 #if ASYNC
         await
 #endif
-        FileMs.WriteAllTextAsync(pathCsproj, content);
+        FileMs.WriteAllTextAsync(filePath, content);
     }
 
-    public static 
+    /// <summary>
+    /// Applies a transformation function to file content and writes back if content changed.
+    /// </summary>
+    /// <param name="filePath">Path to the file.</param>
+    /// <param name="transformFunction">Function that transforms file content with an argument.</param>
+    /// <param name="argument">Argument to pass to transformation function.</param>
+    /// <returns>True if file was modified, false otherwise.</returns>
+    public static
 #if ASYNC
         async Task<bool>
 #else
-    void 
+    bool
 #endif
-    PureFileOperationWithArg(string f, Func<string, string, string> transformHtmlToMetro4, string arg)
+    PureFileOperationWithArg(string filePath, Func<string, string, string> transformFunction, string argument)
     {
-        var content = 
+        var content =
 #if ASYNC
             await
 #endif
-        FileMs.ReadAllTextAsync(f);
-        var content2 = transformHtmlToMetro4.Invoke(content, arg);
-        if (content.Trim() != content2.Trim())
+        FileMs.ReadAllTextAsync(filePath);
+        var transformedContent = transformFunction.Invoke(content, argument);
+        if (content.Trim() != transformedContent.Trim())
         {
-            await FileMs.WriteAllTextAsync(f, content2);
+            await FileMs.WriteAllTextAsync(filePath, transformedContent);
             return true;
         }
 

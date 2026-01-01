@@ -1,4 +1,8 @@
-global using Xunit;global using System.Collections.Generic;
+// EN: Global usings for test project
+// CZ: Globální using direktivy pro testovací projekt
+
+global using Xunit;
+global using System.Collections.Generic;
 global using System.Linq;
 global using System.Text;
 global using System.Threading.Tasks;

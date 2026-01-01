@@ -1,57 +1,34 @@
 namespace SunamoFileIO;
 
-// EN: Variable names have been checked and replaced with self-descriptive names
-// CZ: Názvy proměnných byly zkontrolovány a nahrazeny samopopisnými názvy
 public partial class TF
 {
-    public static 
+    /// <summary>
+    /// Applies a transformation function to file content and writes to a new file with inserted text in filename if content changed.
+    /// </summary>
+    /// <param name="filePath">Path to the file.</param>
+    /// <param name="transformFunction">Function that transforms file content.</param>
+    /// <param name="insertBetweenFilenameAndExtension">Text to insert between filename and extension for output file.</param>
+    /// <returns>True if file was modified, false otherwise.</returns>
+    public static
 #if ASYNC
         async Task<bool>
 #else
-    void 
+    bool
 #endif
-    PureFileOperation(string f, Func<string, string> transformHtmlToMetro4, string insertBetweenFilenameAndExtension)
+    PureFileOperation(string filePath, Func<string, string> transformFunction, string insertBetweenFilenameAndExtension)
     {
-        var content = 
+        var content =
 #if ASYNC
             await
 #endif
-        FileMs.ReadAllTextAsync(f);
-        var contentNew = transformHtmlToMetro4.Invoke(content);
-        if (contentNew != content)
+        FileMs.ReadAllTextAsync(filePath);
+        var transformedContent = transformFunction.Invoke(content);
+        if (transformedContent != content)
         {
 #if ASYNC
             await
 #endif
-            WriteAllText(FS.InsertBetweenFileNameAndExtension(f, insertBetweenFilenameAndExtension), content);
-            return true;
-        }
-
-        return false;
-    }
-
-    public static 
-#if ASYNC
-        async Task<bool>
-#else
-    void 
-#endif
-    PureFileOperation(string f, Func<string, string> transformHtmlToMetro4)
-    {
-        var content = (
-#if ASYNC
-            await
-#endif
-        FileMs.ReadAllTextAsync(f)).Trim();
-        var content2 = transformHtmlToMetro4.Invoke(content);
-        if (string.Compare(content, content2) != 0)
-        {
-            //TF.SaveFile(content, CompareFilesPaths.GetFile(CompareExt.cs, 1));
-            //TF.SaveFile(content2, CompareFilesPaths.GetFile(CompareExt.cs, 2));
-#if ASYNC
-            await
-#endif
-            FileMs.WriteAllTextAsync(f, content2);
+            WriteAllText(FS.InsertBetweenFileNameAndExtension(filePath, insertBetweenFilenameAndExtension), content);
             return true;
         }
 
@@ -59,43 +36,84 @@ public partial class TF
     }
 
     /// <summary>
-    ///     StreamReader is derived from TextReader
+    /// Applies a transformation function to file content and writes back if content changed.
     /// </summary>
-    /// <param name = "file"></param>
-    public static StreamReader TextReader(string file)
+    /// <param name="filePath">Path to the file.</param>
+    /// <param name="transformFunction">Function that transforms file content.</param>
+    /// <returns>True if file was modified, false otherwise.</returns>
+    public static
+#if ASYNC
+        async Task<bool>
+#else
+    bool
+#endif
+    PureFileOperation(string filePath, Func<string, string> transformFunction)
     {
-        return FileMs.OpenText(file);
+        var content = (
+#if ASYNC
+            await
+#endif
+        FileMs.ReadAllTextAsync(filePath)).Trim();
+        var transformedContent = transformFunction.Invoke(content);
+        if (string.Compare(content, transformedContent) != 0)
+        {
+#if ASYNC
+            await
+#endif
+            FileMs.WriteAllTextAsync(filePath, transformedContent);
+            return true;
+        }
+
+        return false;
     }
 
+    /// <summary>
+    /// Opens a text file and returns a StreamReader.
+    /// StreamReader is derived from TextReader.
+    /// </summary>
+    /// <param name="filePath">Path to the file to open.</param>
+    /// <returns>StreamReader for reading the file.</returns>
+    public static StreamReader TextReader(string filePath)
+    {
+        return FileMs.OpenText(filePath);
+    }
+
+    /// <summary>
+    /// Creates an empty file if it doesn't exist.
+    /// </summary>
+    /// <param name="path">Path to the file to create.</param>
     public static async Task CreateEmptyFileWhenDoesntExists(string path)
     {
-        //await CreateEmptyFileWhenDoesntExists<string, string>(path, null);
         await FileMs.WriteAllTextAsync(path, "");
     }
 
-    //public static void WriteAllBytes(string p, IEnumerable<byte> builder)
-    //{
-    //    FileMs.WriteAllBytes(p, builder.ToArray());
-    //}
-    public static List<byte> bomUtf8 = new List<byte>([239, 187, 191]);
-    public static 
+    /// <summary>
+    /// UTF-8 BOM (Byte Order Mark) bytes: 239, 187, 191.
+    /// </summary>
+    public static List<byte> BomUtf8 = new List<byte>([239, 187, 191]);
+
+    /// <summary>
+    /// Removes double UTF-8 BOM from file if present.
+    /// </summary>
+    /// <param name="path">Path to the file.</param>
+    public static
 #if ASYNC
         async Task
 #else
-    void 
+    void
 #endif
     RemoveDoubleBomUtf8(string path)
     {
-        var builder = (
+        var bytes = (
 #if ASYNC
             await
 #endif
         FileMs.ReadAllBytesAsync(path)).ToList();
-        var to = builder.Count > 5 ? 6 : builder.Count;
-        for (var i = 3; i < to; i++)
-            if (bomUtf8[i - 3] != builder[i])
+        var endIndex = bytes.Count > 5 ? 6 : bytes.Count;
+        for (var i = 3; i < endIndex; i++)
+            if (BomUtf8[i - 3] != bytes[i])
                 break;
-        builder = builder.Skip(3).ToList();
-        await FileMs.WriteAllBytesAsync(path, builder.ToArray());
+        bytes = bytes.Skip(3).ToList();
+        await FileMs.WriteAllBytesAsync(path, bytes.ToArray());
     }
 }

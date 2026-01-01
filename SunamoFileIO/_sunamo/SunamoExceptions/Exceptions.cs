@@ -1,35 +1,46 @@
 namespace SunamoFileIO._sunamo.SunamoExceptions;
 
 // © www.sunamo.cz. All Rights Reserved.
+
+/// <summary>
+/// EN: Helper class for formatting exception messages
+/// CZ: Pomocná třída pro formátování chybových zpráv
+/// </summary>
 internal sealed partial class Exceptions
 {
     #region Other
+    /// <summary>
+    /// EN: Adds colon and space after prefix if not empty
+    /// CZ: Přidá dvojtečku a mezeru za prefix pokud není prázdný
+    /// </summary>
     internal static string CheckBefore(string before)
     {
         return string.IsNullOrWhiteSpace(before) ? string.Empty : before + ": ";
     }
 
-
-    internal static Tuple<string, string, string> PlaceOfException(
-bool fillAlsoFirstTwo = true)
+    /// <summary>
+    /// EN: Gets the place where exception occurred from stack trace
+    /// CZ: Získá místo kde došlo k výjimce ze stack trace
+    /// </summary>
+    internal static Tuple<string, string, string> PlaceOfException(bool fillAlsoFirstTwo = true)
     {
-        StackTrace st = new();
-        var value = st.ToString();
-        var lines = value.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).ToList();
+        StackTrace stackTrace = new();
+        var stackTraceText = stackTrace.ToString();
+        var lines = stackTraceText.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).ToList();
         lines.RemoveAt(0);
-        var i = 0;
+        var currentIndex = 0;
         string type = string.Empty;
         string methodName = string.Empty;
-        for (; i < lines.Count; i++)
+        for (; currentIndex < lines.Count; currentIndex++)
         {
-            var item = lines[i];
+            var line = lines[currentIndex];
             if (fillAlsoFirstTwo)
-                if (!item.StartsWith("   at ThrowEx"))
+                if (!line.StartsWith("   at ThrowEx"))
                 {
-                    TypeAndMethodName(item, out type, out methodName);
+                    TypeAndMethodName(line, out type, out methodName);
                     fillAlsoFirstTwo = false;
                 }
-            if (item.StartsWith("at System."))
+            if (line.StartsWith("at System."))
             {
                 lines.Add(string.Empty);
                 lines.Add(string.Empty);
@@ -38,19 +49,29 @@ bool fillAlsoFirstTwo = true)
         }
         return new Tuple<string, string, string>(type, methodName, string.Join(Environment.NewLine, lines));
     }
-    internal static void TypeAndMethodName(string lines, out string type, out string methodName)
+
+    /// <summary>
+    /// EN: Extracts type name and method name from stack trace line
+    /// CZ: Extrahuje název typu a metody z řádku stack trace
+    /// </summary>
+    internal static void TypeAndMethodName(string stackTraceLine, out string type, out string methodName)
     {
-        var s2 = lines.Split("at ")[1].Trim();
-        var text = s2.Split("(")[0];
-        var parameter = text.Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries).ToList();
-        methodName = parameter[^1];
-        parameter.RemoveAt(parameter.Count - 1);
-        type = string.Join(".", parameter);
+        var trimmedLine = stackTraceLine.Split("at ")[1].Trim();
+        var fullMethodPath = trimmedLine.Split("(")[0];
+        var parts = fullMethodPath.Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+        methodName = parts[^1];
+        parts.RemoveAt(parts.Count - 1);
+        type = string.Join(".", parts);
     }
-    internal static string CallingMethod(int value = 1)
+
+    /// <summary>
+    /// EN: Gets the name of calling method from stack trace
+    /// CZ: Získá název volající metody ze stack trace
+    /// </summary>
+    internal static string CallingMethod(int depth = 1)
     {
         StackTrace stackTrace = new();
-        var methodBase = stackTrace.GetFrame(value)?.GetMethod();
+        var methodBase = stackTrace.GetFrame(depth)?.GetMethod();
         if (methodBase == null)
         {
             return "Method name cannot be get";
@@ -61,17 +82,25 @@ bool fillAlsoFirstTwo = true)
     #endregion
 
     #region IsNullOrWhitespace
-    readonly static StringBuilder sbAdditionalInfoInner = new();
-    readonly static StringBuilder sbAdditionalInfo = new();
+    internal readonly static StringBuilder AdditionalInfoInnerStringBuilder = new();
+    internal readonly static StringBuilder AdditionalInfoStringBuilder = new();
     #endregion
 
-    #region OnlyReturnString 
+    #region OnlyReturnString
+    /// <summary>
+    /// EN: Creates custom exception message with optional prefix
+    /// CZ: Vytvoří vlastní chybovou zprávu s volitelným prefixem
+    /// </summary>
     internal static string? Custom(string before, string message)
     {
         return CheckBefore(before) + message;
     }
     #endregion
 
+    /// <summary>
+    /// EN: Returns error message if directory doesn't exist, null otherwise
+    /// CZ: Vrátí chybovou zprávu pokud složka neexistuje, jinak null
+    /// </summary>
     internal static string? DirectoryWasntFound(string before, string directory)
     {
         return !Directory.Exists(directory)

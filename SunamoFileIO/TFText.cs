@@ -1,17 +1,20 @@
 namespace SunamoFileIO;
 
-// EN: Variable names have been checked and replaced with self-descriptive names
-// CZ: Názvy proměnných byly zkontrolovány a nahrazeny samopopisnými názvy
 partial class TF
 {
-
+    /// <summary>
+    /// Reads all text from a file, creating it if it doesn't exist.
+    /// </summary>
+    /// <param name="path">Path to the file.</param>
+    /// <param name="encoding">Encoding to use (defaults to UTF-8).</param>
+    /// <returns>Content of the file, or empty string if file doesn't exist or is locked.</returns>
     public static
 #if ASYNC
 async Task<string>
 #else
 string
 #endif
-ReadAllText(string path, Encoding? enc = null)
+ReadAllText(string path, Encoding? encoding = null)
     {
         if (!File.Exists(path))
         {
@@ -19,54 +22,71 @@ ReadAllText(string path, Encoding? enc = null)
             return "";
         }
 
-        if (enc == null)
+        if (encoding == null)
         {
-            enc = Encoding.UTF8;
+            encoding = Encoding.UTF8;
         }
 
         if (LockedByBitLocker(path)) return string.Empty;
 
-        if (isUsed != null)
-            if (isUsed.Invoke(path))
+        if (IsUsed != null)
+            if (IsUsed.Invoke(path))
                 return string.Empty;
 
 #if ASYNC
-        return await File.ReadAllTextAsync(path, enc);
+        return await File.ReadAllTextAsync(path, encoding);
 #else
-return File.ReadAllText(path, enc);
+return File.ReadAllText(path, encoding);
 #endif
     }
 
     #region WriteAllText
+
+    /// <summary>
+    /// Writes all text from StringBuilder to a file with Unix line endings.
+    /// </summary>
+    /// <param name="filePath">Path to the file.</param>
+    /// <param name="stringBuilder">StringBuilder containing content to write.</param>
     public static
 #if ASYNC
 async Task
 #else
 void
 #endif
-WriteAllText(string file, StringBuilder sb)
+WriteAllText(string filePath, StringBuilder stringBuilder)
     {
 #if ASYNC
         await
 #endif
-            WriteAllText(file, sb.ToString().ToUnixLineEnding());
+            WriteAllText(filePath, stringBuilder.ToString().ToUnixLineEnding());
     }
 
+    /// <summary>
+    /// Writes or appends text to a file with Unix line endings.
+    /// </summary>
+    /// <param name="filePath">Path to the file.</param>
+    /// <param name="content">Content to write or append.</param>
+    /// <param name="isAppending">Whether to append to file instead of overwriting.</param>
     public static
 #if ASYNC
         async Task
 #else
 void
 #endif
-        WriteAllText(string file, string content, bool append)
+        WriteAllText(string filePath, string content, bool isAppending)
     {
-        if (append)
-            await AppendAllText(file, content.ToUnixLineEnding());
+        if (isAppending)
+            await AppendAllText(filePath, content.ToUnixLineEnding());
         else
-            await WriteAllText(file, content.ToUnixLineEnding());
+            await WriteAllText(filePath, content.ToUnixLineEnding());
     }
 
-
+    /// <summary>
+    /// Writes all text to a file.
+    /// </summary>
+    /// <param name="path">Path to the file.</param>
+    /// <param name="content">Content to write to file.</param>
+    /// <param name="encoding">Encoding to use (defaults to UTF-8).</param>
     public static
 #if ASYNC
         async Task
@@ -89,8 +109,11 @@ File.WriteAllText(path, content);
     }
     #endregion
 
-
-
+    /// <summary>
+    /// Appends text to a file, creating it if it doesn't exist.
+    /// </summary>
+    /// <param name="path">Path to the file.</param>
+    /// <param name="content">Content to append to file.</param>
     public static
 #if ASYNC
         async Task
@@ -105,9 +128,7 @@ void
         }
 
         if (LockedByBitLocker(path)) return;
-#if ASYNC
 
-#endif
         try
         {
 #if ASYNC
@@ -120,6 +141,4 @@ File.AppendAllText(path, content);
         {
         }
     }
-
-
 }

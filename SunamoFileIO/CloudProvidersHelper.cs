@@ -1,99 +1,59 @@
 namespace SunamoFileIO;
 
+/// <summary>
+/// Helper class for managing cloud provider configurations and folders.
+/// </summary>
 public class CloudProvidersHelper
 {
-    //private Dictionary<string, string> folders = null;
+    /// <summary>
+    /// Primary OneDrive folder path.
+    /// </summary>
     public static string OneDriveFolder0 = null;
+
+    /// <summary>
+    /// Secondary OneDrive folder path.
+    /// </summary>
     public static string OneDriveFolder1 = null;
+
+    /// <summary>
+    /// Google Drive folder path.
+    /// </summary>
     public static string GDriveFolder = null;
+
+    /// <summary>
+    /// OneDrive executable path.
+    /// </summary>
     public static string OneDriveExe = null;
+
+    /// <summary>
+    /// Google Drive executable path.
+    /// </summary>
     public static string GDriveExe = null;
 
+    /// <summary>
+    /// OneDrive executable filename without extension.
+    /// </summary>
     public static string OneDriveFn = null;
+
+    /// <summary>
+    /// Google Drive executable filename without extension.
+    /// </summary>
     public static string GDriveFn = null;
 
-    public static /*IMyStations*/ dynamic myStations = null;
-
-    //private static CloudProvidersHelper Instance = null;
-    private static bool isUseCloud = false;
+    /// <summary>
+    /// Dynamic stations configuration object.
+    /// </summary>
+    public static dynamic myStations = null;
 
     private CloudProvidersHelper()
     {
     }
 
+    /// <summary>
+    /// Initializes cloud provider settings. Currently returns early if GDriveFolder is already set.
+    /// </summary>
     public static void Init()
     {
         if (GDriveFolder != null) return;
-
-        // Return always, also for my PC
-        // Nemůžu, občas to používám
-        //return;
-
-        //if (Instance != null)
-        //{
-        //    return;
-        //}
-        //Instance = this;
-        //var fCloudProviders = AppData.ci.GetFileCommonSettings("CloudProviders.txt");
-
-        //var (header, l) = SF.GetAllElementsFileAdvanced(fCloudProviders, null);
-
-        //if (header.Count != 0)
-        //{
-
-        //    isUseCloud = true;
-        //    //folders = SF.ToDictionary<string, string>(l);
-        //    var OneDriveFolders = SHSplit.Split(header[0], "*");
-        //    OneDriveFolder0 = OneDriveFolders[0];
-        //    OneDriveFolder1 = OneDriveFolders[1];
-        //    GDriveFolder = l[0][0];
-
-        //    string oneDriveExe = header[1];
-
-        //    if (myStations != null)
-        //    {
-        //        oneDriveExe = oneDriveExe.Replace(SH.WrapWithBs(myStations.Vps), SH.WrapWithBs(myStations.Mb));
-        //    }
-
-        //    //if (!VpsHelperSunamo.IsVps)
-        //    //{
-        //    //    OneDriveExe = oneDriveExe;
-        //    //}
-
-        //    GDriveExe = l[0][1];
-
-        //    OneDriveFn = Path.GetFileNameWithoutExtension(OneDriveExe);
-        //    GDriveFn = Path.GetFileNameWithoutExtension(GDriveExe);
-        //}
     }
-
-
-    //public static void OpenSyncAppIfNotRunning(string ss2)
-    //{
-    //    if (!isUseCloud)
-    //    {
-    //        return;
-    //    }
-
-    //    if (OneDriveExe == null)
-    //        return;
-
-    //    if (ss2.StartsWith(OneDriveFolder0) || ss2.StartsWith(OneDriveFolder1))
-    //    {
-    //        if (!PH.IsAlreadyRunning(OneDriveFn))
-    //        {
-    //            AIStore.winPi?.PHWinPiRunAsDesktopUserNoAdmin(OneDriveExe);
-    //            Thread.Sleep(5000);
-    //        }
-    //    }
-    //    else if (ss2.StartsWith(GDriveFolder))
-    //    {
-    //        if (!PH.IsAlreadyRunning(GDriveFn))
-    //        {
-    //            Process.Start(GDriveExe);
-    //            Thread.Sleep(5000);
-    //        }
-    //    }
-
-    //}
 }
