@@ -90,7 +90,7 @@ public partial class TF
     /// <summary>
     /// UTF-8 BOM (Byte Order Mark) bytes: 239, 187, 191.
     /// </summary>
-    public static List<byte> BomUtf8 = new List<byte>([239, 187, 191]);
+    public static readonly List<byte> BomUtf8 = new List<byte>([239, 187, 191]);
 
     /// <summary>
     /// Removes double UTF-8 BOM from file if present.

@@ -28,7 +28,7 @@ public class EncodingHelper
     /// <param name="bom">First 4 bytes of the file.</param>
     /// <param name="defaultEncoding">Default encoding to return if no BOM detected (defaults to ASCII).</param>
     /// <returns>Detected encoding or default encoding.</returns>
-    public static Encoding DetectEncoding(List<byte> bom, Encoding defaultEncoding = null)
+    public static Encoding DetectEncoding(List<byte> bom, Encoding? defaultEncoding = null)
     {
         if (defaultEncoding == null) defaultEncoding = Encoding.ASCII;
 
@@ -38,8 +38,10 @@ public class EncodingHelper
             var second = bom[1];
             var third = bom[2];
 
+#pragma warning disable SYSLIB0001
             if (first == 0x2b && second == 0x2f && third == 0x76)
                 return Encoding.UTF7;
+#pragma warning restore SYSLIB0001
             if (first == 0xef && second == 0xbb && third == 0xbf)
                 return Encoding.UTF8;
             if (first == 0xff && second == 0xfe)
@@ -77,11 +79,11 @@ public class EncodingHelper
     /// <summary>
     /// Checks if a character is a control character (non-printable).
     /// </summary>
-    /// <param name="ch">Character code to check.</param>
+    /// <param name="characterCode">Character code to check.</param>
     /// <returns>True if character is a control character, false otherwise.</returns>
-    public static bool IsControlChar(int ch)
+    public static bool IsControlChar(int characterCode)
     {
-        return (ch > Chars.NUL && ch < Chars.BS) || (ch > Chars.CR && ch < Chars.SUB);
+        return (characterCode > Chars.NUL && characterCode < Chars.BS) || (characterCode > Chars.CR && characterCode < Chars.SUB);
     }
 
     /// <summary>
@@ -107,7 +109,7 @@ public class EncodingHelper
     public static Dictionary<int, string> ConvertToAllAvailableEncodings(byte[] buffer)
     {
         var result = new Dictionary<int, string>();
-        Encoding encoding = null;
+        Encoding? encoding = null;
         var encodings = Encoding.GetEncodings();
         foreach (var item in encodings)
         {
@@ -130,21 +132,21 @@ public class EncodingHelper
         /// <summary>
         /// Null character (ASCII 0).
         /// </summary>
-        public static char NUL = (char)0;
+        public static readonly char NUL = (char)0;
 
         /// <summary>
         /// Backspace character (ASCII 8).
         /// </summary>
-        public static char BS = (char)8;
+        public static readonly char BS = (char)8;
 
         /// <summary>
         /// Carriage Return character (ASCII 13).
         /// </summary>
-        public static char CR = (char)13;
+        public static readonly char CR = (char)13;
 
         /// <summary>
         /// Substitute character (ASCII 26).
         /// </summary>
-        public static char SUB = (char)26;
+        public static readonly char SUB = (char)26;
     }
 }

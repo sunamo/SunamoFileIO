@@ -15,7 +15,7 @@ public partial class TF
     /// <summary>
     /// Function to check if a file is currently in use.
     /// </summary>
-    public static Func<string, bool> IsUsed = null;
+    public static Func<string, bool>? IsUsed { get; set; } = null;
 
 #pragma warning disable
     /// <summary>
@@ -29,17 +29,17 @@ public partial class TF
         return false;
     }
 
-    private static Type type = typeof(TF);
+    private static Type tfType = typeof(TF);
 
     /// <summary>
     /// Throw exception if file cannot be written.
     /// </summary>
-    public static bool ThrowExcIfCantBeWrite = false;
+    public static bool ThrowExcIfCannotBeWritten { get; set; } = false;
 
     /// <summary>
     /// Enable file reading operations.
     /// </summary>
-    public static bool ReadFile = true;
+    public static bool ReadFile { get; set; } = true;
 #if ASYNC
     /// <summary>
     /// Waits and returns empty string (async helper).
@@ -79,7 +79,7 @@ public partial class TF
             var lineIndex = 0;
             while (!sr.EndOfStream)
             {
-                allLines[lineIndex] = sr.ReadLine();
+                allLines[lineIndex] = sr.ReadLine()!;
                 lineIndex += 1;
             }
         }
@@ -111,7 +111,7 @@ public partial class TF
             await
 #endif
         FileMs.ReadAllTextAsync(configFilePath)).ToList();
-        list = list.Where(d => !d.StartsWith("#")).ToList();
+        list = list.Where(line => !line.StartsWith("#")).ToList();
         return list;
     }
 
@@ -138,7 +138,7 @@ public partial class TF
     public static Encoding GetEncoding(FileStream file)
     {
         var bom = new byte[4];
-        file.Read(bom, 0, 4);
+        file.ReadExactly(bom, 0, 4);
         return EncodingHelper.DetectEncoding(new List<byte>(bom));
     }
 
@@ -270,7 +270,7 @@ public partial class TF
 #if ASYNC
                 await
 #endif
-            FileMs.ReadAllTextAsync(item, null)).ToList();
+            FileMs.ReadAllTextAsync(item)).ToList();
             for (var i = 0; i < lines.Count; i++)
             {
                 var line = lines[i].Trim();

@@ -10,9 +10,9 @@ internal class FS
     /// EN: Inserts a folder name between parent path and file name
     /// CZ: Vloží název složky mezi nadřazenou cestu a název souboru
     /// </summary>
-    internal static string InsertBetweenFileNameAndPath(string folder, string parentFolder, string insert)
+    internal static string InsertBetweenFileNameAndPath(string folder, string? parentFolder, string insert)
     {
-        if (parentFolder == null) parentFolder = Path.GetDirectoryName(folder);
+        if (parentFolder == null) parentFolder = Path.GetDirectoryName(folder)!;
         var outputFolder = Path.Combine(parentFolder, insert);
         CreateFoldersPsysicallyUnlessThere(outputFolder);
         return Path.Combine(outputFolder, Path.GetFileName(folder));
@@ -34,11 +34,11 @@ internal class FS
         var currentPath = path;
         while (true)
         {
-            currentPath = Path.GetDirectoryName(currentPath);
+            currentPath = Path.GetDirectoryName(currentPath)!;
             // EN: TODO: This doesn't work for UWP/UAP apps because they don't have access to the whole disk
             // CZ: TODO: Toto nefunguje pro UWP/UAP aplikace protože nemají přístup k celému disku
             if (Directory.Exists(currentPath)) break;
-            foldersToCreate.Add(currentPath);
+            foldersToCreate.Add(currentPath!);
         }
 
         foldersToCreate.Reverse();
@@ -63,8 +63,8 @@ internal class FS
 
         if (pathString.Contains('/') || pathString.Contains('\\'))
         {
-            string directoryPath = Path.GetDirectoryName(pathString);
-            return Path.Combine(directoryPath, fileNameWithoutExtension + whatInsert + extension);
+            string? directoryPath = Path.GetDirectoryName(pathString);
+            return Path.Combine(directoryPath!, fileNameWithoutExtension + whatInsert + extension);
         }
 
         return fileNameWithoutExtension + whatInsert + extension;

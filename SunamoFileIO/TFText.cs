@@ -93,7 +93,7 @@ void
 #else
 void
 #endif
-        WriteAllText(string path, string content, Encoding encoding = null)
+        WriteAllText(string path, string content, Encoding? encoding = null)
     {
         if (encoding == null)
         {

@@ -8,42 +8,42 @@ public class CloudProvidersHelper
     /// <summary>
     /// Primary OneDrive folder path.
     /// </summary>
-    public static string OneDriveFolder0 = null;
+    public static string? OneDriveFolder0 { get; set; } = null;
 
     /// <summary>
     /// Secondary OneDrive folder path.
     /// </summary>
-    public static string OneDriveFolder1 = null;
+    public static string? OneDriveFolder1 { get; set; } = null;
 
     /// <summary>
     /// Google Drive folder path.
     /// </summary>
-    public static string GDriveFolder = null;
+    public static string? GDriveFolder { get; set; } = null;
 
     /// <summary>
     /// OneDrive executable path.
     /// </summary>
-    public static string OneDriveExe = null;
+    public static string? OneDriveExe { get; set; } = null;
 
     /// <summary>
     /// Google Drive executable path.
     /// </summary>
-    public static string GDriveExe = null;
+    public static string? GDriveExe { get; set; } = null;
 
     /// <summary>
     /// OneDrive executable filename without extension.
     /// </summary>
-    public static string OneDriveFn = null;
+    public static string? OneDriveFilename { get; set; } = null;
 
     /// <summary>
     /// Google Drive executable filename without extension.
     /// </summary>
-    public static string GDriveFn = null;
+    public static string? GDriveFilename { get; set; } = null;
 
     /// <summary>
     /// Dynamic stations configuration object.
     /// </summary>
-    public static dynamic myStations = null;
+    public static dynamic? MyStations { get; set; } = null;
 
     private CloudProvidersHelper()
     {

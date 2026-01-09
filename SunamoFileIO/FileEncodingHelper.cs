@@ -18,11 +18,11 @@ async Task
 #else
 void
 #endif
-ConvertToEncodingWorker(List<string> files, Encoding inputEncoding, Encoding outputEncoding, string filenameInsert = null)
+ConvertToEncodingWorker(List<string> files, Encoding? inputEncoding, Encoding outputEncoding, string? filenameInsert = null)
     {
         foreach (var item in files)
         {
-            string content = null;
+            string? content = null;
             if (inputEncoding == null)
             {
                 content =
@@ -42,7 +42,7 @@ await
             var newFile = item;
             if (filenameInsert != null)
             {
-                newFile = FS.InsertBetweenFileNameAndPath(item, null, filenameInsert);
+                newFile = FS.InsertBetweenFileNameAndPath(item, null!, filenameInsert);
             }
             await TF.WriteAllText(newFile, content, outputEncoding);
         }
@@ -60,7 +60,7 @@ async Task
 #else
     void
 #endif
-ConvertToEncoding(List<string> files, Encoding inputEncoding, Encoding outputEncoding)
+ConvertToEncoding(List<string> files, Encoding? inputEncoding, Encoding outputEncoding)
     {
         var insert = "Converted";
         await ConvertToEncodingWorker(files, inputEncoding, outputEncoding, insert);

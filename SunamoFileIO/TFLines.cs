@@ -85,7 +85,7 @@ List<string>
 #else
 File.ReadAllText(filePath).ToList();
 #endif
-        if (isTrimmingEmptyLines) result = result.Where(d => !string.IsNullOrWhiteSpace(d)).ToList();
+        if (isTrimmingEmptyLines) result = result.Where(line => !string.IsNullOrWhiteSpace(line)).ToList();
         return result;
     }
 
