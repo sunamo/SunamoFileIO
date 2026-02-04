@@ -7,7 +7,7 @@ partial class TF
     /// <summary>
     /// Appends lines to a file, optionally removing duplicates.
     /// </summary>
-    /// <param name="path">Path to the file.</param>
+    /// <param name="filePath">Path to the file.</param>
     /// <param name="linesToAppend">Lines to append to file.</param>
     /// <param name="isDuplicatingRemoving">Whether to remove duplicate lines after appending.</param>
     public static
@@ -16,22 +16,22 @@ partial class TF
 #else
 void
 #endif
-    AppendAllLines(string path, IEnumerable<string> linesToAppend, bool isDuplicatingRemoving = false)
+    AppendAllLines(string filePath, IEnumerable<string> linesToAppend, bool isDuplicatingRemoving = false)
     {
-        if (!File.Exists(path))
+        if (!File.Exists(filePath))
         {
-            await TF.WriteAllText(path, "");
+            await TF.WriteAllText(filePath, "");
         }
 
         var list = SHGetLines.GetLines(
 #if ASYNC
             await
 #endif
-                FileMs.ReadAllTextAsync(path)).ToList();
+                FileMs.ReadAllTextAsync(filePath)).ToList();
         list.AddRange(linesToAppend);
         if (isDuplicatingRemoving)
             list = list.Distinct().ToList();
-        await FileMs.WriteAllLinesAsync(path, list);
+        await FileMs.WriteAllLinesAsync(filePath, list);
     }
 
     /// <summary>

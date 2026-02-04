@@ -1,7 +1,5 @@
 namespace SunamoFileIO._sunamo.SunamoExceptions;
 
-// © www.sunamo.cz. All Rights Reserved.
-
 /// <summary>
 /// EN: Helper class for formatting exception messages
 /// CZ: Pomocná třída pro formátování chybových zpráv

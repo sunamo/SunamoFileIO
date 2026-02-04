@@ -1,3 +1,4 @@
+// variables names: ok
 namespace RunnerFileIO;
 
 internal class Program

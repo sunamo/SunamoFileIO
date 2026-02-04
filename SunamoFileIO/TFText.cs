@@ -45,7 +45,7 @@ return File.ReadAllText(path, encoding);
     /// <summary>
     /// Writes all text from StringBuilder to a file with Unix line endings.
     /// </summary>
-    /// <param name="filePath">Path to the file.</param>
+    /// <param name="path">Path to the file.</param>
     /// <param name="stringBuilder">StringBuilder containing content to write.</param>
     public static
 #if ASYNC
@@ -53,18 +53,18 @@ async Task
 #else
 void
 #endif
-WriteAllText(string filePath, StringBuilder stringBuilder)
+WriteAllText(string path, StringBuilder stringBuilder)
     {
 #if ASYNC
         await
 #endif
-            WriteAllText(filePath, stringBuilder.ToString().ToUnixLineEnding());
+            WriteAllText(path, stringBuilder.ToString().ToUnixLineEnding());
     }
 
     /// <summary>
     /// Writes or appends text to a file with Unix line endings.
     /// </summary>
-    /// <param name="filePath">Path to the file.</param>
+    /// <param name="path">Path to the file.</param>
     /// <param name="content">Content to write or append.</param>
     /// <param name="isAppending">Whether to append to file instead of overwriting.</param>
     public static
@@ -73,12 +73,12 @@ WriteAllText(string filePath, StringBuilder stringBuilder)
 #else
 void
 #endif
-        WriteAllText(string filePath, string content, bool isAppending)
+        WriteAllText(string path, string content, bool isAppending)
     {
         if (isAppending)
-            await AppendAllText(filePath, content.ToUnixLineEnding());
+            await AppendAllText(path, content.ToUnixLineEnding());
         else
-            await WriteAllText(filePath, content.ToUnixLineEnding());
+            await WriteAllText(path, content.ToUnixLineEnding());
     }
 
     /// <summary>

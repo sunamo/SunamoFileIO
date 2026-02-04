@@ -1,6 +1,3 @@
-// EN: Global usings for SunamoFileIO library
-// CZ: Globální using direktivy pro knihovnu SunamoFileIO
-
 global using SunamoFileIO._sunamo.SunamoExceptions;
 global using SunamoFileIO._sunamo.SunamoExtensions;
 global using SunamoFileIO._sunamo.SunamoFileSystem;
