@@ -1,3 +1,4 @@
+// variables names: ok
 // EN: Global usings for test project
 // CZ: Globální using direktivy pro testovací projekt
 
