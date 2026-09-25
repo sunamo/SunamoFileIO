@@ -1,25 +1,13 @@
 namespace SunamoFileIO._sunamo.SunamoExceptions;
 
-/// <summary>
-/// EN: Helper class for formatting exception messages
-/// CZ: Pomocná třída pro formátování chybových zpráv
-/// </summary>
 internal sealed partial class Exceptions
 {
     #region Other
-    /// <summary>
-    /// EN: Adds colon and space after prefix if not empty
-    /// CZ: Přidá dvojtečku a mezeru za prefix pokud není prázdný
-    /// </summary>
     internal static string CheckBefore(string before)
     {
         return string.IsNullOrWhiteSpace(before) ? string.Empty : before + ": ";
     }
 
-    /// <summary>
-    /// EN: Gets the place where exception occurred from stack trace
-    /// CZ: Získá místo kde došlo k výjimce ze stack trace
-    /// </summary>
     internal static Tuple<string, string, string> PlaceOfException(bool fillAlsoFirstTwo = true)
     {
         StackTrace stackTrace = new();
@@ -48,10 +36,6 @@ internal sealed partial class Exceptions
         return new Tuple<string, string, string>(type, methodName, string.Join(Environment.NewLine, lines));
     }
 
-    /// <summary>
-    /// EN: Extracts type name and method name from stack trace line
-    /// CZ: Extrahuje název typu a metody z řádku stack trace
-    /// </summary>
     internal static void TypeAndMethodName(string stackTraceLine, out string type, out string methodName)
     {
         var trimmedLine = stackTraceLine.Split("at ")[1].Trim();
@@ -62,15 +46,11 @@ internal sealed partial class Exceptions
         type = string.Join(".", parts);
     }
 
-    /// <summary>
-    /// EN: Gets the name of calling method from stack trace
-    /// CZ: Získá název volající metody ze stack trace
-    /// </summary>
     internal static string CallingMethod(int depth = 1)
     {
         StackTrace stackTrace = new();
         var methodBase = stackTrace.GetFrame(depth)?.GetMethod();
-        if (methodBase == null)
+        if (methodBase is null)
         {
             return "Method name cannot be get";
         }
@@ -85,20 +65,12 @@ internal sealed partial class Exceptions
     #endregion
 
     #region OnlyReturnString
-    /// <summary>
-    /// EN: Creates custom exception message with optional prefix
-    /// CZ: Vytvoří vlastní chybovou zprávu s volitelným prefixem
-    /// </summary>
     internal static string? Custom(string before, string message)
     {
         return CheckBefore(before) + message;
     }
     #endregion
 
-    /// <summary>
-    /// EN: Returns error message if directory doesn't exist, null otherwise
-    /// CZ: Vrátí chybovou zprávu pokud složka neexistuje, jinak null
-    /// </summary>
     internal static string? DirectoryWasntFound(string before, string directory)
     {
         return !Directory.Exists(directory)
