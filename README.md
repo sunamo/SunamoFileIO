@@ -1,5 +1,10 @@
 # SunamoFileIO
 
+## Short description
+
+Metody ReadAllText, WriteAllText a další pro čtení a zápis souborů s několika vylepšeními.
+
+
 ReadAllText, WriteAllText etc. with some magic ability
 
 ## Overview
