@@ -31,7 +31,7 @@ public class TFTests
     }
 
     /// <summary>
-    /// EN: Tests whether different newline formats are read correctly
+    /// Tests whether different newline formats are read correctly
     /// Both File and TF handle it correctly. SHGetLines also works OK!
     /// The issue was that SunamoStringGetLines wasn't imported, transient dependency was used.
     /// </summary>
