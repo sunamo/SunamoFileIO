@@ -2,6 +2,13 @@ namespace SunamoFileIO;
 
 public partial class TF
 {
+    /// <summary>
+    /// Pure file operation.
+    /// </summary>
+    /// <param name="filePath">The file path.</param>
+    /// <param name="transformFunction">The transform function.</param>
+    /// <param name="insertBetweenFilenameAndExtension">The insert between filename and extension.</param>
+    /// <returns>The pure file operation result.</returns>
     public static
         async Task<bool>
     PureFileOperation(string filePath, Func<string, string> transformFunction, string insertBetweenFilenameAndExtension)
@@ -18,6 +25,12 @@ public partial class TF
         return false;
     }
 
+    /// <summary>
+    /// Pure file operation.
+    /// </summary>
+    /// <param name="filePath">The file path.</param>
+    /// <param name="transformFunction">The transform function.</param>
+    /// <returns>The pure file operation result.</returns>
     public static
         async Task<bool>
     PureFileOperation(string filePath, Func<string, string> transformFunction)
@@ -36,19 +49,35 @@ public partial class TF
     }
 
     // StreamReader is derived from TextReader.
+    /// <summary>
+    /// Text reader.
+    /// </summary>
+    /// <param name="filePath">The file path.</param>
+    /// <returns>The text reader result.</returns>
     public static StreamReader TextReader(string filePath)
     {
         return FileMs.OpenText(filePath);
     }
 
+    /// <summary>
+    /// Create empty file when doesnt exists.
+    /// </summary>
+    /// <param name="path">The path.</param>
     public static async Task CreateEmptyFileWhenDoesntExists(string path)
     {
         await FileAsync.WriteAllTextAsync(path, "");
     }
 
     // UTF-8 BOM (Byte Order Mark) bytes: 239, 187, 191.
+    /// <summary>
+    /// The bom utf 8.
+    /// </summary>
     public static readonly List<byte> BomUtf8 = new List<byte>([239, 187, 191]);
 
+    /// <summary>
+    /// Remove double bom utf 8.
+    /// </summary>
+    /// <param name="path">The path.</param>
     public static
         async Task
     RemoveDoubleBomUtf8(string path)

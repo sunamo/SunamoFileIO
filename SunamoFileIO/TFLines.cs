@@ -4,6 +4,12 @@ partial class TF
 {
     #region Lines
 
+    /// <summary>
+    /// Append all lines.
+    /// </summary>
+    /// <param name="filePath">The file path.</param>
+    /// <param name="linesToAppend">The lines to append.</param>
+    /// <param name="isDuplicatingRemoving">The is duplicating removing.</param>
     public static
     async Task
     AppendAllLines(string filePath, IEnumerable<string> linesToAppend, bool isDuplicatingRemoving = false)
@@ -22,6 +28,11 @@ partial class TF
         await FileAsync.WriteAllLinesAsync(filePath, list);
     }
 
+    /// <summary>
+    /// Write all lines.
+    /// </summary>
+    /// <param name="filePath">The file path.</param>
+    /// <param name="lines">The lines.</param>
     public static
         async Task
         WriteAllLines(string filePath, IList<string> lines)
@@ -32,6 +43,12 @@ partial class TF
             (filePath, lines.ToArray());
     }
 
+    /// <summary>
+    /// Read all lines.
+    /// </summary>
+    /// <param name="filePath">The file path.</param>
+    /// <param name="isTrimmingEmptyLines">The is trimming empty lines.</param>
+    /// <returns>The read all lines result.</returns>
     public static
         async Task<List<string>>
         ReadAllLines(string filePath, bool isTrimmingEmptyLines = true)
