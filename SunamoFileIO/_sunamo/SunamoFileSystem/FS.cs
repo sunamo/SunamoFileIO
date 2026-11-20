@@ -23,8 +23,7 @@ internal class FS
         while (true)
         {
             currentPath = Path.GetDirectoryName(currentPath)!;
-            // EN: TODO: This doesn't work for UWP/UAP apps because they don't have access to the whole disk
-            // CZ: TODO: Toto nefunguje pro UWP/UAP aplikace protože nemají přístup k celému disku
+            // TODO: This doesn't work for UWP/UAP apps because they don't have access to the whole disk
             if (Directory.Exists(currentPath)) break;
             foldersToCreate.Add(currentPath!);
         }
