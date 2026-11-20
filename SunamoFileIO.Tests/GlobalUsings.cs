@@ -1,4 +1,3 @@
-// variables names: ok
 // Global usings for test project
 
 global using Xunit;

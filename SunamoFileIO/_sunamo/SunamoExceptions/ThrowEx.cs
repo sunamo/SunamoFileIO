@@ -1,6 +1,5 @@
 namespace SunamoFileIO._sunamo.SunamoExceptions;
 
-// Variable names have been checked and replaced with self-descriptive names
 internal partial class ThrowEx
 {
 
