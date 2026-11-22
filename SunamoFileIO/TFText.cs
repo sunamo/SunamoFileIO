@@ -2,6 +2,12 @@ namespace SunamoFileIO;
 
 partial class TF
 {
+    /// <summary>
+    /// Read all text.
+    /// </summary>
+    /// <param name="path">The path.</param>
+    /// <param name="encoding">The encoding.</param>
+    /// <returns>The read all text result.</returns>
     public static
 async Task<string>
 ReadAllText(string path, Encoding? encoding = null)
@@ -25,6 +31,11 @@ ReadAllText(string path, Encoding? encoding = null)
 
     #region WriteAllText
 
+    /// <summary>
+    /// Write all text.
+    /// </summary>
+    /// <param name="path">The path.</param>
+    /// <param name="stringBuilder">The string builder.</param>
     public static
 async Task
 WriteAllText(string path, StringBuilder stringBuilder)
@@ -32,6 +43,12 @@ WriteAllText(string path, StringBuilder stringBuilder)
         await WriteAllText(path, stringBuilder.ToString().ToUnixLineEnding());
     }
 
+    /// <summary>
+    /// Write all text.
+    /// </summary>
+    /// <param name="path">The path.</param>
+    /// <param name="content">The content.</param>
+    /// <param name="isAppending">The is appending.</param>
     public static
         async Task
         WriteAllText(string path, string content, bool isAppending)
@@ -46,6 +63,12 @@ WriteAllText(string path, StringBuilder stringBuilder)
         }
     }
 
+    /// <summary>
+    /// Write all text.
+    /// </summary>
+    /// <param name="path">The path.</param>
+    /// <param name="content">The content.</param>
+    /// <param name="encoding">The encoding.</param>
     public static
         async Task
         WriteAllText(string path, string content, Encoding? encoding = null)
@@ -57,6 +80,11 @@ WriteAllText(string path, StringBuilder stringBuilder)
     }
     #endregion
 
+    /// <summary>
+    /// Append all text.
+    /// </summary>
+    /// <param name="path">The path.</param>
+    /// <param name="content">The content.</param>
     public static
         async Task
         AppendAllText(string path, string content)

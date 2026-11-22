@@ -1,6 +1,3 @@
-// variables names: ok
-// EN: Variable names have been checked and replaced with self-descriptive names
-// CZ: Názvy proměnných byly zkontrolovány a nahrazeny samopopisnými názvy
 
 namespace SunamoFileIO.Tests;
 
@@ -27,13 +24,12 @@ public class TFTests
     [Fact]
     public async Task ReadAllTextTest()
     {
-        // EN: Test placeholder - implement actual test logic
-        // CZ: Zástupce pro test - implementuj skutečnou testovací logiku
+        // Test placeholder - implement actual test logic
         await Task.CompletedTask;
     }
 
     /// <summary>
-    /// EN: Tests whether different newline formats are read correctly
+    /// Tests whether different newline formats are read correctly
     /// Both File and TF handle it correctly. SHGetLines also works OK!
     /// The issue was that SunamoStringGetLines wasn't imported, transient dependency was used.
     /// </summary>
@@ -55,7 +51,7 @@ public class TFTests
     {
 
         var path = basePath + "AllRnRn.cs";
-        // EN: TF.ReadAllLines returns 26 lines, ReadAllLinesAsync returns 29
+        // TF.ReadAllLines returns 26 lines, ReadAllLinesAsync returns 29
         var fileLines = await File.ReadAllLinesAsync(path);
         var list = await TF.ReadAllLines(path);
     }

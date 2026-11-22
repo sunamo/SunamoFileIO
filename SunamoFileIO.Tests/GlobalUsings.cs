@@ -1,6 +1,4 @@
-// variables names: ok
-// EN: Global usings for test project
-// CZ: Globální using direktivy pro testovací projekt
+// Global usings for test project
 
 global using Xunit;
 global using System.Collections.Generic;

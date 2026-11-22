@@ -1,7 +1,15 @@
 namespace SunamoFileIO;
 
+/// <summary>
+/// Represents the encoding helper type.
+/// </summary>
 public class EncodingHelper
 {
+    /// <summary>
+    /// Print names for encoding as is in sheet.
+    /// </summary>
+    /// <param name="encoding">The encoding.</param>
+    /// <returns>The print names for encoding as is in sheet result.</returns>
     public static string PrintNamesForEncodingAsIsInSheet(Encoding encoding)
     {
         var stringBuilder = new StringBuilder();
@@ -14,6 +22,12 @@ public class EncodingHelper
         return stringBuilder.ToString();
     }
 
+    /// <summary>
+    /// Detect encoding.
+    /// </summary>
+    /// <param name="bom">The bom.</param>
+    /// <param name="defaultEncoding">The default encoding.</param>
+    /// <returns>The detect encoding result.</returns>
     public static Encoding DetectEncoding(List<byte> bom, Encoding? defaultEncoding = null)
     {
         defaultEncoding ??= Encoding.ASCII;
@@ -41,6 +55,11 @@ public class EncodingHelper
         return defaultEncoding;
     }
 
+    /// <summary>
+    /// Is binary.
+    /// </summary>
+    /// <param name="path">The path.</param>
+    /// <returns>The is binary result.</returns>
     public static bool IsBinary(string path)
     {
         var length = new FileInfo(path).Length;
@@ -55,11 +74,23 @@ public class EncodingHelper
         return false;
     }
 
+    /// <summary>
+    /// Is control char.
+    /// </summary>
+    /// <param name="characterCode">The character code.</param>
+    /// <returns>The is control char result.</returns>
     public static bool IsControlChar(int characterCode)
     {
         return (characterCode > Chars.NUL && characterCode < Chars.BS) || (characterCode > Chars.CR && characterCode < Chars.SUB);
     }
 
+    /// <summary>
+    /// Convert to.
+    /// </summary>
+    /// <param name="destinationEncodingCodepage">The destination encoding codepage.</param>
+    /// <param name="input">The input.</param>
+    /// <param name="badCharsReplaceFor">The bad chars replace for.</param>
+    /// <returns>The convert to result.</returns>
     public static string ConvertTo(int destinationEncodingCodepage, List<byte> input, string badCharsReplaceFor)
     {
         var sourceEncoding = DetectEncoding(input);
@@ -68,6 +99,11 @@ public class EncodingHelper
         return destinationEncoding.GetString(Encoding.Convert(sourceEncoding, destinationEncoding, input.ToArray()));
     }
 
+    /// <summary>
+    /// Convert to all available encodings.
+    /// </summary>
+    /// <param name="buffer">The buffer.</param>
+    /// <returns>The convert to all available encodings result.</returns>
     public static Dictionary<int, string> ConvertToAllAvailableEncodings(byte[] buffer)
     {
         var result = new Dictionary<int, string>();
@@ -86,14 +122,29 @@ public class EncodingHelper
         return result;
     }
 
+    /// <summary>
+    /// Represents the chars type.
+    /// </summary>
     public static class Chars
     {
+        /// <summary>
+        /// The NUL.
+        /// </summary>
         public static readonly char NUL = (char)0;
 
+        /// <summary>
+        /// The BS.
+        /// </summary>
         public static readonly char BS = (char)8;
 
+        /// <summary>
+        /// The CR.
+        /// </summary>
         public static readonly char CR = (char)13;
 
+        /// <summary>
+        /// The SUB.
+        /// </summary>
         public static readonly char SUB = (char)26;
     }
 }
