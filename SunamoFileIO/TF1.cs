@@ -60,12 +60,23 @@ public partial class TF
     }
 
     /// <summary>
-    /// Create empty file when doesnt exists.
+    /// Creates an empty file only when the file does not exist; an existing file keeps its content.
     /// </summary>
     /// <param name="path">The path.</param>
     public static async Task CreateEmptyFileWhenDoesntExists(string path)
     {
-        await FileAsync.WriteAllTextAsync(path, "");
+        if (!File.Exists(path))
+            await FileAsync.WriteAllTextAsync(path, "");
+    }
+
+    /// <summary>
+    /// Creates an empty file synchronously only when the file does not exist; an existing file keeps its content.
+    /// </summary>
+    /// <param name="path">The path.</param>
+    public static void CreateEmptyFileWhenDoesntExistsSync(string path)
+    {
+        if (!File.Exists(path))
+            File.WriteAllText(path, "");
     }
 
     // UTF-8 BOM (Byte Order Mark) bytes: 239, 187, 191.
